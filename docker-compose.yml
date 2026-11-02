@@ -1,0 +1,54 @@
+# PostgreSQL 17 para desarrollo y pruebas, y Mailpit para ver los correos en desarrollo.
+#   npm run db:up    → levanta los servicios y espera a que estén sanos
+#   npm run db:down  → los detiene (los datos de desarrollo persisten en el volumen)
+# Puertos distintos a los de HOSCEM (5432/5433) para que ambos proyectos corran a la vez.
+name: feacomech
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: feacomech
+      POSTGRES_PASSWORD: feacomech_dev
+      POSTGRES_DB: feacomech
+      TZ: UTC
+    ports:
+      - "5434:5432"
+    volumes:
+      - feacomech_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U feacomech -d feacomech"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # Base de pruebas aparte: sin volumen, se recrea en cada arranque.
+  db-test:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: feacomech
+      POSTGRES_PASSWORD: feacomech_test
+      POSTGRES_DB: feacomech_test
+      TZ: UTC
+    ports:
+      - "5435:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U feacomech -d feacomech_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # Correo de desarrollo: captura todo lo que envía la plataforma (no sale a internet).
+  # Bandeja en http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  feacomech_pg:

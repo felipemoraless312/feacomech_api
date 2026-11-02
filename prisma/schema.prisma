@@ -1,0 +1,1047 @@
+// =============================================================================
+//  FEACOMECH — Federación de Asociaciones y Colegios Médicos del Estado de Chiapas
+//  Esquema Prisma
+//
+//  Convenciones (las mismas de HOSCEM):
+//   - Nombres de dominio en español, PascalCase para modelos, camelCase campos.
+//   - IDs UUID v7 (ordenables por tiempo, no adivinables).
+//   - Fechas en UTC; se muestran en America/Mexico_City.
+//   - Lo institucional no se borra: estados + historial + Auditoria (sólo inserción).
+//   - Prisma 7: la URL de conexión vive en prisma.config.ts.
+// =============================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../server/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -----------------------------------------------------------------------------
+//  ENUMS
+// -----------------------------------------------------------------------------
+
+enum AccionAuditoria {
+  CREAR
+  ACTUALIZAR
+  ELIMINAR
+  CONSULTAR
+  DESCARGAR
+  VALIDAR
+  RECHAZAR
+  LOGIN
+  LOGIN_FALLIDO
+  LOGOUT
+}
+
+/// Ver shared/permisos.ts.
+enum AlcancePermiso {
+  TOTAL
+  ORGANIZACION
+  PROPIO
+}
+
+enum TipoOrganizacion {
+  COLEGIO
+  ASOCIACION
+}
+
+enum TipoOrgano {
+  MESA_DIRECTIVA
+  CONSEJO_CONSULTIVO
+  COMISION
+  OTRO
+}
+
+enum EstadoNombramiento {
+  VIGENTE
+  CONCLUIDO
+  REVOCADO
+}
+
+enum TipoNoticia {
+  COMUNICADO
+  NOTICIA
+  ACTIVIDAD
+  PUBLICACION
+}
+
+enum EstadoNoticia {
+  BORRADOR
+  REVISION
+  PUBLICADA
+  RETIRADA
+}
+
+enum TipoVinculo {
+  INSTITUCION
+  CONVENIO
+  ORGANISMO
+}
+
+enum EstadoMensaje {
+  NUEVO
+  ATENDIDO
+  ARCHIVADO
+}
+
+enum TipoEvento {
+  CONGRESO
+  CURSO
+  CONFERENCIA
+  TALLER
+  JORNADA
+  OTRO
+}
+
+enum ModalidadEvento {
+  PRESENCIAL
+  VIRTUAL
+  HIBRIDO
+}
+
+enum EstadoEvento {
+  BORRADOR
+  PUBLICADO
+  CANCELADO
+}
+
+enum EstadoInscripcion {
+  CONFIRMADA
+  LISTA_ESPERA
+  CANCELADA
+}
+
+enum TipoGrupo {
+  GENERAL
+  ESPECIALIDAD
+  ORGANIZACION
+  DEBATE
+}
+
+enum PrivacidadGrupo {
+  ABIERTO
+  MIEMBROS
+  PRIVADO
+}
+
+enum RolGrupo {
+  MIEMBRO
+  MODERADOR
+}
+
+enum EstadoMiembroGrupo {
+  ACTIVO
+  PENDIENTE
+}
+
+enum TipoReaccion {
+  ME_GUSTA
+  UTIL
+  INTERESANTE
+}
+
+enum MotivoReporte {
+  DATOS_PACIENTE
+  INAPROPIADO
+  SPAM
+  OTRO
+}
+
+enum EstadoReporte {
+  PENDIENTE
+  ELIMINADO
+  DESESTIMADO
+}
+
+/// Quién puede consultar un documento:
+///   PUBLICO      – cualquiera, también en el portal;
+///   AFILIADOS    – cualquier usuario con sesión en la plataforma;
+///   ORGANIZACION – integrantes y representantes de la organización dueña del documento;
+///   RESTRINGIDO  – sólo quien tiene el permiso documento.ver (o lo gestiona).
+enum NivelAcceso {
+  PUBLICO
+  AFILIADOS
+  ORGANIZACION
+  RESTRINGIDO
+}
+
+/// Estado de la organización ante la Federación.
+enum EstadoAfiliacion {
+  EN_TRAMITE
+  AFILIADA
+  SUSPENDIDA
+  BAJA
+}
+
+/// SOLICITADA → ACTIVA (validada por la Federación) o RECHAZADA; ACTIVA → BAJA.
+enum EstadoMembresia {
+  SOLICITADA
+  ACTIVA
+  RECHAZADA
+  BAJA
+}
+
+enum EstadoSolicitud {
+  PENDIENTE
+  APROBADA
+  RECHAZADA
+}
+
+enum EstadoValidacion {
+  PENDIENTE
+  VALIDADO
+  RECHAZADO
+}
+
+enum TipoTokenAcceso {
+  RECUPERACION
+  INVITACION
+}
+
+/// PUBLICO: cualquiera. AUTENTICADO: usuarios con sesión. RESTRINGIDO: lo decide el
+/// módulo dueño del archivo (documentos, adjuntos del foro…).
+enum VisibilidadArchivo {
+  PUBLICO
+  AUTENTICADO
+  RESTRINGIDO
+}
+
+// -----------------------------------------------------------------------------
+//  IDENTIDAD Y ACCESO
+// -----------------------------------------------------------------------------
+
+/// Persona con acceso a la plataforma privada.
+model Usuario {
+  id                  String    @id @default(uuid(7)) @db.Uuid
+  email               String    @unique // siempre en minúsculas; es el nombre de inicio de sesión
+  passwordHash        String
+  nombre              String
+  apellidoPaterno     String
+  apellidoMaterno     String?
+  telefono            String?
+  activo              Boolean   @default(true)
+  versionSesion       Int       @default(0) // incrementar = invalidar sesiones abiertas
+  debeCambiarPassword Boolean   @default(true)
+  intentosFallidos    Int       @default(0) // se reinicia al entrar; 5 seguidos bloquean 15 min
+  bloqueadoHasta      DateTime?
+  ultimoAcceso        DateTime?
+  creadoEn            DateTime  @default(now())
+  actualizadoEn       DateTime  @updatedAt
+
+  roles             UsuarioRol[]        @relation("RolDelUsuario")
+  rolesAsignados    UsuarioRol[]        @relation("RolAsignadoPor")
+  auditoria         Auditoria[]
+  perfil            PerfilProfesional?  @relation("PerfilDelUsuario")
+  perfilesValidados PerfilProfesional[] @relation("PerfilValidadoPor")
+  sesiones          Sesion[]
+  tokens            TokenAcceso[]
+  notificaciones    Notificacion[]
+  archivosSubidos   Archivo[]
+
+  membresias              Membresia[]              @relation("MembresiaDelUsuario")
+  membresiasSolicitadas   Membresia[]              @relation("MembresiaSolicitadaPor")
+  membresiasResueltas     Membresia[]              @relation("MembresiaResueltaPor")
+  afiliacionesRegistradas AfiliacionOrganizacion[]
+  cambiosSolicitados      SolicitudCambio[]        @relation("CambioSolicitadoPor")
+  cambiosResueltos        SolicitudCambio[]        @relation("CambioResueltoPor")
+  nombramientos           Nombramiento[]
+  noticias                Noticia[]                @relation("NoticiaAutor")
+  mensajesAtendidos       MensajeContacto[]        @relation("MensajeAtendidoPor")
+  eventosCreados          Evento[]                 @relation("EventoCreadoPor")
+  inscripciones           Inscripcion[]
+  asistenciasRegistradas  Asistencia[]             @relation("AsistenciaRegistradaPor")
+  constanciasEmitidas     Constancia[]             @relation("ConstanciaEmitidaPor")
+  gruposCreados           Grupo[]                  @relation("GrupoCreadoPor")
+  grupos                  MiembroGrupo[]
+  publicaciones           Publicacion[]            @relation("PublicacionAutor")
+  publicacionesEliminadas Publicacion[]            @relation("PublicacionEliminadaPor")
+  comentarios             Comentario[]             @relation("ComentarioAutor")
+  comentariosEliminados   Comentario[]             @relation("ComentarioEliminadoPor")
+  reacciones              Reaccion[]
+  reportes                Reporte[]                @relation("ReporteDe")
+  reportesResueltos       Reporte[]                @relation("ReporteResueltoPor")
+  documentosSubidos       Documento[]              @relation("DocumentoSubidoPor")
+}
+
+/// Sesión abierta (una por dispositivo). La cookie sellada guarda su id; cerrarla aquí
+/// la invalida en la siguiente petición. Permite ver y cerrar sesiones desde la cuenta.
+model Sesion {
+  id              String    @id @default(uuid(7)) @db.Uuid
+  usuarioId       String    @db.Uuid
+  creadaEn        DateTime  @default(now())
+  ultimaActividad DateTime  @default(now())
+  ip              String?
+  userAgent       String?
+  cerradaEn       DateTime?
+  motivoCierre    String? // LOGOUT, INACTIVIDAD, CERRADA_POR_USUARIO, CAMBIO_CONTRASENA, DESACTIVADO
+  usuario         Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId, cerradaEn])
+}
+
+/// Enlaces de un solo uso enviados por correo: recuperar contraseña o activar una cuenta
+/// nueva (invitación). Sólo se guarda el hash SHA-256 del token.
+model TokenAcceso {
+  id        String          @id @default(uuid(7)) @db.Uuid
+  usuarioId String          @db.Uuid
+  tipo      TipoTokenAcceso
+  tokenHash String          @unique
+  expiraEn  DateTime
+  usadoEn   DateTime?
+  creadoEn  DateTime        @default(now())
+  ip        String?
+  usuario   Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId, creadoEn])
+}
+
+/// Aviso dentro de la plataforma para un usuario.
+model Notificacion {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  usuarioId String    @db.Uuid
+  tipo      String // CUENTA, SEGURIDAD, AFILIACION, EVENTO, COMUNIDAD…
+  titulo    String
+  cuerpo    String?
+  enlace    String? // ruta interna, p. ej. /plataforma/cuenta/seguridad
+  leidaEn   DateTime?
+  creadaEn  DateTime  @default(now())
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId, leidaEn, creadaEn])
+}
+
+// -----------------------------------------------------------------------------
+//  PERFIL PROFESIONAL
+// -----------------------------------------------------------------------------
+
+/// Catálogo configurable de especialidades. Una subespecialidad tiene `padreId`.
+model Especialidad {
+  id                String              @id @default(uuid(7)) @db.Uuid
+  nombre            String
+  padreId           String?             @db.Uuid
+  activo            Boolean             @default(true)
+  creadoEn          DateTime            @default(now())
+  padre             Especialidad?       @relation("Subespecialidades", fields: [padreId], references: [id])
+  subespecialidades Especialidad[]      @relation("Subespecialidades")
+  perfiles          PerfilProfesional[] @relation("PerfilEspecialidad")
+  perfilesSub       PerfilProfesional[] @relation("PerfilSubespecialidad")
+  grupos            Grupo[]
+
+  @@unique([padreId, nombre])
+}
+
+/// Datos profesionales del usuario (uno a uno). Todo es opcional: el personal
+/// administrativo de la Federación puede no tener cédula.
+model PerfilProfesional {
+  usuarioId          String           @id @db.Uuid
+  cedulaProfesional  String?
+  especialidadId     String?          @db.Uuid
+  subespecialidadId  String?          @db.Uuid
+  cedulaEspecialidad String?
+  /// Municipio donde ejerce (para el censo estatal).
+  municipioId        String?          @db.Uuid
+  institucionTrabajo String?
+  /// El usuario autoriza mostrar su institución de trabajo (directorio y censo detallado).
+  mostrarInstitucion Boolean          @default(false)
+  cargoInstitucional String?
+  fotoId             String?          @unique @db.Uuid
+  /// Consentimiento para aparecer en el directorio público (nombre, especialidad, foto).
+  publicarDirectorio Boolean          @default(false)
+  consentimientoEn   DateTime?
+  estadoValidacion   EstadoValidacion @default(PENDIENTE)
+  validadoPorId      String?          @db.Uuid
+  validadoEn         DateTime?
+  motivoRechazo      String?
+  actualizadoEn      DateTime         @updatedAt
+  usuario            Usuario          @relation("PerfilDelUsuario", fields: [usuarioId], references: [id], onDelete: Cascade)
+  especialidad       Especialidad?    @relation("PerfilEspecialidad", fields: [especialidadId], references: [id])
+  subespecialidad    Especialidad?    @relation("PerfilSubespecialidad", fields: [subespecialidadId], references: [id])
+  foto               Archivo?         @relation(fields: [fotoId], references: [id])
+  validadoPor        Usuario?         @relation("PerfilValidadoPor", fields: [validadoPorId], references: [id])
+  municipio          Municipio?       @relation(fields: [municipioId], references: [id])
+
+  @@index([especialidadId])
+  @@index([estadoValidacion])
+}
+
+// -----------------------------------------------------------------------------
+//  ARCHIVOS
+// -----------------------------------------------------------------------------
+
+/// Archivo subido. Se guarda fuera de public/ (carpeta almacen/) con nombre aleatorio y se
+/// entrega por /api/archivos/:id, que revisa la visibilidad.
+model Archivo {
+  id               String              @id @default(uuid(7)) @db.Uuid
+  nombreOriginal   String
+  mime             String
+  tamano           Int
+  ruta             String              @unique // relativa a la carpeta de almacenamiento
+  sha256           String
+  visibilidad      VisibilidadArchivo  @default(AUTENTICADO)
+  subidoPorId      String?             @db.Uuid
+  creadoEn         DateTime            @default(now())
+  subidoPor        Usuario?            @relation(fields: [subidoPorId], references: [id])
+  fotoDePerfil     PerfilProfesional?
+  logoDe           Organizacion?
+  fotoNombramiento Nombramiento?       @relation("FotoNombramiento")
+  portadaNoticia   Noticia?            @relation("PortadaNoticia")
+  logoVinculo      Vinculo?            @relation("LogoVinculo")
+  portadaEvento    Evento?             @relation("PortadaEvento")
+  adjuntoComunidad AdjuntoPublicacion? @relation("AdjuntoComunidad")
+  documento        Documento?          @relation("ArchivoDocumento")
+}
+
+/// Rol configurable. Los iniciales los crea el seed (`sistema = true`: no se borran).
+model Rol {
+  id            String       @id @default(uuid(7)) @db.Uuid
+  clave         String       @unique // SUPERADMIN, MEDICO_AFILIADO…
+  nombre        String
+  descripcion   String?
+  sistema       Boolean      @default(false)
+  activo        Boolean      @default(true)
+  creadoEn      DateTime     @default(now())
+  actualizadoEn DateTime     @updatedAt
+  permisos      RolPermiso[]
+  usuarios      UsuarioRol[]
+}
+
+/// Permiso que otorga un rol y con qué alcance. `permiso` es una clave del catálogo
+/// de shared/permisos.ts (se valida en el servicio).
+model RolPermiso {
+  rolId   String         @db.Uuid
+  permiso String
+  alcance AlcancePermiso
+  rol     Rol            @relation(fields: [rolId], references: [id], onDelete: Cascade)
+
+  @@id([rolId, permiso])
+}
+
+/// Rol asignado a un usuario. Con `organizacionId`, los permisos de alcance ORGANIZACION
+/// del rol aplican sobre esa organización (p. ej. representante de un colegio).
+/// Sin organización, el rol es general (sus permisos ORGANIZACION no aplican a ninguna).
+model UsuarioRol {
+  id             String        @id @default(uuid(7)) @db.Uuid
+  usuarioId      String        @db.Uuid
+  rolId          String        @db.Uuid
+  organizacionId String?       @db.Uuid
+  asignadoEn     DateTime      @default(now())
+  asignadoPorId  String?       @db.Uuid
+  usuario        Usuario       @relation("RolDelUsuario", fields: [usuarioId], references: [id], onDelete: Cascade)
+  rol            Rol           @relation(fields: [rolId], references: [id])
+  organizacion   Organizacion? @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  asignadoPor    Usuario?      @relation("RolAsignadoPor", fields: [asignadoPorId], references: [id])
+
+  /// NULLS NOT DISTINCT en la migración: un rol general no se repite.
+  @@unique([usuarioId, rolId, organizacionId])
+  @@index([rolId])
+  @@index([organizacionId])
+}
+
+/// Bitácora inmutable (trigger SQL): cambios con antes/después, descargas, validaciones,
+/// inicios de sesión. Sólo INSERT.
+model Auditoria {
+  id        BigInt          @id @default(autoincrement())
+  fecha     DateTime        @default(now())
+  usuarioId String?         @db.Uuid
+  accion    AccionAuditoria
+  entidad   String // "Usuario", "Rol.permisos", "Organizacion"…
+  entidadId String
+  antes     Json?
+  despues   Json?
+  motivo    String?
+  ip        String?
+  userAgent String?
+  usuario   Usuario?        @relation(fields: [usuarioId], references: [id])
+
+  @@index([entidad, entidadId])
+  @@index([usuarioId, fecha])
+  @@index([fecha])
+}
+
+// -----------------------------------------------------------------------------
+//  CONFIGURACIÓN
+// -----------------------------------------------------------------------------
+
+/// Folios consecutivos (constancias, credenciales…). Ver server/utils/folios.ts.
+model Folio {
+  tipo    String // clave de FORMATO_FOLIO
+  anio    Int // 0 si el consecutivo no reinicia por año
+  prefijo String
+  ultimo  Int    @default(0)
+
+  @@id([tipo, anio])
+}
+
+/// Parámetros generales (clave/valor). Ver shared/parametros.ts.
+model Parametro {
+  clave         String   @id
+  valor         Json
+  descripcion   String?
+  actualizadoEn DateTime @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+//  COLEGIOS Y ASOCIACIONES
+// -----------------------------------------------------------------------------
+
+/// Colegio o asociación médica. `estadoAfiliacion` es el estado vigente; el historial
+/// está en AfiliacionOrganizacion.
+model Organizacion {
+  id                String                   @id @default(uuid(7)) @db.Uuid
+  tipo              TipoOrganizacion
+  nombre            String // nombre oficial
+  siglas            String?
+  slug              String                   @unique // página pública: /directorio/<slug>
+  descripcion       String?
+  fechaConstitucion DateTime?                @db.Date
+  municipio         String?
+  direccion         String?
+  telefono          String?
+  email             String?
+  sitioWeb          String?
+  logoId            String?                  @unique @db.Uuid
+  estadoAfiliacion  EstadoAfiliacion         @default(EN_TRAMITE)
+  /// Aparece en el directorio público (sólo si además está AFILIADA).
+  publica           Boolean                  @default(true)
+  creadoEn          DateTime                 @default(now())
+  actualizadoEn     DateTime                 @updatedAt
+  logo              Archivo?                 @relation(fields: [logoId], references: [id])
+  afiliaciones      AfiliacionOrganizacion[]
+  membresias        Membresia[]
+  roles             UsuarioRol[]
+  solicitudesCambio SolicitudCambio[]
+  organos           Organo[]
+  periodos          Periodo[]
+  procedenciaDe     Nombramiento[]           @relation("Procedencia")
+  noticias          Noticia[]
+  eventos           Evento[]
+  grupo             Grupo?
+  documentos        Documento[]
+
+  @@index([tipo, estadoAfiliacion])
+}
+
+/// Historial de la afiliación de una organización a la Federación (un renglón por periodo).
+model AfiliacionOrganizacion {
+  id              String           @id @default(uuid(7)) @db.Uuid
+  organizacionId  String           @db.Uuid
+  estado          EstadoAfiliacion
+  desde           DateTime         @db.Date
+  hasta           DateTime?        @db.Date // null = vigente
+  motivo          String?
+  registradoPorId String?          @db.Uuid
+  creadoEn        DateTime         @default(now())
+  organizacion    Organizacion     @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  registradoPor   Usuario?         @relation(fields: [registradoPorId], references: [id])
+
+  @@index([organizacionId, desde])
+}
+
+/// Pertenencia de un profesional a una organización. Cada alta es un renglón nuevo:
+/// el conjunto es el historial de afiliaciones del profesional.
+model Membresia {
+  id               String          @id @default(uuid(7)) @db.Uuid
+  usuarioId        String          @db.Uuid
+  organizacionId   String          @db.Uuid
+  estado           EstadoMembresia @default(SOLICITADA)
+  numeroSocio      String?
+  desde            DateTime?       @db.Date // fecha de alta validada
+  hasta            DateTime?       @db.Date // fecha de baja
+  solicitadaPorId  String?         @db.Uuid
+  solicitadaEn     DateTime        @default(now())
+  comentario       String? // de quien solicita
+  resueltaPorId    String?         @db.Uuid
+  resueltaEn       DateTime?
+  motivo           String? // de rechazo o de baja
+  bajaSolicitadaEn DateTime?
+  usuario          Usuario         @relation("MembresiaDelUsuario", fields: [usuarioId], references: [id], onDelete: Cascade)
+  organizacion     Organizacion    @relation(fields: [organizacionId], references: [id])
+  solicitadaPor    Usuario?        @relation("MembresiaSolicitadaPor", fields: [solicitadaPorId], references: [id])
+  resueltaPor      Usuario?        @relation("MembresiaResueltaPor", fields: [resueltaPorId], references: [id])
+
+  @@index([organizacionId, estado])
+  @@index([usuarioId])
+}
+
+/// Cambio a los datos de una organización propuesto por su representante; se aplica
+/// cuando la Federación lo aprueba.
+model SolicitudCambio {
+  id              String          @id @default(uuid(7)) @db.Uuid
+  organizacionId  String          @db.Uuid
+  datos           Json // campos propuestos (shared/schemas/organizacion.ts)
+  estado          EstadoSolicitud @default(PENDIENTE)
+  solicitadaPorId String?         @db.Uuid
+  creadaEn        DateTime        @default(now())
+  resueltaPorId   String?         @db.Uuid
+  resueltaEn      DateTime?
+  motivo          String?
+  organizacion    Organizacion    @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  solicitadaPor   Usuario?        @relation("CambioSolicitadoPor", fields: [solicitadaPorId], references: [id])
+  resueltaPor     Usuario?        @relation("CambioResueltoPor", fields: [resueltaPorId], references: [id])
+
+  @@index([organizacionId, estado])
+}
+
+// -----------------------------------------------------------------------------
+//  ESTRUCTURA ORGANIZACIONAL (de la Federación o de cada organización)
+// -----------------------------------------------------------------------------
+
+/// Mesa directiva, consejo consultivo, comisiones… `organizacionId` null = la Federación.
+model Organo {
+  id             String        @id @default(uuid(7)) @db.Uuid
+  organizacionId String?       @db.Uuid
+  tipo           TipoOrgano
+  nombre         String
+  descripcion    String?
+  orden          Int           @default(0)
+  activo         Boolean       @default(true)
+  creadoEn       DateTime      @default(now())
+  organizacion   Organizacion? @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  cargos         Cargo[]
+
+  @@index([organizacionId, orden])
+}
+
+/// Cargo configurable dentro de un órgano. `superiorId` arma el organigrama.
+model Cargo {
+  id            String         @id @default(uuid(7)) @db.Uuid
+  organoId      String         @db.Uuid
+  nombre        String
+  descripcion   String?
+  orden         Int            @default(0)
+  superiorId    String?        @db.Uuid
+  activo        Boolean        @default(true)
+  creadoEn      DateTime       @default(now())
+  organo        Organo         @relation(fields: [organoId], references: [id], onDelete: Cascade)
+  superior      Cargo?         @relation("Jerarquia", fields: [superiorId], references: [id])
+  subordinados  Cargo[]        @relation("Jerarquia")
+  nombramientos Nombramiento[]
+
+  @@index([organoId, orden])
+}
+
+/// Periodo de gestión (p. ej. "2025–2027"). `organizacionId` null = la Federación.
+model Periodo {
+  id             String         @id @default(uuid(7)) @db.Uuid
+  organizacionId String?        @db.Uuid
+  nombre         String
+  inicio         DateTime       @db.Date
+  fin            DateTime?      @db.Date
+  descripcion    String?
+  creadoEn       DateTime       @default(now())
+  organizacion   Organizacion?  @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  nombramientos  Nombramiento[]
+
+  @@index([organizacionId, inicio])
+}
+
+/// Una persona en un cargo durante un periodo. La persona puede tener cuenta (usuarioId)
+/// o registrarse sólo por nombre. Sólo los publicados aparecen en el portal: la Federación
+/// los valida antes de publicarlos.
+model Nombramiento {
+  id                        String             @id @default(uuid(7)) @db.Uuid
+  cargoId                   String             @db.Uuid
+  periodoId                 String?            @db.Uuid
+  usuarioId                 String?            @db.Uuid
+  nombrePersona             String?
+  organizacionProcedenciaId String?            @db.Uuid
+  fotoId                    String?            @unique @db.Uuid
+  descripcion               String?
+  inicio                    DateTime           @db.Date
+  fin                       DateTime?          @db.Date
+  estado                    EstadoNombramiento @default(VIGENTE)
+  publicado                 Boolean            @default(false)
+  creadoEn                  DateTime           @default(now())
+  actualizadoEn             DateTime           @updatedAt
+  cargo                     Cargo              @relation(fields: [cargoId], references: [id])
+  periodo                   Periodo?           @relation(fields: [periodoId], references: [id])
+  usuario                   Usuario?           @relation(fields: [usuarioId], references: [id])
+  organizacionProcedencia   Organizacion?      @relation("Procedencia", fields: [organizacionProcedenciaId], references: [id])
+  foto                      Archivo?           @relation("FotoNombramiento", fields: [fotoId], references: [id])
+
+  @@index([cargoId, estado])
+  @@index([periodoId])
+  @@index([usuarioId])
+}
+
+// -----------------------------------------------------------------------------
+//  PORTAL PÚBLICO: NOTICIAS, VINCULACIÓN, CONTACTO
+// -----------------------------------------------------------------------------
+
+/// Comunicado, noticia, actividad o publicación. BORRADOR → REVISION → PUBLICADA (→ RETIRADA).
+model Noticia {
+  id             String        @id @default(uuid(7)) @db.Uuid
+  tipo           TipoNoticia
+  titulo         String
+  slug           String        @unique
+  resumen        String?
+  contenido      String // texto; los párrafos se separan con una línea en blanco
+  portadaId      String?       @unique @db.Uuid
+  estado         EstadoNoticia @default(BORRADOR)
+  destacada      Boolean       @default(false)
+  publicadaEn    DateTime?
+  autorId        String?       @db.Uuid
+  organizacionId String?       @db.Uuid // si la emite un colegio o asociación
+  creadoEn       DateTime      @default(now())
+  actualizadoEn  DateTime      @updatedAt
+  portada        Archivo?      @relation("PortadaNoticia", fields: [portadaId], references: [id])
+  autor          Usuario?      @relation("NoticiaAutor", fields: [autorId], references: [id])
+  organizacion   Organizacion? @relation(fields: [organizacionId], references: [id])
+
+  @@index([estado, publicadaEn])
+  @@index([tipo, estado])
+}
+
+/// Instituciones colaboradoras, convenios y organismos relacionados.
+model Vinculo {
+  id            String      @id @default(uuid(7)) @db.Uuid
+  tipo          TipoVinculo
+  nombre        String
+  descripcion   String?
+  sitioWeb      String?
+  logoId        String?     @unique @db.Uuid
+  fechaFirma    DateTime?   @db.Date // convenios
+  vigenciaHasta DateTime?   @db.Date
+  orden         Int         @default(0)
+  publicado     Boolean     @default(false)
+  creadoEn      DateTime    @default(now())
+  actualizadoEn DateTime    @updatedAt
+  logo          Archivo?    @relation("LogoVinculo", fields: [logoId], references: [id])
+
+  @@index([tipo, publicado, orden])
+}
+
+/// Mensaje recibido por el formulario de contacto del portal.
+model MensajeContacto {
+  id            String        @id @default(uuid(7)) @db.Uuid
+  nombre        String
+  email         String
+  telefono      String?
+  asunto        String
+  mensaje       String
+  estado        EstadoMensaje @default(NUEVO)
+  ip            String?
+  creadoEn      DateTime      @default(now())
+  atendidoPorId String?       @db.Uuid
+  atendidoEn    DateTime?
+  nota          String?
+  atendidoPor   Usuario?      @relation("MensajeAtendidoPor", fields: [atendidoPorId], references: [id])
+
+  @@index([estado, creadoEn])
+}
+
+// -----------------------------------------------------------------------------
+//  EVENTOS Y EDUCACIÓN MÉDICA CONTINUA
+// -----------------------------------------------------------------------------
+
+/// Congreso, curso, conferencia, taller o jornada. `organizacionId` null = la Federación.
+model Evento {
+  id                 String              @id @default(uuid(7)) @db.Uuid
+  slug               String              @unique
+  tipo               TipoEvento
+  titulo             String
+  descripcion        String
+  portadaId          String?             @unique @db.Uuid
+  inicio             DateTime
+  fin                DateTime
+  modalidad          ModalidadEvento
+  sede               String?
+  direccion          String?
+  /// Enlace de la sesión virtual: sólo lo ven los inscritos confirmados.
+  enlaceVirtual      String?
+  organizacionId     String?             @db.Uuid
+  organizador        String? // texto libre, p. ej. "Comité académico"
+  capacidad          Int?
+  requisitos         String?
+  valorCurricular    String? // p. ej. "20 horas, 4 puntos de recertificación"
+  inscripcionAbierta Boolean             @default(true)
+  estado             EstadoEvento        @default(BORRADOR)
+  creadoPorId        String?             @db.Uuid
+  creadoEn           DateTime            @default(now())
+  actualizadoEn      DateTime            @updatedAt
+  portada            Archivo?            @relation("PortadaEvento", fields: [portadaId], references: [id])
+  organizacion       Organizacion?       @relation(fields: [organizacionId], references: [id])
+  creadoPor          Usuario?            @relation("EventoCreadoPor", fields: [creadoPorId], references: [id])
+  programa           ActividadPrograma[]
+  ponentes           Ponente[]
+  inscripciones      Inscripcion[]
+  documentos         Documento[]
+
+  @@index([estado, inicio])
+  @@index([organizacionId])
+}
+
+model ActividadPrograma {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  eventoId    String    @db.Uuid
+  inicio      DateTime
+  fin         DateTime?
+  titulo      String
+  descripcion String?
+  ponentes    String? // nombres, como se anuncian
+  lugar       String?
+  evento      Evento    @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+
+  @@index([eventoId, inicio])
+}
+
+model Ponente {
+  id        String  @id @default(uuid(7)) @db.Uuid
+  eventoId  String  @db.Uuid
+  nombre    String
+  semblanza String?
+  orden     Int     @default(0)
+  evento    Evento  @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+
+  @@index([eventoId, orden])
+}
+
+/// Inscripción de un usuario a un evento (una por usuario y evento).
+model Inscripcion {
+  id          String            @id @default(uuid(7)) @db.Uuid
+  eventoId    String            @db.Uuid
+  usuarioId   String            @db.Uuid
+  estado      EstadoInscripcion
+  creadaEn    DateTime          @default(now())
+  canceladaEn DateTime?
+  evento      Evento            @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  usuario     Usuario           @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  asistencias Asistencia[]
+  constancia  Constancia?
+
+  @@unique([eventoId, usuarioId])
+  @@index([eventoId, estado, creadaEn])
+}
+
+/// Asistencia registrada por día del evento.
+model Asistencia {
+  id              String      @id @default(uuid(7)) @db.Uuid
+  inscripcionId   String      @db.Uuid
+  fecha           DateTime    @db.Date
+  registradaPorId String?     @db.Uuid
+  registradaEn    DateTime    @default(now())
+  inscripcion     Inscripcion @relation(fields: [inscripcionId], references: [id], onDelete: Cascade)
+  registradaPor   Usuario?    @relation("AsistenciaRegistradaPor", fields: [registradaPorId], references: [id])
+
+  @@unique([inscripcionId, fecha])
+}
+
+/// Constancia de participación con folio consecutivo y código de verificación público.
+model Constancia {
+  id               String      @id @default(uuid(7)) @db.Uuid
+  folio            String      @unique
+  codigo           String      @unique // para /verificar/<codigo> y el QR
+  inscripcionId    String      @unique @db.Uuid
+  emitidaEn        DateTime    @default(now())
+  emitidaPorId     String?     @db.Uuid
+  revocadaEn       DateTime?
+  motivoRevocacion String?
+  inscripcion      Inscripcion @relation(fields: [inscripcionId], references: [id], onDelete: Restrict)
+  emitidaPor       Usuario?    @relation("ConstanciaEmitidaPor", fields: [emitidaPorId], references: [id])
+}
+
+// -----------------------------------------------------------------------------
+//  COMUNIDAD MÉDICA
+// -----------------------------------------------------------------------------
+
+/// Espacio de discusión. Privacidad:
+///   ABIERTO  - cualquier participante de la comunidad lo lee y publica;
+///   MIEMBROS - todos lo leen; publican quienes se unen (unirse es libre);
+///   PRIVADO  - sólo sus miembros lo leen y publican (ingreso aprobado por moderación).
+/// Los grupos de organización consideran miembros a sus integrantes activos.
+model Grupo {
+  id             String          @id @default(uuid(7)) @db.Uuid
+  tipo           TipoGrupo
+  nombre         String
+  slug           String          @unique
+  descripcion    String?
+  privacidad     PrivacidadGrupo
+  especialidadId String?         @db.Uuid
+  organizacionId String?         @unique @db.Uuid
+  activo         Boolean         @default(true)
+  creadoPorId    String?         @db.Uuid
+  creadoEn       DateTime        @default(now())
+  especialidad   Especialidad?   @relation(fields: [especialidadId], references: [id])
+  organizacion   Organizacion?   @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  creadoPor      Usuario?        @relation("GrupoCreadoPor", fields: [creadoPorId], references: [id])
+  miembros       MiembroGrupo[]
+  publicaciones  Publicacion[]
+
+  @@index([tipo, activo])
+}
+
+model MiembroGrupo {
+  grupoId   String             @db.Uuid
+  usuarioId String             @db.Uuid
+  rol       RolGrupo           @default(MIEMBRO)
+  estado    EstadoMiembroGrupo @default(ACTIVO)
+  unidoEn   DateTime           @default(now())
+  grupo     Grupo              @relation(fields: [grupoId], references: [id], onDelete: Cascade)
+  usuario   Usuario            @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@id([grupoId, usuarioId])
+  @@index([usuarioId])
+}
+
+model Publicacion {
+  id                String               @id @default(uuid(7)) @db.Uuid
+  grupoId           String               @db.Uuid
+  autorId           String               @db.Uuid
+  titulo            String?
+  contenido         String
+  fijada            Boolean              @default(false)
+  editadaEn         DateTime?
+  eliminadaEn       DateTime?
+  eliminadaPorId    String?              @db.Uuid
+  motivoEliminacion String?
+  creadaEn          DateTime             @default(now())
+  grupo             Grupo                @relation(fields: [grupoId], references: [id], onDelete: Cascade)
+  autor             Usuario              @relation("PublicacionAutor", fields: [autorId], references: [id])
+  eliminadaPor      Usuario?             @relation("PublicacionEliminadaPor", fields: [eliminadaPorId], references: [id])
+  comentarios       Comentario[]
+  reacciones        Reaccion[]
+  adjuntos          AdjuntoPublicacion[]
+  reportes          Reporte[]
+
+  @@index([grupoId, eliminadaEn, creadaEn])
+  @@index([autorId])
+}
+
+model Comentario {
+  id                String       @id @default(uuid(7)) @db.Uuid
+  publicacionId     String       @db.Uuid
+  autorId           String       @db.Uuid
+  padreId           String?      @db.Uuid // respuesta a otro comentario
+  contenido         String
+  editadoEn         DateTime?
+  eliminadoEn       DateTime?
+  eliminadoPorId    String?      @db.Uuid
+  motivoEliminacion String?
+  creadoEn          DateTime     @default(now())
+  publicacion       Publicacion  @relation(fields: [publicacionId], references: [id], onDelete: Cascade)
+  autor             Usuario      @relation("ComentarioAutor", fields: [autorId], references: [id])
+  eliminadoPor      Usuario?     @relation("ComentarioEliminadoPor", fields: [eliminadoPorId], references: [id])
+  padre             Comentario?  @relation("Respuestas", fields: [padreId], references: [id])
+  respuestas        Comentario[] @relation("Respuestas")
+  reacciones        Reaccion[]
+  reportes          Reporte[]
+
+  @@index([publicacionId, creadoEn])
+}
+
+/// Una reacción por usuario y elemento (publicación o comentario); cambiarla reemplaza el tipo.
+model Reaccion {
+  id            String       @id @default(uuid(7)) @db.Uuid
+  usuarioId     String       @db.Uuid
+  publicacionId String?      @db.Uuid
+  comentarioId  String?      @db.Uuid
+  tipo          TipoReaccion
+  creadaEn      DateTime     @default(now())
+  usuario       Usuario      @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  publicacion   Publicacion? @relation(fields: [publicacionId], references: [id], onDelete: Cascade)
+  comentario    Comentario?  @relation(fields: [comentarioId], references: [id], onDelete: Cascade)
+
+  @@index([publicacionId])
+  @@index([comentarioId])
+}
+
+/// Imagen o documento adjunto (visibilidad RESTRINGIDO: lo sirve la comunidad con su regla de acceso).
+model AdjuntoPublicacion {
+  id            String      @id @default(uuid(7)) @db.Uuid
+  publicacionId String      @db.Uuid
+  archivoId     String      @unique @db.Uuid
+  orden         Int         @default(0)
+  publicacion   Publicacion @relation(fields: [publicacionId], references: [id], onDelete: Cascade)
+  archivo       Archivo     @relation("AdjuntoComunidad", fields: [archivoId], references: [id])
+
+  @@index([publicacionId, orden])
+}
+
+model Reporte {
+  id             String        @id @default(uuid(7)) @db.Uuid
+  publicacionId  String?       @db.Uuid
+  comentarioId   String?       @db.Uuid
+  reportadoPorId String        @db.Uuid
+  motivo         MotivoReporte
+  detalle        String?
+  estado         EstadoReporte @default(PENDIENTE)
+  resueltoPorId  String?       @db.Uuid
+  resueltoEn     DateTime?
+  nota           String?
+  creadoEn       DateTime      @default(now())
+  publicacion    Publicacion?  @relation(fields: [publicacionId], references: [id], onDelete: Cascade)
+  comentario     Comentario?   @relation(fields: [comentarioId], references: [id], onDelete: Cascade)
+  reportadoPor   Usuario       @relation("ReporteDe", fields: [reportadoPorId], references: [id])
+  resueltoPor    Usuario?      @relation("ReporteResueltoPor", fields: [resueltoPorId], references: [id])
+
+  @@index([estado, creadoEn])
+}
+
+// -----------------------------------------------------------------------------
+//  GESTIÓN DOCUMENTAL
+// -----------------------------------------------------------------------------
+
+/// Categoría configurable (estatutos, actas, convocatorias…).
+model CategoriaDocumento {
+  id          String      @id @default(uuid(7)) @db.Uuid
+  nombre      String      @unique
+  slug        String      @unique
+  descripcion String?
+  orden       Int         @default(0)
+  activo      Boolean     @default(true)
+  documentos  Documento[]
+}
+
+/// Documento de la biblioteca institucional. El archivo tiene visibilidad RESTRINGIDO:
+/// lo entrega /api/documentos/:id/archivo según `nivelAcceso`.
+model Documento {
+  id             String             @id @default(uuid(7)) @db.Uuid
+  titulo         String
+  descripcion    String?
+  categoriaId    String             @db.Uuid
+  archivoId      String             @unique @db.Uuid
+  nivelAcceso    NivelAcceso
+  organizacionId String?            @db.Uuid // dueña del documento (null = la Federación)
+  eventoId       String?            @db.Uuid // material de un congreso o curso
+  fechaDocumento DateTime?          @db.Date
+  responsable    String? // área o persona responsable
+  vigente        Boolean            @default(true)
+  descargas      Int                @default(0)
+  subidoPorId    String?            @db.Uuid
+  publicadoEn    DateTime           @default(now())
+  actualizadoEn  DateTime           @updatedAt
+  categoria      CategoriaDocumento @relation(fields: [categoriaId], references: [id])
+  archivo        Archivo            @relation("ArchivoDocumento", fields: [archivoId], references: [id])
+  organizacion   Organizacion?      @relation(fields: [organizacionId], references: [id])
+  evento         Evento?            @relation(fields: [eventoId], references: [id], onDelete: SetNull)
+  subidoPor      Usuario?           @relation("DocumentoSubidoPor", fields: [subidoPorId], references: [id])
+
+  @@index([categoriaId, vigente])
+  @@index([nivelAcceso, vigente])
+  @@index([organizacionId])
+}
+
+// -----------------------------------------------------------------------------
+//  CENSO: CATÁLOGO GEOGRÁFICO DE CHIAPAS
+// -----------------------------------------------------------------------------
+
+/// Región socioeconómica de Chiapas (15).
+model Region {
+  id         String      @id @default(uuid(7)) @db.Uuid
+  numero     Int         @unique
+  nombre     String      @unique
+  municipios Municipio[]
+}
+
+model Municipio {
+  id       String              @id @default(uuid(7)) @db.Uuid
+  nombre   String              @unique
+  regionId String              @db.Uuid
+  region   Region              @relation(fields: [regionId], references: [id])
+  perfiles PerfilProfesional[]
+
+  @@index([regionId])
+}

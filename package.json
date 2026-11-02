@@ -1,0 +1,58 @@
+{
+  "name": "feacomech",
+  "private": true,
+  "type": "module",
+  "description": "FEACOMECH – Federación de Asociaciones y Colegios Médicos del Estado de Chiapas: plataforma institucional",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "nuxt dev --port 3001",
+    "dev:red": "nuxt dev --port 3001 --host 0.0.0.0",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare && prisma generate",
+    "typecheck": "nuxt typecheck",
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:demo": "tsx prisma/seed/demo.ts",
+    "db:quitar-demo": "tsx prisma/seed/quitar-demo.ts",
+    "db:datos-reales": "tsx prisma/seed/feacomech-real.ts",
+    "db:studio": "prisma studio",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@date-fns/tz": "^1.5.0",
+    "@node-rs/argon2": "^2.2.1",
+    "@nuxt/ui": "^4.11.3",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "date-fns": "^4.4.0",
+    "nodemailer": "^10.3.1",
+    "nuxt": "^4.5.2",
+    "nuxt-auth-utils": "^0.5.30",
+    "pg": "^8.23.1",
+    "qrcode": "^1.5.4",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.140",
+    "@nuxt/test-utils": "^4.3.3",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.15.0",
+    "@types/qrcode": "^1.5.6",
+    "dotenv": "^18.0.5",
+    "prisma": "7.10.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.3",
+    "vue-tsc": "^3.3.12"
+  }
+}
