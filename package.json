@@ -10,6 +10,7 @@
     "dev": "nuxt dev --port 3001",
     "dev:red": "nuxt dev --port 3001 --host 0.0.0.0",
     "build": "nuxt build",
+    "vercel-build": "prisma migrate deploy && prisma db seed && nuxt build",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare && prisma generate",
     "typecheck": "nuxt typecheck",

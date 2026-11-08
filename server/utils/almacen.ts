@@ -1,12 +1,27 @@
 // Almacenamiento de archivos subidos, fuera de public/: nunca se sirven directamente,
 // sólo por /api/archivos/:id, que revisa la visibilidad.
 //   NUXT_DIR_ALMACEN = carpeta (por defecto ./almacen). En producción, un volumen con respaldo.
+//   NUXT_ALMACEN = "disco" | "db". Por defecto "disco", salvo en Vercel (sistema de archivos
+//   efímero y de sólo lectura), donde el contenido se guarda en la tabla ContenidoArchivo.
 import { createHash, randomUUID } from 'node:crypto'
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve, sep } from 'node:path'
 import { createError } from 'h3'
 import type { VisibilidadArchivo } from '../generated/prisma/enums'
 import type { Db } from './prisma'
+
+/** true si el contenido de los archivos vive en la base de datos en lugar del disco. */
+export function almacenEnBaseDeDatos(): boolean {
+  const modo = process.env.NUXT_ALMACEN
+  if (modo === 'db') return true
+  if (modo === 'disco') return false
+  return !!process.env.VERCEL
+}
+
+/** Cliente global, cargado sólo cuando se necesita (las pruebas unitarias no tienen base). */
+async function clienteGlobal() {
+  return (await import('./prisma')).prisma
+}
 
 export function carpetaAlmacen(): string {
   return resolve(process.env.NUXT_DIR_ALMACEN || join(process.cwd(), 'almacen'))
@@ -83,9 +98,15 @@ export async function guardarArchivo(db: Db, a: GuardarArchivo) {
 
   const id = randomUUID()
   const ruta = `${id.slice(0, 2)}/${id}.${tipo.extension}`
-  const abs = rutaAbsoluta(ruta)
-  await mkdir(dirname(abs), { recursive: true })
-  await writeFile(abs, a.datos, { flag: 'wx' })
+  if (almacenEnBaseDeDatos()) {
+    // Dentro de la misma transacción que el registro: si ésta falla, no queda huérfano.
+    await db.contenidoArchivo.create({ data: { ruta, datos: new Uint8Array(a.datos) } })
+  }
+  else {
+    const abs = rutaAbsoluta(ruta)
+    await mkdir(dirname(abs), { recursive: true })
+    await writeFile(abs, a.datos, { flag: 'wx' })
+  }
 
   return db.archivo.create({
     data: {
@@ -100,11 +121,22 @@ export async function guardarArchivo(db: Db, a: GuardarArchivo) {
   })
 }
 
-export function leerArchivo(ruta: string): Promise<Buffer> {
+export async function leerArchivo(ruta: string): Promise<Buffer> {
+  if (almacenEnBaseDeDatos()) {
+    const prisma = await clienteGlobal()
+    const c = await prisma.contenidoArchivo.findUnique({ where: { ruta } })
+    if (!c) throw createError({ statusCode: 404, message: 'No encontrado' })
+    return Buffer.from(c.datos)
+  }
   return readFile(rutaAbsoluta(ruta))
 }
 
-/** Borra el archivo del disco (el registro lo borra quien llama). Ignora si ya no existe. */
+/** Borra el contenido del archivo (el registro lo borra quien llama). Ignora si ya no existe. */
 export async function borrarDeDisco(ruta: string) {
+  if (almacenEnBaseDeDatos()) {
+    const prisma = await clienteGlobal()
+    await prisma.contenidoArchivo.deleteMany({ where: { ruta } })
+    return
+  }
   await rm(rutaAbsoluta(ruta), { force: true })
 }
