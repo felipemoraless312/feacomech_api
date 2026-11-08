@@ -394,6 +394,14 @@ model Archivo {
   documento        Documento?          @relation("ArchivoDocumento")
 }
 
+// Contenido de los archivos cuando el almacenamiento es la base de datos (despliegues sin
+// disco persistente, p. ej. Vercel). Se indexa por la misma `ruta` de Archivo, igual que
+// el archivo en disco; sin llave foránea para conservar la misma semántica de borrado.
+model ContenidoArchivo {
+  ruta  String @id
+  datos Bytes
+}
+
 /// Rol configurable. Los iniciales los crea el seed (`sistema = true`: no se borran).
 model Rol {
   id            String       @id @default(uuid(7)) @db.Uuid
