@@ -43,9 +43,15 @@
         <div class="entrada mt-6 grid gap-2.5 sm:mt-9 sm:flex sm:flex-wrap sm:gap-3" :style="{ '--retraso': `${300 + palabras.length * 70}ms` }">
           <UButton to="/directorio" label="Colegios y asociaciones" icon="i-lucide-landmark" size="xl" class="boton-brillo justify-center bg-white text-marca-900 hover:bg-marca-50" />
           <UButton to="/plataforma" label="Plataforma para afiliados" icon="i-lucide-lock" size="xl" class="justify-center bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
+          <UButton to="/constancias" label="Descargar constancia" icon="i-lucide-award" size="xl" class="justify-center bg-acento-500 text-white hover:bg-acento-600 sm:hidden" />
         </div>
 
         <!-- Cifras animadas -->
+        <NuxtLink to="/constancias" class="entrada mt-5 hidden items-center gap-2 text-sm font-semibold text-acento-200 hover:text-white sm:inline-flex" :style="{ '--retraso': `${350 + palabras.length * 70}ms` }">
+          <UIcon name="i-lucide-award" class="size-4" /> ¿Asistió a un evento? Descargue su constancia
+          <UIcon name="i-lucide-arrow-right" class="size-4" />
+        </NuxtLink>
+
         <dl v-if="cifras.length" class="entrada mt-12 hidden max-w-lg grid-cols-3 gap-6 border-t sm:grid border-white/15 pt-6" :style="{ '--retraso': `${400 + palabras.length * 70}ms` }">
           <div v-for="c in cifras" :key="c.etiqueta">
             <dt class="sr-only">{{ c.etiqueta }}</dt>

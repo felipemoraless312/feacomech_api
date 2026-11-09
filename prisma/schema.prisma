@@ -1053,3 +1053,35 @@ model Municipio {
 
   @@index([regionId])
 }
+
+// -----------------------------------------------------------------------------
+//  CONSTANCIAS DE LAS JORNADAS (participantes sin cuenta en la plataforma)
+// -----------------------------------------------------------------------------
+
+enum TipoParticipacion {
+  ASISTENTE
+  PONENTE
+  TALLER
+  CARTEL
+  COORDINADOR
+}
+
+/// Participación en un evento académico de la Federación con constancia descargable.
+/// A diferencia de Inscripcion/Constancia, no exige cuenta: se busca por correo o folio.
+model ParticipacionEvento {
+  id               String            @id @default(uuid(7)) @db.Uuid
+  eventoSlug       String
+  folio            String            @unique
+  codigo           String            @unique // para el QR de verificación
+  tipo             TipoParticipacion
+  nombre           String // como aparecerá en la constancia (según INE)
+  correo           String?
+  /// Tema de la ponencia, nombre del taller o título del cartel.
+  detalle          String?
+  horas            Int?
+  emitidaEn        DateTime          @default(now())
+  revocadaEn       DateTime?
+  motivoRevocacion String?
+
+  @@index([eventoSlug, correo])
+}

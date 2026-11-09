@@ -21,6 +21,7 @@
     "db:seed": "prisma db seed",
     "db:demo": "tsx prisma/seed/demo.ts",
     "db:quitar-demo": "tsx prisma/seed/quitar-demo.ts",
+    "db:constancias-demo": "tsx prisma/seed/constancias-demo.ts",
     "db:datos-reales": "tsx prisma/seed/feacomech-real.ts",
     "db:studio": "prisma studio",
     "test": "vitest run",
