@@ -19,3 +19,4 @@ almacen/
 # Credenciales locales (no versionar)
 ACCESOS.txt
 .vercel
+.env*
