@@ -25,7 +25,7 @@
     </header>
 
     <UContainer class="max-w-3xl space-y-8 pb-20">
-      <img v-if="n.portadaId" :src="`/api/archivos/${n.portadaId}`" alt="" class="entrada aspect-[16/8] w-full rounded-3xl object-cover shadow-tarjeta">
+      <img v-if="n.portadaId" :src="`/api/archivos/${n.portadaId}`" alt="" class="entrada aspect-[16/8] w-full rounded-xl object-cover shadow-tarjeta">
       <p v-if="n.resumen" class="text-xl leading-relaxed text-highlighted">
         {{ n.resumen }}
       </p>

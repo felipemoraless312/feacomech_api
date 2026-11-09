@@ -33,7 +33,7 @@
           </div>
         </div>
         <figure class="entrada relative" style="--retraso: 200ms">
-          <div class="overflow-hidden rounded-3xl shadow-flotante ring-1 ring-white/15">
+          <div class="overflow-hidden rounded-xl shadow-flotante ring-1 ring-white/15">
             <img
               src="/img/jornadas-2025-1280.webp"
               srcset="/img/jornadas-2025-768.webp 768w, /img/jornadas-2025-1280.webp 1280w, /img/jornadas-2025-1920.webp 1920w"
@@ -69,6 +69,30 @@
       <div class="flex justify-center pb-6">
         <UIcon name="i-lucide-chevrons-down" class="rebote size-6 text-white/50" aria-hidden="true" />
       </div>
+    </section>
+
+    <!-- Evento principal vigente -->
+    <section v-if="jornadasVigentes" class="border-b border-default bg-default">
+      <UContainer class="grid gap-8 py-12 lg:grid-cols-[auto_1fr_auto] lg:items-center">
+        <div class="flex items-center gap-5">
+          <div class="rounded-md bg-marca-800 px-4 py-3 text-center text-white">
+            <p class="font-display text-3xl font-bold leading-none">26–28</p>
+            <p class="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-acento-300">Nov 2026</p>
+          </div>
+        </div>
+        <div>
+          <p class="rotulo">Próximo evento académico</p>
+          <h2 class="mt-2 font-display text-2xl font-bold uppercase tracking-[0.06em] text-highlighted sm:text-3xl">
+            VII Jornadas Académicas FEACOMECH <span class="text-acento-600">&amp; Simposio de Dermatología</span>
+          </h2>
+          <p class="mt-1 text-muted">
+            Centro de Convenciones Polyforum Chiapas · 22 colegios participantes · talleres, carteles científicos y cena de gala
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <UButton to="/jornadas-2026" label="Información e inscripción" trailing-icon="i-lucide-arrow-right" size="lg" class="bg-acento-500 text-white hover:bg-acento-600" />
+        </div>
+      </UContainer>
     </section>
 
     <!-- Franja en movimiento -->
@@ -138,12 +162,12 @@
             v-for="(l, i) in portada.lineas"
             :key="l.titulo"
             v-revelar="(i % 3) * 80"
-            class="group relative overflow-hidden rounded-3xl bg-default p-7 shadow-tarjeta ring-1 ring-default transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-flotante"
+            class="group relative overflow-hidden rounded-xl bg-default p-7 shadow-tarjeta ring-1 ring-default transition-[box-shadow,transform] duration-300 hover:shadow-flotante"
           >
             <span class="absolute right-5 top-4 font-display text-5xl font-semibold text-marca-500/10 transition-colors group-hover:text-marca-500/20">
               {{ String(i + 1).padStart(2, '0') }}
             </span>
-            <span class="flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-marca-500 to-marca-800 text-white shadow-tarjeta transition-transform duration-300 group-hover:rotate-[-6deg] group-hover:scale-110">
+            <span class="flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-marca-500 to-marca-800 text-white shadow-tarjeta transition-transform duration-300 ">
               <UIcon :name="l.icono" class="size-6" />
             </span>
             <h3 class="mt-5 font-display text-xl font-semibold text-highlighted">
@@ -159,7 +183,7 @@
 
     <!-- Cita -->
     <section v-if="portada?.cita.texto" class="px-4 py-20">
-      <UContainer class="relative isolate overflow-hidden rounded-[2rem] bg-gradient-to-br from-marca-700 via-marca-800 to-marca-950 px-8 py-16 text-center text-white sm:px-16">
+      <UContainer class="relative isolate overflow-hidden rounded-xl bg-gradient-to-br from-marca-700 via-marca-800 to-marca-950 px-8 py-16 text-center text-white sm:px-16">
         <MarcaRed class="girar-lento pointer-events-none absolute left-1/2 top-1/2 -z-10 size-[40rem] -translate-x-1/2 -translate-y-1/2 text-white/[0.07]" />
         <UIcon name="i-lucide-quote" class="mx-auto size-10 text-marca-300" aria-hidden="true" />
         <blockquote v-revelar class="mx-auto mt-6 max-w-3xl font-display text-3xl font-medium leading-snug text-balance sm:text-4xl">
@@ -256,10 +280,10 @@
         </p>
       </div>
       <div class="grid gap-6 lg:grid-cols-2">
-        <div v-revelar class="rounded-3xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
+        <div v-revelar class="rounded-xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
           <GraficaBarras :barras="censo!.porRegion" titulo="Por región" />
         </div>
-        <div v-revelar="80" class="rounded-3xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
+        <div v-revelar="80" class="rounded-xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
           <GraficaBarras :barras="censo!.porEspecialidad" titulo="Por especialidad" />
         </div>
       </div>
@@ -280,7 +304,7 @@
             <UButton to="/directorio/profesionales" label="Profesionales" icon="i-lucide-stethoscope" color="neutral" variant="soft" />
           </div>
         </div>
-        <div v-if="inicio?.presidencia?.cargo.personas.length" v-revelar class="relative overflow-hidden rounded-3xl bg-default p-8 shadow-tarjeta ring-1 ring-default">
+        <div v-if="inicio?.presidencia?.cargo.personas.length" v-revelar class="relative overflow-hidden rounded-xl bg-default p-8 shadow-tarjeta ring-1 ring-default">
           <MarcaRed class="pointer-events-none absolute -bottom-24 -right-24 size-72 text-marca-500/10" />
           <p class="text-sm font-semibold uppercase tracking-[0.16em] text-marca-700 dark:text-marca-300">
             {{ inicio.presidencia.cargo.nombre }}<template v-if="inicio.periodo">
@@ -331,7 +355,7 @@
 
     <!-- Comunidad privada -->
     <section class="px-4 pb-20">
-      <UContainer class="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-marca-700 to-marca-950 px-8 py-14 text-white sm:px-14">
+      <UContainer class="relative isolate overflow-hidden rounded-xl bg-gradient-to-br from-marca-700 to-marca-950 px-8 py-14 text-white sm:px-14">
         <MarcaRed class="girar-lento pointer-events-none absolute -bottom-32 -right-24 -z-10 size-96 text-white/10" />
         <div class="destello pointer-events-none absolute inset-0 -z-10" />
         <h2 class="max-w-xl font-display text-3xl font-semibold leading-tight tracking-tight">
@@ -422,6 +446,8 @@ const hayAgenda = computed(() => {
 
 // Con muy pocos registros la gráfica pública no dice nada y podría identificar personas.
 const mostrarCenso = computed(() => (censo.value?.totales.registrados ?? 0) >= 20)
+
+const jornadasVigentes = new Date() < new Date('2026-11-28T16:00:00-06:00')
 
 const primerParrafo = (t?: string | null) => (t ?? '').split(/\n\s*\n/)[0]
 </script>

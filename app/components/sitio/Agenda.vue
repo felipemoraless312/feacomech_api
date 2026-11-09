@@ -5,7 +5,7 @@
       v-for="(a, i) in proximas"
       :key="a.titulo"
       v-revelar="i * 80"
-      class="relative isolate flex flex-col gap-6 overflow-hidden rounded-3xl bg-default p-7 shadow-tarjeta ring-1 ring-default sm:flex-row sm:items-center"
+      class="relative isolate flex flex-col gap-6 overflow-hidden rounded-xl bg-default p-7 shadow-tarjeta ring-1 ring-default sm:flex-row sm:items-center"
     >
       <MarcaRed class="pointer-events-none absolute -right-20 -top-20 -z-10 size-64 text-marca-500/10" />
       <!-- Hoja de calendario -->

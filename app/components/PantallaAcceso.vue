@@ -31,7 +31,7 @@
         <NuxtLink to="/" class="mb-8 flex justify-center lg:hidden" aria-label="Ir al portal público">
           <MarcaLogo claro class="!text-white" />
         </NuxtLink>
-        <div class="rounded-3xl bg-default p-8 shadow-flotante sm:p-10">
+        <div class="rounded-xl bg-default p-8 shadow-flotante sm:p-10">
           <slot />
         </div>
         <p class="mt-8 text-center text-xs text-white/70 lg:text-dimmed">

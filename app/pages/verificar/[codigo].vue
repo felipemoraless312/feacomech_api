@@ -3,7 +3,7 @@
   <div>
     <SitioEncabezado antetitulo="Verificación" titulo="Constancia de participación" />
     <UContainer class="max-w-2xl py-12">
-      <div class="rounded-3xl bg-default p-8 text-center shadow-tarjeta ring-1 ring-default">
+      <div class="rounded-xl bg-default p-8 text-center shadow-tarjeta ring-1 ring-default">
         <template v-if="r?.valida">
           <span class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-success/10 text-success">
             <UIcon name="i-lucide-badge-check" class="size-8" />

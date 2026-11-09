@@ -6,7 +6,7 @@
 
     <div v-if="e" class="grid gap-10 lg:grid-cols-[1fr_20rem]">
       <div class="min-w-0 space-y-8">
-        <img v-if="e.portadaId" :src="`/api/archivos/${e.portadaId}`" alt="" class="aspect-[16/7] w-full rounded-3xl object-cover shadow-tarjeta">
+        <img v-if="e.portadaId" :src="`/api/archivos/${e.portadaId}`" alt="" class="aspect-[16/7] w-full rounded-xl object-cover shadow-tarjeta">
         <div>
           <p class="text-sm font-semibold uppercase tracking-wide text-marca-700 dark:text-marca-300">
             {{ NOMBRE_TIPO_EVENTO[e.tipo] }} · {{ NOMBRE_MODALIDAD[e.modalidad] }}

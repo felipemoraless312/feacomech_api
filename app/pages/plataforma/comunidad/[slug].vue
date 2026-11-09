@@ -11,7 +11,7 @@
 
       <div class="min-w-0 space-y-5">
         <!-- Encabezado del grupo -->
-        <header class="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-marca-700 to-marca-950 px-6 py-7 text-white">
+        <header class="relative isolate overflow-hidden rounded-xl bg-gradient-to-br from-marca-700 to-marca-950 px-6 py-7 text-white">
           <MarcaRed class="pointer-events-none absolute -right-16 -top-16 -z-10 size-64 text-white/10" />
           <p class="text-xs font-semibold uppercase tracking-[0.14em] text-marca-200">
             {{ NOMBRE_TIPO_GRUPO[grupo.tipo] }} · {{ grupo.privacidad === 'PRIVADO' ? 'Privado' : grupo.privacidad === 'MIEMBROS' ? 'Publican los miembros' : 'Abierto' }}

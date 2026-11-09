@@ -9,10 +9,10 @@ export default defineAppConfig({
     },
 
     button: {
-      slots: { base: 'rounded-full font-medium transition-[background-color,color,transform] active:scale-[0.98]' },
+      slots: { base: 'rounded-md font-semibold tracking-[0.01em] transition-[background-color,color]' },
     },
     badge: {
-      slots: { base: 'rounded-full font-medium' },
+      slots: { base: 'rounded-sm font-semibold uppercase tracking-wide text-[11px]' },
     },
     input: {
       slots: { base: 'rounded-lg' },
@@ -34,12 +34,12 @@ export default defineAppConfig({
       slots: { label: 'text-[13px] font-medium text-muted', help: 'text-xs' },
     },
     card: {
-      slots: { root: 'rounded-2xl shadow-tarjeta' },
+      slots: { root: 'rounded-lg shadow-tarjeta' },
       variants: { variant: { outline: { root: 'bg-default ring-0 divide-y divide-default' } } },
     },
     pageCard: {
       slots: {
-        root: 'rounded-2xl transition-[box-shadow,transform] duration-300',
+        root: 'rounded-lg transition-[box-shadow] duration-200',
         leadingIcon: 'size-7 stroke-[1.5] text-primary',
         title: 'text-[17px] font-semibold tracking-tight text-highlighted',
         description: 'text-[15px] leading-relaxed text-muted',
@@ -49,7 +49,7 @@ export default defineAppConfig({
           outline: { root: 'bg-default ring-0 shadow-tarjeta' },
           subtle: { root: 'bg-muted ring-0' },
         },
-        to: { true: { root: 'hover:-translate-y-0.5 hover:shadow-flotante' } },
+        to: { true: { root: 'hover:shadow-flotante' } },
       },
     },
     pageHero: {
@@ -73,15 +73,15 @@ export default defineAppConfig({
       },
     },
     header: {
-      slots: { root: 'bg-default/72 backdrop-blur-xl backdrop-saturate-150 border-b border-default' },
+      slots: { root: 'bg-default border-b border-default' },
     },
     footer: {
       slots: { root: 'border-t border-default bg-muted' },
     },
     modal: {
       slots: {
-        overlay: 'bg-black/20 backdrop-blur-[2px]',
-        content: 'rounded-2xl shadow-flotante ring-0 divide-y-0',
+        overlay: 'bg-marca-950/40',
+        content: 'rounded-lg shadow-flotante ring-0 divide-y-0',
         header: 'px-6 pt-6 pb-2 min-h-0',
         title: 'text-lg font-semibold tracking-tight',
         body: 'px-6 py-4',
