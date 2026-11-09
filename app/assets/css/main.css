@@ -98,6 +98,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
     font-feature-settings: 'cv11', 'ss01';
   }
 
