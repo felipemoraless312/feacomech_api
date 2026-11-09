@@ -157,6 +157,16 @@
   transition-delay: var(--retraso, 0ms);
 }
 
+/* Acercamiento lento de la fotografía de portada */
+@keyframes fea-acercamiento {
+  from { transform: scale(1) translate(0, 0); }
+  to { transform: scale(1.12) translate(-2%, -1%); }
+}
+.acercamiento {
+  animation: fea-acercamiento 24s ease-in-out infinite alternate;
+  transform-origin: 60% 40%;
+}
+
 /* Entrada escalonada del texto del encabezado */
 @keyframes fea-entrada {
   from { opacity: 0; transform: translateY(22px); filter: blur(6px); }
@@ -229,5 +239,5 @@
 @media (prefers-reduced-motion: reduce) {
   .portal [data-slot="body"] > * { animation: none; }
   .revelar-oculto { opacity: 1; transform: none; }
-  .entrada, .girar-lento, .rebote, .franja, .flotar, .destello { animation: none; }
+  .acercamiento, .entrada, .girar-lento, .rebote, .franja, .flotar, .destello { animation: none; }
 }
