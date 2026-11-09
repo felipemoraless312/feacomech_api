@@ -16,7 +16,7 @@
 
     <UContainer class="grid items-center gap-6 pb-10 pt-5 sm:gap-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-20">
       <!-- Texto -->
-      <div class="order-2 lg:order-1">
+      <div>
         <div class="entrada hidden items-center gap-4 sm:flex">
           <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="h-12 w-auto drop-shadow-xl sm:h-20" width="138" height="160">
           <div class="border-l border-white/25 pl-4">
@@ -56,56 +56,69 @@
       </div>
 
       <!-- Fotografía con inclinación 3D -->
-      <div class="entrada relative order-1 [perspective:1400px] lg:order-2" style="--retraso: 120ms">
+      <div class="entrada relative mt-2 [perspective:1400px] sm:mt-0" style="--retraso: 260ms">
         <div class="inclinacion relative">
           <!-- Marco cobre desplazado: se mueve en sentido contrario a la foto -->
           <div class="marco absolute inset-0 hidden translate-x-4 translate-y-4 rounded-lg sm:block border-2 border-acento-500 sm:translate-x-6 sm:translate-y-6" aria-hidden="true" />
           <figure class="relative overflow-hidden rounded-lg shadow-[0_30px_80px_-20px_rgb(0_0_0/0.7)] ring-1 ring-white/15">
             <img
-              src="/img/jornadas-2025-1280.webp"
-              srcset="/img/jornadas-2025-768.webp 768w, /img/jornadas-2025-1280.webp 1280w, /img/jornadas-2025-1920.webp 1920w"
-              sizes="(min-width: 1024px) 46vw, 100vw"
+              src="/images/general.jpg"
               alt="Integrantes de la Federación reunidos en las Jornadas Médicas FEACOMECH 2025"
-              class="respirar aspect-[4/3] w-full object-cover"
-              width="1280"
-              height="960"
+              class="respirar aspect-[1955/1066] w-full object-cover"
+              width="1955"
+              height="1066"
               fetchpriority="high"
             >
             <!-- Reflejo que recorre la foto al inclinarla -->
             <div class="reflejo pointer-events-none absolute inset-0" aria-hidden="true" />
-            <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-marca-950/85 to-transparent px-5 pb-4 pt-12 text-sm font-medium text-white/90">
+            <figcaption class="sr-only">
               Jornadas Médicas FEACOMECH 2025
             </figcaption>
           </figure>
         </div>
 
         <!-- Cuenta regresiva flotante -->
+        <!-- Tarjeta con la identidad del cartel oficial: degradado azul → cobre y ondas blancas -->
         <NuxtLink
           v-if="jornadasVigentes"
           to="/jornadas-2026"
-          class="flotar group relative z-10 mx-auto -mt-8 block w-[92%] max-w-sm overflow-hidden rounded-lg bg-white text-marca-950 shadow-flotante ring-1 ring-black/5 sm:absolute sm:-bottom-14 sm:-left-10 sm:mt-0 sm:w-80"
+          class="cartel group relative z-10 mx-auto -mt-3 block w-[94%] max-w-sm overflow-hidden rounded-lg text-white shadow-[0_24px_60px_-12px_rgb(0_0_0/0.65)] ring-1 ring-white/20 sm:-mt-5 sm:ml-[-1.5rem] sm:mr-0 sm:w-[22rem] lg:ml-[-2.5rem]"
         >
-          <div class="flex items-center justify-between bg-acento-500 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white">
-            <span class="flex items-center gap-2">
-              <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping rounded-full bg-white opacity-75 motion-reduce:hidden" /><span class="relative inline-flex size-2 rounded-full bg-white" /></span>
-              Próximo evento
-            </span>
-            <span>26 – 28 nov</span>
-          </div>
-          <div class="p-4">
-            <p class="font-display text-base font-bold uppercase leading-tight tracking-[0.04em]">VII Jornadas Académicas FEACOMECH</p>
-            <p class="font-display text-xs font-semibold uppercase italic tracking-[0.06em] text-acento-600">&amp; Simposio de Dermatología</p>
-            <div class="mt-3 grid grid-cols-4 gap-1.5 text-center">
-              <div v-for="u in cuenta" :key="u.t" class="rounded-md bg-marca-50 py-1.5">
-                <p :key="u.v" class="digito font-display text-xl font-bold tabular-nums text-marca-800">{{ u.v }}</p>
-                <p class="text-[9px] font-medium uppercase tracking-wide text-marca-900/60">{{ u.t }}</p>
+          <!-- Ondas del cartel -->
+          <svg class="ondas pointer-events-none absolute -right-6 -top-4 h-24 w-64 text-white/25" viewBox="0 0 260 90" fill="none" aria-hidden="true">
+            <path v-for="k in 6" :key="k" :d="`M0 ${10 + k * 11} C 60 ${-6 + k * 11}, 110 ${26 + k * 11}, 170 ${8 + k * 11} S 240 ${k * 11}, 260 ${6 + k * 11}`" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+
+          <div class="relative px-5 pb-4 pt-5">
+            <p class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/80">
+              <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping rounded-full bg-acento-300 opacity-75 motion-reduce:hidden" /><span class="relative inline-flex size-2 rounded-full bg-acento-300" /></span>
+              {{ JORNADAS_2026.edicion }} edición · Polyforum Chiapas
+            </p>
+            <p class="mt-3 font-display text-[1.35rem] font-bold uppercase leading-[1.02] tracking-[0.14em]">
+              Jornadas<br>Académicas<br>FEACOMECH
+            </p>
+            <p class="font-display text-lg font-bold uppercase italic leading-tight tracking-[0.06em] text-acento-200">
+              &amp; Simposio de Dermatología
+            </p>
+            <div class="mt-2 flex items-baseline gap-3">
+              <span class="font-display text-3xl font-black tracking-[0.35em]">2026</span>
+              <span class="text-xs font-semibold text-white/80">26, 27 y 28 de noviembre</span>
+            </div>
+            <div class="my-3 h-[3px] w-full bg-gradient-to-r from-acento-400 via-acento-300/60 to-marca-400" />
+
+            <!-- Cuenta regresiva -->
+            <div class="grid grid-cols-4 divide-x divide-white/20 text-center" aria-label="Tiempo para el inicio de las Jornadas">
+              <div v-for="u in cuenta" :key="u.t" class="px-1">
+                <p :key="u.v" class="digito font-display text-[1.7rem] font-bold leading-none tabular-nums">{{ u.v }}</p>
+                <p class="mt-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/70">{{ u.t }}</p>
               </div>
             </div>
-            <p class="mt-3 flex items-center justify-between text-sm font-semibold text-marca-800">
-              Programa e inscripción
-              <UIcon name="i-lucide-arrow-right" class="size-5 transition-transform group-hover:translate-x-1" />
-            </p>
           </div>
+
+          <span class="relative flex items-center justify-between bg-white/95 px-5 py-2.5 text-sm font-bold uppercase tracking-[0.08em] text-marca-900">
+            Programa e inscripción
+            <UIcon name="i-lucide-arrow-right" class="size-5 text-acento-600 transition-transform group-hover:translate-x-1" />
+          </span>
         </NuxtLink>
       </div>
     </UContainer>
@@ -229,6 +242,24 @@ onBeforeUnmount(() => cancelAnimationFrame(cuadro))
   mix-blend-mode: soft-light;
 }
 
+/* Tarjeta del evento: el degradado azul → cobre del cartel oficial, con un leve movimiento */
+.cartel {
+  background: linear-gradient(135deg, #2b3a8f 0%, #4a4a8c 38%, #8a5a6e 68%, #d96a22 100%);
+  background-size: 160% 160%;
+  animation: cartel 12s ease-in-out infinite alternate;
+}
+@keyframes cartel {
+  from { background-position: 0% 0%; }
+  to { background-position: 100% 100%; }
+}
+.ondas {
+  animation: ondas 9s ease-in-out infinite alternate;
+}
+@keyframes ondas {
+  from { transform: translateX(0); }
+  to { transform: translateX(-18px); }
+}
+
 /* Respiración muy leve: nadie sale del cuadro */
 .respirar {
   animation: respirar 18s ease-in-out infinite alternate;
@@ -265,7 +296,7 @@ onBeforeUnmount(() => cancelAnimationFrame(cuadro))
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .palabra, .respirar, .digito, .boton-brillo::after { animation: none; }
+  .palabra, .respirar, .digito, .cartel, .ondas, .boton-brillo::after { animation: none; }
   .inclinacion, .marco { transform: none; }
 }
 </style>
