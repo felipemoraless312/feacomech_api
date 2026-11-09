@@ -12,7 +12,7 @@
 
     <!-- Cinta de colegios participantes -->
     <div class="overflow-hidden border-b border-default bg-marca-900 py-3 text-white">
-      <div class="franja flex w-max gap-10 [animation-duration:150s]">
+      <div class="franja flex w-max gap-10" style="--duracion: 240s">
         <template v-for="copia in 2" :key="copia">
           <span v-for="c in JORNADAS_2026.colegios" :key="`${copia}-${c}`" class="flex items-center gap-10 whitespace-nowrap font-display text-sm font-semibold uppercase tracking-[0.12em] text-white/85" :aria-hidden="copia === 2">
             {{ c }}<span class="size-1.5 rotate-45 bg-acento-400" />
@@ -23,7 +23,7 @@
 
     <!-- Franja en movimiento -->
     <div v-if="franja.length" class="overflow-hidden border-b border-default bg-marca-50 py-4 dark:bg-marca-950/60" aria-hidden="true">
-      <div class="franja flex w-max gap-10 [animation-duration:110s]">
+      <div class="franja flex w-max gap-10" style="--duracion: 120s">
         <template v-for="copia in 2" :key="copia">
           <span v-for="t in franja" :key="`${copia}-${t.texto}`" class="flex items-center gap-3 whitespace-nowrap font-display text-lg font-medium text-marca-800 dark:text-marca-200">
             <UIcon :name="t.icono" class="size-5 text-marca-500" />{{ t.texto }}
