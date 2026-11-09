@@ -5,7 +5,7 @@
     <NuxtLink v-if="avisoJornadas" to="/jornadas-2026" class="block bg-marca-950 text-white hover:bg-marca-900">
       <UContainer class="flex items-center justify-center gap-3 py-2 text-[13px]">
         <span class="hidden rounded-sm bg-acento-500 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider sm:inline">Inscripciones abiertas</span>
-        <span class="truncate"><strong class="font-semibold">VII Jornadas Académicas FEACOMECH 2026</strong> · 26 al 28 de noviembre · Polyforum Chiapas</span>
+        <span class="min-w-0 truncate"><strong class="font-semibold">VII Jornadas Académicas FEACOMECH 2026</strong><span class="hidden sm:inline"> · 26 al 28 de noviembre · Polyforum Chiapas</span><span class="sm:hidden"> · 26–28 nov</span></span>
         <UIcon name="i-lucide-arrow-right" class="size-4 shrink-0" />
       </UContainer>
     </NuxtLink>

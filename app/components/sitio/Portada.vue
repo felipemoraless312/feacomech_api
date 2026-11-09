@@ -14,18 +14,18 @@
     <div class="halo pointer-events-none absolute inset-0 -z-10" />
     <div class="reticula pointer-events-none absolute inset-0 -z-10 opacity-[0.06]" />
 
-    <UContainer class="grid items-center gap-14 py-16 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
+    <UContainer class="grid items-center gap-6 pb-10 pt-5 sm:gap-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-20">
       <!-- Texto -->
-      <div>
-        <div class="entrada flex items-center gap-4">
-          <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="h-20 w-auto drop-shadow-xl" width="138" height="160">
+      <div class="order-2 lg:order-1">
+        <div class="entrada hidden items-center gap-4 sm:flex">
+          <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="h-12 w-auto drop-shadow-xl sm:h-20" width="138" height="160">
           <div class="border-l border-white/25 pl-4">
             <p class="font-display text-sm font-bold uppercase tracking-[0.24em] text-acento-300">{{ siglas }}</p>
             <p class="text-sm text-white/70">{{ ciudad }}</p>
           </div>
         </div>
 
-        <h1 class="mt-8 font-display text-4xl font-bold uppercase leading-[1.04] tracking-[0.03em] sm:text-5xl xl:text-[3.4rem]" :aria-label="nombre">
+        <h1 class="font-display sm:mt-8 text-[1.65rem] font-bold uppercase leading-[1.08] tracking-[0.02em] sm:text-5xl sm:leading-[1.04] sm:tracking-[0.03em] xl:text-[3.4rem]" :aria-label="nombre">
           <span
             v-for="(p, i) in palabras"
             :key="i"
@@ -36,17 +36,17 @@
           >{{ p }}</span>
         </h1>
 
-        <p v-if="lema" class="entrada mt-6 max-w-xl border-l-2 border-acento-500 pl-4 text-lg text-white/85" :style="{ '--retraso': `${200 + palabras.length * 70}ms` }">
+        <p v-if="lema" class="entrada mt-4 max-w-xl border-l-2 border-acento-500 pl-3 text-[15px] text-white/85 sm:mt-6 sm:pl-4 sm:text-lg" :style="{ '--retraso': `${200 + palabras.length * 70}ms` }">
           {{ lema }}
         </p>
 
-        <div class="entrada mt-9 flex flex-wrap gap-3" :style="{ '--retraso': `${300 + palabras.length * 70}ms` }">
-          <UButton to="/directorio" label="Colegios y asociaciones" icon="i-lucide-landmark" size="xl" class="boton-brillo bg-white text-marca-900 hover:bg-marca-50" />
-          <UButton to="/plataforma" label="Plataforma para afiliados" icon="i-lucide-lock" size="xl" class="bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
+        <div class="entrada mt-6 grid gap-2.5 sm:mt-9 sm:flex sm:flex-wrap sm:gap-3" :style="{ '--retraso': `${300 + palabras.length * 70}ms` }">
+          <UButton to="/directorio" label="Colegios y asociaciones" icon="i-lucide-landmark" size="xl" class="boton-brillo justify-center bg-white text-marca-900 hover:bg-marca-50" />
+          <UButton to="/plataforma" label="Plataforma para afiliados" icon="i-lucide-lock" size="xl" class="justify-center bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
         </div>
 
         <!-- Cifras animadas -->
-        <dl v-if="cifras.length" class="entrada mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-6" :style="{ '--retraso': `${400 + palabras.length * 70}ms` }">
+        <dl v-if="cifras.length" class="entrada mt-12 hidden max-w-lg grid-cols-3 gap-6 border-t sm:grid border-white/15 pt-6" :style="{ '--retraso': `${400 + palabras.length * 70}ms` }">
           <div v-for="c in cifras" :key="c.etiqueta">
             <dt class="sr-only">{{ c.etiqueta }}</dt>
             <dd class="font-display text-3xl font-bold text-white"><SitioContador :valor="c.valor" /></dd>
@@ -56,10 +56,10 @@
       </div>
 
       <!-- Fotografía con inclinación 3D -->
-      <div class="entrada relative [perspective:1400px]" style="--retraso: 260ms">
+      <div class="entrada relative order-1 [perspective:1400px] lg:order-2" style="--retraso: 120ms">
         <div class="inclinacion relative">
           <!-- Marco cobre desplazado: se mueve en sentido contrario a la foto -->
-          <div class="marco absolute inset-0 translate-x-4 translate-y-4 rounded-lg border-2 border-acento-500 sm:translate-x-6 sm:translate-y-6" aria-hidden="true" />
+          <div class="marco absolute inset-0 hidden translate-x-4 translate-y-4 rounded-lg sm:block border-2 border-acento-500 sm:translate-x-6 sm:translate-y-6" aria-hidden="true" />
           <figure class="relative overflow-hidden rounded-lg shadow-[0_30px_80px_-20px_rgb(0_0_0/0.7)] ring-1 ring-white/15">
             <img
               src="/img/jornadas-2025-1280.webp"
@@ -83,7 +83,7 @@
         <NuxtLink
           v-if="jornadasVigentes"
           to="/jornadas-2026"
-          class="flotar group relative z-10 mx-auto -mt-10 block w-[88%] max-w-sm overflow-hidden rounded-lg bg-white text-marca-950 shadow-flotante ring-1 ring-black/5 sm:absolute sm:-bottom-14 sm:-left-10 sm:mt-0 sm:w-80"
+          class="flotar group relative z-10 mx-auto -mt-8 block w-[92%] max-w-sm overflow-hidden rounded-lg bg-white text-marca-950 shadow-flotante ring-1 ring-black/5 sm:absolute sm:-bottom-14 sm:-left-10 sm:mt-0 sm:w-80"
         >
           <div class="flex items-center justify-between bg-acento-500 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white">
             <span class="flex items-center gap-2">
@@ -97,9 +97,7 @@
             <p class="font-display text-xs font-semibold uppercase italic tracking-[0.06em] text-acento-600">&amp; Simposio de Dermatología</p>
             <div class="mt-3 grid grid-cols-4 gap-1.5 text-center">
               <div v-for="u in cuenta" :key="u.t" class="rounded-md bg-marca-50 py-1.5">
-                <Transition name="digito" mode="out-in">
-                  <p :key="u.v" class="font-display text-xl font-bold tabular-nums text-marca-800">{{ u.v }}</p>
-                </Transition>
+                <p :key="u.v" class="digito font-display text-xl font-bold tabular-nums text-marca-800">{{ u.v }}</p>
                 <p class="text-[9px] font-medium uppercase tracking-wide text-marca-900/60">{{ u.t }}</p>
               </div>
             </div>
@@ -112,7 +110,7 @@
       </div>
     </UContainer>
 
-    <div class="flex justify-center pb-6 pt-10 sm:pt-16">
+    <div class="hidden justify-center pb-6 pt-10 sm:flex sm:pt-16">
       <UIcon name="i-lucide-chevrons-down" class="rebote size-6 text-white/40" aria-hidden="true" />
     </div>
   </section>
@@ -259,12 +257,15 @@ onBeforeUnmount(() => cancelAnimationFrame(cuadro))
 }
 
 /* Cambio de dígito de la cuenta regresiva */
-.digito-enter-active, .digito-leave-active { transition: transform 0.25s ease, opacity 0.25s ease; }
-.digito-enter-from { transform: translateY(-40%); opacity: 0; }
-.digito-leave-to { transform: translateY(40%); opacity: 0; }
+/* Cada dígito nuevo entra deslizándose (se monta de nuevo al cambiar su clave). */
+.digito { animation: digito 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes digito {
+  from { transform: translateY(-35%); opacity: 0.2; }
+  to { transform: none; opacity: 1; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .palabra, .respirar, .boton-brillo::after { animation: none; }
+  .palabra, .respirar, .digito, .boton-brillo::after { animation: none; }
   .inclinacion, .marco { transform: none; }
 }
 </style>
