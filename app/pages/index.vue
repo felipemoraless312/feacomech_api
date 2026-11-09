@@ -1,81 +1,18 @@
 <!-- Inicio del portal. Todo proviene de la base: lo que no se ha capturado no se muestra. -->
 <template>
   <div>
-    <!-- Presentación: texto a la izquierda, fotografía de la Federación a la derecha -->
-    <section class="relative isolate overflow-hidden bg-marca-950 text-white">
-      <MarcaRed class="girar-lento pointer-events-none absolute -left-56 -top-56 -z-10 size-[46rem] text-white/[0.07]" />
-      <!-- Fotografía a color, a sangre por la derecha, con acercamiento lento -->
-      <div class="absolute inset-y-0 right-0 -z-20 hidden w-[52%] overflow-hidden [clip-path:polygon(14%_0,100%_0,100%_100%,0_100%)] lg:block">
-        <img
-          src="/img/jornadas-2025-1920.webp"
-          srcset="/img/jornadas-2025-1280.webp 1280w, /img/jornadas-2025-1920.webp 1920w"
-          sizes="52vw"
-          alt="Integrantes de la Federación en las Jornadas Médicas FEACOMECH 2025"
-          class="acercamiento size-full object-cover"
-          width="1920"
-          height="1440"
-          fetchpriority="high"
-        >
-        <div class="absolute inset-0 bg-gradient-to-r from-marca-950/50 via-transparent to-transparent" />
-      </div>
-      <!-- Filete cobre que sigue el corte diagonal -->
-      <div class="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[52%] bg-acento-500 [clip-path:polygon(14%_0,14.8%_0,0.8%_100%,0_100%)] lg:block" />
-
-      <UContainer class="grid min-h-[36rem] gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:py-24">
-        <div class="flex flex-col justify-center lg:pr-10">
-          <div class="entrada flex items-center gap-4">
-            <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="h-20 w-auto drop-shadow-xl" width="138" height="160">
-            <div class="border-l border-white/25 pl-4">
-              <p class="font-display text-sm font-bold uppercase tracking-[0.24em] text-acento-300">{{ institucion?.siglas ?? 'FEACOMECH' }}</p>
-              <p class="text-sm text-white/70">{{ institucion?.ciudad ?? 'Tuxtla Gutiérrez, Chiapas' }}</p>
-            </div>
-          </div>
-          <h1 class="entrada mt-8 font-display text-4xl font-bold uppercase leading-[1.03] tracking-[0.03em] text-balance sm:text-5xl" style="--retraso: 80ms">
-            {{ institucion?.nombre ?? 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas' }}
-          </h1>
-          <p v-if="institucion?.lema || institucion?.presentacion" class="entrada mt-6 max-w-xl border-l-2 border-acento-500 pl-4 text-lg text-white/85" style="--retraso: 160ms">
-            {{ institucion?.lema || primerParrafo(institucion?.presentacion) }}
-          </p>
-          <div class="entrada mt-9 flex flex-wrap gap-3" style="--retraso: 240ms">
-            <UButton to="/directorio" label="Colegios y asociaciones" icon="i-lucide-landmark" size="xl" class="bg-white text-marca-900 hover:bg-marca-50" />
-            <UButton to="/plataforma" label="Plataforma para afiliados" icon="i-lucide-lock" size="xl" class="bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
-          </div>
-        </div>
-
-        <!-- Fotografía en móvil -->
-        <div class="overflow-hidden rounded-lg lg:hidden">
-          <img src="/img/jornadas-2025-768.webp" alt="Integrantes de la Federación en las Jornadas Médicas FEACOMECH 2025" class="acercamiento aspect-[4/3] w-full object-cover" width="768" height="576">
-        </div>
-
-        <!-- Cuenta regresiva sobre la fotografía -->
-        <div class="flex items-end justify-end">
-          <NuxtLink v-if="jornadasVigentes" to="/jornadas-2026" class="entrada group w-full max-w-sm overflow-hidden rounded-lg bg-white/95 text-marca-950 shadow-flotante" style="--retraso: 320ms">
-            <div class="flex items-center justify-between bg-acento-500 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white">
-              Próximo evento <span>26 – 28 nov</span>
-            </div>
-            <div class="p-4">
-              <p class="font-display text-lg font-bold uppercase leading-tight tracking-[0.04em]">VII Jornadas Académicas FEACOMECH</p>
-              <p class="font-display text-sm font-semibold uppercase italic tracking-[0.06em] text-acento-600">&amp; Simposio de Dermatología</p>
-              <div class="mt-3 grid grid-cols-4 gap-1.5 text-center">
-                <div v-for="u in cuentaJornadas" :key="u.t" class="rounded-md bg-marca-50 py-2">
-                  <p class="font-display text-2xl font-bold tabular-nums text-marca-800">{{ u.v }}</p>
-                  <p class="text-[10px] font-medium uppercase tracking-wide text-marca-900/60">{{ u.t }}</p>
-                </div>
-              </div>
-              <p class="mt-3 flex items-center justify-between text-sm font-semibold text-marca-800">
-                Programa e inscripción
-                <UIcon name="i-lucide-arrow-right" class="size-5 transition-transform group-hover:translate-x-1" />
-              </p>
-            </div>
-          </NuxtLink>
-        </div>
-      </UContainer>
-      <p class="absolute bottom-3 right-4 hidden text-xs text-white/80 drop-shadow lg:block">Jornadas Médicas FEACOMECH 2025</p>
-    </section>
+    <!-- Presentación -->
+    <SitioPortada
+      :nombre="institucion?.nombre ?? 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas'"
+      :siglas="institucion?.siglas ?? 'FEACOMECH'"
+      :ciudad="institucion?.ciudad ?? 'Tuxtla Gutiérrez, Chiapas'"
+      :lema="institucion?.lema || primerParrafo(institucion?.presentacion)"
+      :cifras="cifras.slice(0, 3)"
+    />
 
     <!-- Cinta de colegios participantes -->
     <div class="overflow-hidden border-b border-default bg-marca-900 py-3 text-white">
-      <div class="franja flex w-max gap-10">
+      <div class="franja flex w-max gap-10 [animation-duration:150s]">
         <template v-for="copia in 2" :key="copia">
           <span v-for="c in JORNADAS_2026.colegios" :key="`${copia}-${c}`" class="flex items-center gap-10 whitespace-nowrap font-display text-sm font-semibold uppercase tracking-[0.12em] text-white/85" :aria-hidden="copia === 2">
             {{ c }}<span class="size-1.5 rotate-45 bg-acento-400" />
@@ -86,7 +23,7 @@
 
     <!-- Franja en movimiento -->
     <div v-if="franja.length" class="overflow-hidden border-b border-default bg-marca-50 py-4 dark:bg-marca-950/60" aria-hidden="true">
-      <div class="franja flex w-max gap-10">
+      <div class="franja flex w-max gap-10 [animation-duration:110s]">
         <template v-for="copia in 2" :key="copia">
           <span v-for="t in franja" :key="`${copia}-${t.texto}`" class="flex items-center gap-3 whitespace-nowrap font-display text-lg font-medium text-marca-800 dark:text-marca-200">
             <UIcon :name="t.icono" class="size-5 text-marca-500" />{{ t.texto }}
@@ -429,20 +366,7 @@ const mostrarCenso = computed(() => (censo.value?.totales.registrados ?? 0) >= 2
 
 const jornadasVigentes = new Date() < new Date('2026-11-28T16:00:00-06:00')
 
-// Cuenta regresiva al inicio de las Jornadas (mismo valor al hidratar; corre en el navegador).
-const ahora = useState('inicio-ahora', () => Date.now())
-let reloj: ReturnType<typeof setInterval> | undefined
-onMounted(() => { reloj = setInterval(() => (ahora.value = Date.now()), 1000) })
-onBeforeUnmount(() => clearInterval(reloj))
-const cuentaJornadas = computed(() => {
-  const s = Math.max(0, Math.floor((new Date(JORNADAS_2026.inicio).getTime() - ahora.value) / 1000))
-  return [
-    { v: Math.floor(s / 86400), t: 'días' },
-    { v: String(Math.floor((s % 86400) / 3600)).padStart(2, '0'), t: 'horas' },
-    { v: String(Math.floor((s % 3600) / 60)).padStart(2, '0'), t: 'min' },
-    { v: String(s % 60).padStart(2, '0'), t: 'seg' },
-  ]
-})
+
 
 const primerParrafo = (t?: string | null) => (t ?? '').split(/\n\s*\n/)[0]
 </script>
