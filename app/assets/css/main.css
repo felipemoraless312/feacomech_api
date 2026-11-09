@@ -209,7 +209,7 @@
   to { transform: translateX(-50%); }
 }
 .franja {
-  animation: fea-franja 45s linear infinite;
+  animation: fea-franja var(--duracion, 60s) linear infinite;
 }
 .franja:hover { animation-play-state: paused; }
 
