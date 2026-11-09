@@ -375,6 +375,28 @@
       </UContainer>
     </section>
 
+    <!-- Constancias -->
+    <section id="constancias" class="scroll-mt-32 py-16 sm:py-20">
+      <UContainer>
+        <div class="relative isolate grid gap-8 overflow-hidden rounded-lg bg-marca-900 p-8 text-white sm:p-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+          <div class="pointer-events-none absolute inset-y-0 right-0 -z-10 w-1/2 bg-gradient-to-l from-acento-500/60 to-transparent" />
+          <div class="space-y-4">
+            <p class="rotulo !text-acento-200">Después del evento</p>
+            <h2 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Descargue su constancia</h2>
+            <p class="max-w-xl text-white/80">
+              Asistencia, talleres, carteles científicos y reconocimientos a ponentes, en PDF y con código QR para verificar su autenticidad. Sólo necesita el correo con el que se inscribió.
+            </p>
+            <UButton to="/jornadas-2026/constancias" icon="i-lucide-award" label="Buscar mi constancia" size="xl" class="bg-white text-marca-900 hover:bg-marca-50" />
+          </div>
+          <ul class="space-y-3 text-sm">
+            <li v-for="t in ['Asistencia con valor curricular', 'Talleres acreditados', 'Carteles científicos', 'Reconocimiento a ponentes']" :key="t" class="flex items-center gap-3 rounded-md bg-white/10 px-4 py-3 ring-1 ring-white/15">
+              <UIcon name="i-lucide-badge-check" class="size-5 text-acento-300" />{{ t }}
+            </li>
+          </ul>
+        </div>
+      </UContainer>
+    </section>
+
     <!-- Preguntas frecuentes -->
     <section id="preguntas" class="scroll-mt-32 bg-muted py-16 sm:py-20">
       <UContainer class="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
@@ -471,6 +493,7 @@ const secciones = [
   { id: 'colegios', t: 'Colegios' },
   { id: 'mesa', t: 'Mesa Directiva' },
   { id: 'patrocinadores', t: 'Patrocinadores' },
+  { id: 'constancias', t: 'Constancias' },
   { id: 'preguntas', t: 'Preguntas' },
 ]
 
@@ -504,6 +527,7 @@ const cifras = [
 const iniciales = (n: string) => n.replace(/^(Dra?\.|Lic\.|Mtra?\.)\s*/, '').split(/\s+/).slice(0, 2).map(p => p[0]).join('')
 
 const preguntas = [
+  { label: '¿Cómo descargo mi constancia?', content: 'Al concluir las Jornadas, entre a «Constancias» en esta página y escriba el correo con el que se inscribió. Podrá descargar en PDF su constancia de asistencia, talleres o cartel, con código QR de verificación.' },
   { label: '¿A qué hora debo llegar?', content: 'El registro abre el jueves 26 a las 7:00 h y la primera conferencia inicia a las 8:00 h; la inauguración es a las 9:50 h. El viernes y el sábado el programa comienza a las 8:00 h.' },
   { label: '¿Qué incluye mi inscripción?', content: 'Acceso a las conferencias de los tres días, incluido el Simposio de Dermatología del sábado, y constancia con valor curricular. Los talleres ($400 c/u) y la Cena de Gala ($1,000 por persona) se pagan por separado.' },
   { label: '¿Cómo confirmo mi pago?', content: `Después de depositar o transferir a la cuenta BBVA de la Federación, envíe su comprobante por WhatsApp al ${J.contacto.telefono} con su nombre completo. También puede comprar su boleto en ${J.pago.ventaFisica.lugar} (${J.pago.ventaFisica.direccion}).` },

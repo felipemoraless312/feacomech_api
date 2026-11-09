@@ -20,6 +20,8 @@
       <UNavigationMenu :items="enlaces" variant="link" color="neutral" :ui="{ link: 'text-[13px] font-medium' }" />
 
       <template #right>
+        <UButton to="/constancias" icon="i-lucide-award" label="Constancias" size="sm" color="neutral" variant="outline" class="hidden md:inline-flex" />
+        <UButton to="/constancias" icon="i-lucide-award" size="sm" color="neutral" variant="outline" class="md:hidden" aria-label="Descargar constancias" />
         <UButton to="/jornadas-2026" label="Jornadas 2026" size="sm" class="hidden bg-acento-500 text-white hover:bg-acento-600 lg:inline-flex" />
         <UButton to="/plataforma" icon="i-lucide-lock" label="Plataforma" size="sm" color="primary" class="hidden sm:inline-flex" />
         <UButton to="/plataforma" icon="i-lucide-lock" size="sm" color="primary" variant="soft" class="sm:hidden" aria-label="Plataforma" />
@@ -28,6 +30,7 @@
       <template #body>
         <UNavigationMenu :items="enlaces" orientation="vertical" color="neutral" class="-mx-2.5" />
         <UButton to="/jornadas-2026" label="Jornadas Académicas 2026" block class="mt-6 bg-acento-500 text-white hover:bg-acento-600" />
+        <UButton to="/constancias" icon="i-lucide-award" label="Descargar mi constancia" block class="mt-3" color="neutral" variant="outline" />
         <UButton to="/plataforma" icon="i-lucide-lock" label="Acceso a la plataforma" block class="mt-3" />
       </template>
     </UHeader>
@@ -62,6 +65,9 @@
           </p>
           <NuxtLink to="/plataforma" class="block text-muted hover:text-highlighted">
             Plataforma para afiliados
+          </NuxtLink>
+          <NuxtLink to="/constancias" class="block text-muted hover:text-highlighted">
+            Descargar constancias
           </NuxtLink>
           <NuxtLink to="/documentos" class="block text-muted hover:text-highlighted">
             Documentos institucionales
