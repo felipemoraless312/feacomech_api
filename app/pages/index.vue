@@ -1,96 +1,68 @@
 <!-- Inicio del portal. Todo proviene de la base: lo que no se ha capturado no se muestra. -->
 <template>
   <div>
-    <!-- Presentación -->
-    <section class="relative isolate overflow-hidden bg-gradient-to-br from-marca-800 via-marca-900 to-marca-950 text-white">
-      <MarcaRed class="girar-lento pointer-events-none absolute -left-48 -top-48 -z-10 size-[44rem] text-white/10" />
-      <MarcaRed class="girar-lento pointer-events-none absolute -bottom-64 right-[-12rem] -z-10 size-[36rem] text-white/[0.06] [animation-direction:reverse]" />
-      <div class="destello pointer-events-none absolute inset-0 -z-10" />
-      <UContainer class="grid items-center gap-12 py-16 sm:py-24 lg:grid-cols-[1.05fr_1fr] lg:py-28">
+    <!-- Presentación: fotografía a sangre en duotono azul federal -->
+    <section class="relative isolate overflow-hidden bg-marca-950 text-white">
+      <img
+        src="/img/jornadas-2025-1920.webp"
+        srcset="/img/jornadas-2025-768.webp 768w, /img/jornadas-2025-1280.webp 1280w, /img/jornadas-2025-1920.webp 1920w"
+        sizes="100vw"
+        alt=""
+        class="absolute inset-0 -z-30 size-full object-cover grayscale"
+        width="1920"
+        height="1440"
+        fetchpriority="high"
+      >
+      <div class="absolute inset-0 -z-20 bg-marca-900 mix-blend-multiply" />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-marca-950 via-marca-950/85 to-marca-950/30" />
+      <div class="absolute inset-x-0 bottom-0 -z-10 h-1.5 bg-acento-500" />
+      <UContainer class="grid gap-12 py-20 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:items-end lg:py-32">
         <div>
           <div class="entrada flex items-center gap-4">
-            <span class="rounded-2xl bg-white p-1.5 shadow-flotante">
-              <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="h-16 w-auto sm:h-20" width="138" height="160">
-            </span>
-            <div>
-              <p class="text-sm font-semibold uppercase tracking-[0.18em] text-marca-200">
-                {{ institucion?.siglas }}
+            <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="h-20 w-auto drop-shadow-xl sm:h-24" width="138" height="160">
+            <div class="border-l border-white/25 pl-4">
+              <p class="font-display text-sm font-bold uppercase tracking-[0.24em] text-acento-300">
+                {{ institucion?.siglas ?? 'FEACOMECH' }}
               </p>
-              <p v-if="institucion?.ciudad" class="text-sm text-white/60">
-                {{ institucion.ciudad }}
+              <p class="text-sm text-white/70">
+                {{ institucion?.ciudad ?? 'Tuxtla Gutiérrez, Chiapas' }}
               </p>
             </div>
           </div>
-          <h1 class="entrada mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.08] tracking-[-0.02em] text-balance sm:text-5xl xl:text-6xl" style="--retraso: 80ms">
-            {{ institucion?.nombre }}
+          <h1 class="entrada mt-8 max-w-3xl font-display text-4xl font-bold uppercase leading-[1.02] tracking-[0.04em] text-balance sm:text-5xl xl:text-6xl" style="--retraso: 80ms">
+            {{ institucion?.nombre ?? 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas' }}
           </h1>
-          <p v-if="institucion?.lema || institucion?.presentacion" class="entrada mt-6 max-w-2xl text-lg italic text-white/85 sm:text-xl" style="--retraso: 160ms">
-            «{{ institucion?.lema || primerParrafo(institucion?.presentacion) }}»
+          <p v-if="institucion?.lema || institucion?.presentacion" class="entrada mt-6 max-w-2xl border-l-2 border-acento-500 pl-4 text-lg text-white/85 sm:text-xl" style="--retraso: 160ms">
+            {{ institucion?.lema || primerParrafo(institucion?.presentacion) }}
           </p>
           <div class="entrada mt-10 flex flex-wrap gap-3" style="--retraso: 240ms">
             <UButton to="/directorio" label="Colegios y asociaciones" icon="i-lucide-landmark" size="xl" class="bg-white text-marca-900 hover:bg-marca-50" />
             <UButton to="/plataforma" label="Plataforma para afiliados" icon="i-lucide-lock" size="xl" class="bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
           </div>
         </div>
-        <figure class="entrada relative" style="--retraso: 200ms">
-          <div class="overflow-hidden rounded-xl shadow-flotante ring-1 ring-white/15">
-            <img
-              src="/img/jornadas-2025-1280.webp"
-              srcset="/img/jornadas-2025-768.webp 768w, /img/jornadas-2025-1280.webp 1280w, /img/jornadas-2025-1920.webp 1920w"
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              alt="Integrantes de la Federación reunidos en las Jornadas Médicas FEACOMECH 2025"
-              class="aspect-[4/3] w-full object-cover"
-              width="1280"
-              height="960"
-              fetchpriority="high"
-            >
-          </div>
-          <!-- Cifras flotantes sobre la foto -->
-          <div
-            v-for="(c, i) in cifrasFlotantes"
-            :key="c.etiqueta"
-            class="flotar absolute hidden items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 text-marca-950 shadow-flotante ring-1 ring-black/5 backdrop-blur sm:flex"
-            :class="i === 0 ? '-left-6 top-8' : '-right-4 bottom-16'"
-            :style="{ '--retraso': `${i * 1500}ms` }"
-          >
-            <span class="flex size-10 items-center justify-center rounded-xl bg-marca-100 text-marca-700">
-              <UIcon :name="i === 0 ? 'i-lucide-landmark' : 'i-lucide-users-round'" class="size-5" />
-            </span>
-            <span>
-              <span class="block font-display text-2xl font-semibold leading-none">{{ c.valor }}</span>
-              <span class="text-xs text-marca-900/70">{{ c.etiqueta }}</span>
-            </span>
-          </div>
-          <figcaption class="mt-3 text-sm text-white/70">
-            Jornadas Médicas FEACOMECH 2025
-          </figcaption>
-        </figure>
-      </UContainer>
-      <div class="flex justify-center pb-6">
-        <UIcon name="i-lucide-chevrons-down" class="rebote size-6 text-white/50" aria-hidden="true" />
-      </div>
-    </section>
 
-    <!-- Evento principal vigente -->
-    <section v-if="jornadasVigentes" class="border-b border-default bg-default">
-      <UContainer class="grid gap-8 py-12 lg:grid-cols-[auto_1fr_auto] lg:items-center">
-        <div class="flex items-center gap-5">
-          <div class="rounded-md bg-marca-800 px-4 py-3 text-center text-white">
-            <p class="font-display text-3xl font-bold leading-none">26–28</p>
-            <p class="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-acento-300">Nov 2026</p>
+        <!-- Panel de accesos -->
+        <div class="entrada space-y-3" style="--retraso: 200ms">
+          <NuxtLink v-if="jornadasVigentes" to="/jornadas-2026" class="group block overflow-hidden rounded-lg bg-white text-marca-950 shadow-flotante">
+            <div class="flex items-center justify-between bg-acento-500 px-5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
+              Próximo evento <span>26 – 28 nov 2026</span>
+            </div>
+            <div class="p-5">
+              <p class="font-display text-xl font-bold uppercase leading-tight tracking-[0.04em]">VII Jornadas Académicas FEACOMECH</p>
+              <p class="font-display text-base font-semibold uppercase italic tracking-[0.06em] text-acento-600">&amp; Simposio de Dermatología</p>
+              <p class="mt-3 flex items-center justify-between text-sm text-marca-950/70">
+                Polyforum Chiapas · programa, cuotas e inscripción
+                <UIcon name="i-lucide-arrow-right" class="size-5 text-marca-800 transition-transform group-hover:translate-x-1" />
+              </p>
+            </div>
+          </NuxtLink>
+          <div class="grid grid-cols-2 gap-3">
+            <NuxtLink v-for="a in accesos" :key="a.to" :to="a.to" class="group rounded-lg bg-white/10 p-4 ring-1 ring-white/15 transition-colors hover:bg-white/15">
+              <UIcon :name="a.i" class="size-5 text-acento-300" />
+              <p class="mt-2 text-sm font-semibold">{{ a.t }}</p>
+              <p class="text-xs text-white/60">{{ a.d }}</p>
+            </NuxtLink>
           </div>
-        </div>
-        <div>
-          <p class="rotulo">Próximo evento académico</p>
-          <h2 class="mt-2 font-display text-2xl font-bold uppercase tracking-[0.06em] text-highlighted sm:text-3xl">
-            VII Jornadas Académicas FEACOMECH <span class="text-acento-600">&amp; Simposio de Dermatología</span>
-          </h2>
-          <p class="mt-1 text-muted">
-            Centro de Convenciones Polyforum Chiapas · 22 colegios participantes · talleres, carteles científicos y cena de gala
-          </p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <UButton to="/jornadas-2026" label="Información e inscripción" trailing-icon="i-lucide-arrow-right" size="lg" class="bg-acento-500 text-white hover:bg-acento-600" />
         </div>
       </UContainer>
     </section>
@@ -419,16 +391,6 @@ const cifras = computed(() => {
     { valor: String(c.afiliados), etiqueta: 'Profesionales afiliados', nota: '' },
   ]
 })
-const cifrasFlotantes = computed(() => {
-  const cs = portada.value?.cifras ?? []
-  const anio = cs.find(c => /^\d{4}$/.test(c.valor))
-  const otra = cs.find(c => c !== anio)
-  return [
-    ...(anio ? [{ valor: `Desde ${anio.valor}`, etiqueta: 'al servicio de la medicina' }] : []),
-    ...(otra ? [{ valor: otra.valor, etiqueta: otra.etiqueta.toLowerCase() }] : []),
-  ]
-})
-
 const franja = computed(() => {
   const lineas = (portada.value?.lineas ?? []).map(l => ({ icono: l.icono, texto: l.titulo }))
   return lineas.length && institucion.value?.lema ? [{ icono: 'i-lucide-sparkles', texto: institucion.value.lema }, ...lineas] : lineas
@@ -446,6 +408,13 @@ const hayAgenda = computed(() => {
 
 // Con muy pocos registros la gráfica pública no dice nada y podría identificar personas.
 const mostrarCenso = computed(() => (censo.value?.totales.registrados ?? 0) >= 20)
+
+const accesos = [
+  { to: '/directorio/profesionales', i: 'i-lucide-stethoscope', t: 'Directorio médico', d: 'Profesionales colegiados' },
+  { to: '/noticias', i: 'i-lucide-newspaper', t: 'Noticias', d: 'Comunicados y actividades' },
+  { to: '/documentos', i: 'i-lucide-file-text', t: 'Documentos', d: 'Estatutos y convocatorias' },
+  { to: '/eventos', i: 'i-lucide-calendar-days', t: 'Eventos', d: 'Calendario académico' },
+]
 
 const jornadasVigentes = new Date() < new Date('2026-11-28T16:00:00-06:00')
 
