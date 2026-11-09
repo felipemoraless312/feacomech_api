@@ -31,7 +31,7 @@
           </div>
           <div class="mt-8 flex flex-wrap gap-3">
             <UButton :to="J.contacto.whatsapp" target="_blank" icon="i-lucide-message-circle" label="Inscribirme por WhatsApp" size="xl" class="bg-acento-500 text-white hover:bg-acento-600" />
-            <UButton to="#cuotas" label="Ver cuotas" size="xl" class="bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
+            <UButton to="#programa" label="Ver programa" size="xl" class="bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
             <UButton :href="ics" download="jornadas-feacomech-2026.ics" icon="i-lucide-calendar-plus" label="Agregar a mi calendario" size="xl" variant="link" class="text-white/85 hover:text-white" />
           </div>
         </div>
@@ -86,6 +86,53 @@
         </a>
       </UContainer>
     </nav>
+
+    <!-- Cifras clave -->
+    <section class="border-b border-default bg-default">
+      <UContainer class="grid grid-cols-2 py-8 sm:grid-cols-3 lg:grid-cols-6 lg:divide-x lg:divide-default">
+        <div v-for="c in cifras" :key="c.t" class="px-4 py-3 text-center">
+          <p class="font-display text-3xl font-bold text-marca-800 sm:text-4xl dark:text-marca-200">{{ c.v }}</p>
+          <p class="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted">{{ c.t }}</p>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Programa académico -->
+    <section id="programa" class="scroll-mt-32 bg-muted/60 py-16 sm:py-20">
+      <UContainer class="space-y-10">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <div class="max-w-2xl space-y-3">
+            <p class="rotulo">Temario oficial</p>
+            <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Programa académico</h2>
+            <p class="text-muted">Tres días de conferencias coordinadas por los colegios de la Federación; el sábado, Simposio de Dermatología.</p>
+          </div>
+          <UButton to="/jornadas/temario.pdf" target="_blank" icon="i-lucide-file-down" label="Descargar temario (PDF)" color="neutral" variant="outline" />
+        </div>
+        <JornadasPrograma />
+      </UContainer>
+    </section>
+
+    <!-- Ponentes invitados -->
+    <section id="ponentes" class="scroll-mt-32 py-16 sm:py-20">
+      <UContainer class="space-y-10">
+        <div class="max-w-2xl space-y-3">
+          <p class="rotulo">Profesorado</p>
+          <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Ponentes invitados</h2>
+          <p class="text-muted">Especialistas de referencia nacional se suman a los ponentes de los colegios de Chiapas.</p>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <article v-for="p in PONENTES_INVITADOS" :key="p.nombre" class="flex gap-4 rounded-lg bg-default p-5 ring-1 ring-default">
+            <span class="flex size-14 shrink-0 items-center justify-center rounded-md bg-marca-800 font-display text-lg font-bold text-white">{{ iniciales(p.nombre) }}</span>
+            <div class="min-w-0">
+              <p class="font-display text-lg font-bold leading-tight text-highlighted">{{ p.nombre }}</p>
+              <p class="mt-0.5 text-xs text-muted">{{ p.perfil }}</p>
+              <p class="mt-3 text-sm font-medium text-marca-800 dark:text-marca-200">«{{ p.tema }}»</p>
+              <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-acento-700 dark:text-acento-300">{{ p.dia }} h</p>
+            </div>
+          </article>
+        </div>
+      </UContainer>
+    </section>
 
     <!-- Cuotas -->
     <section id="cuotas" class="scroll-mt-32 py-16 sm:py-20">
@@ -142,13 +189,16 @@
             <UIcon :name="t.icono" class="size-7 text-marca-700 dark:text-marca-300" />
             <p class="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-acento-700 dark:text-acento-300">Taller · {{ t.dia }}</p>
             <h3 class="mt-1 font-display text-xl font-bold text-highlighted">{{ t.titulo }}</h3>
+            <p class="mt-2 text-sm text-muted">{{ t.imparte }}</p>
+            <p class="mt-1 text-sm text-muted"><UIcon name="i-lucide-clock" class="mr-1 inline size-3.5 align-[-2px]" />{{ t.horario }} · {{ t.lugar }}</p>
             <p class="mt-auto pt-6 font-display text-2xl font-bold text-marca-800 dark:text-marca-200">{{ pesos(J.talleres.costo) }} <span class="text-sm font-medium text-muted">MXN</span></p>
           </article>
           <article class="flex flex-col rounded-lg bg-marca-900 p-6 text-white shadow-tarjeta">
             <UIcon name="i-lucide-wine" class="size-7 text-acento-300" />
             <p class="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-acento-300">Evento social</p>
             <h3 class="mt-1 font-display text-xl font-bold">{{ J.cena.titulo }}</h3>
-            <p class="text-sm text-white/70">{{ J.cena.lugar }}</p>
+            <p class="text-sm text-white/70">{{ J.cena.cuando }} · {{ J.cena.lugar }}</p>
+            <p class="mt-2 text-sm text-white/70">{{ J.cena.detalle }}</p>
             <p class="mt-auto pt-6 font-display text-2xl font-bold">{{ pesos(J.cena.costo) }} <span class="text-sm font-medium text-white/60">MXN por persona</span></p>
           </article>
         </div>
@@ -276,6 +326,42 @@
       </UContainer>
     </section>
 
+    <!-- Mesa Directiva -->
+    <section id="mesa" class="scroll-mt-32 py-16 sm:py-20">
+      <UContainer class="space-y-10">
+        <div class="max-w-2xl space-y-3">
+          <p class="rotulo">Bienio 2026 – 2028</p>
+          <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Mesa Directiva FEACOMECH</h2>
+          <p class="text-muted">Rinde protesta el sábado 28 de noviembre durante la Cena de Gala.</p>
+        </div>
+        <div class="grid gap-px overflow-hidden rounded-lg bg-default ring-1 ring-default sm:grid-cols-2 lg:grid-cols-3">
+          <div v-for="(c, i) in MESA_DIRECTIVA_2026.cargos" :key="c.cargo" class="p-6 ring-1 ring-default" :class="i === 0 ? 'bg-marca-900 text-white sm:col-span-2 lg:col-span-1' : 'bg-default'">
+            <p class="text-xs font-semibold uppercase tracking-[0.18em]" :class="i === 0 ? 'text-acento-300' : 'text-acento-700 dark:text-acento-300'">{{ c.cargo }}</p>
+            <p class="mt-1 font-display text-xl font-bold" :class="i === 0 ? '' : 'text-highlighted'">{{ c.nombre }}</p>
+          </div>
+        </div>
+        <div class="grid gap-10 lg:grid-cols-[1fr_2fr]">
+          <div>
+            <p class="font-display text-sm font-bold uppercase tracking-[0.16em] text-dimmed">Consejo Consultivo</p>
+            <ul class="mt-3 space-y-2">
+              <li v-for="c in MESA_DIRECTIVA_2026.consejo" :key="c.nombre" class="font-medium text-highlighted">
+                {{ c.nombre }}<span v-if="c.finado" class="text-muted" title="In memoriam"> †</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-display text-sm font-bold uppercase tracking-[0.16em] text-dimmed">Presidentes de colegios afiliados</p>
+            <ul class="mt-3 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+              <li v-for="p in MESA_DIRECTIVA_2026.presidentes" :key="p.nombre" class="flex justify-between gap-3 border-b border-default pb-2">
+                <span class="font-medium text-highlighted">{{ p.nombre }}</span>
+                <span class="text-right text-muted">{{ p.colegio }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
     <!-- Patrocinadores -->
     <section id="patrocinadores" class="scroll-mt-32 py-16 sm:py-20">
       <UContainer class="space-y-8">
@@ -286,6 +372,18 @@
         <ul class="flex flex-wrap justify-center gap-x-8 gap-y-4">
           <li v-for="p in J.patrocinadores" :key="p" class="font-display text-lg font-semibold uppercase tracking-[0.08em] text-gris-500 transition-colors hover:text-marca-800 dark:hover:text-marca-200">{{ p }}</li>
         </ul>
+      </UContainer>
+    </section>
+
+    <!-- Preguntas frecuentes -->
+    <section id="preguntas" class="scroll-mt-32 bg-muted py-16 sm:py-20">
+      <UContainer class="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
+        <div class="space-y-3">
+          <p class="rotulo">Antes de asistir</p>
+          <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Preguntas frecuentes</h2>
+          <p class="text-muted">¿Otra duda? Escríbanos por WhatsApp al {{ J.contacto.telefono }}.</p>
+        </div>
+        <UAccordion :items="preguntas" type="multiple" :ui="{ item: 'border-b border-default', trigger: 'py-4 text-base font-semibold text-highlighted', body: 'pb-5 text-[15px] leading-relaxed text-muted' }" />
       </UContainer>
     </section>
 
@@ -309,6 +407,7 @@
 
 <script setup lang="ts">
 import { JORNADAS_2026 as J, pesos } from '#shared/jornadas2026'
+import { MESA_DIRECTIVA_2026, PONENTES_INVITADOS, PROGRAMA_2026, ponenciasDe } from '#shared/jornadas2026-programa'
 
 const titulo = `${J.titulo} y ${J.subtitulo} ${J.anio}`
 const descripcion = `${J.edicion} Jornadas Académicas FEACOMECH y Simposio de Dermatología: ${J.fechas} en el ${J.sede.nombre}. Cuotas, talleres, cena de gala y convocatoria de carteles científicos.`
@@ -362,13 +461,17 @@ const cuenta = computed(() => {
 const fechaLarga = (iso: string) => new Intl.DateTimeFormat('es-MX', { dateStyle: 'full', timeZone: 'America/Mexico_City' }).format(new Date(iso))
 
 const secciones = [
+  { id: 'programa', t: 'Programa' },
+  { id: 'ponentes', t: 'Ponentes' },
   { id: 'cuotas', t: 'Cuotas' },
   { id: 'talleres', t: 'Talleres y cena' },
   { id: 'pago', t: 'Cómo pagar' },
   { id: 'carteles', t: 'Carteles científicos' },
   { id: 'sede', t: 'Sede' },
   { id: 'colegios', t: 'Colegios' },
+  { id: 'mesa', t: 'Mesa Directiva' },
   { id: 'patrocinadores', t: 'Patrocinadores' },
+  { id: 'preguntas', t: 'Preguntas' },
 ]
 
 const pasos = [
@@ -386,6 +489,28 @@ const bloquesCarteles = [
   { t: 'Quiénes participan', i: 'i-lucide-users', l: J.carteles.dirigidoA },
   { t: 'Normas del resumen', i: 'i-lucide-file-text', l: J.carteles.normas },
   { t: 'Beneficios', i: 'i-lucide-award', l: J.carteles.beneficios },
+]
+
+const ponencias = PROGRAMA_2026.flatMap(ponenciasDe)
+const cifras = [
+  { v: '3', t: 'días' },
+  { v: String(ponencias.length), t: 'conferencias' },
+  { v: String(new Set(ponencias.map(p => p.ponente)).size), t: 'ponentes' },
+  { v: String(J.colegios.length), t: 'colegios' },
+  { v: '2', t: 'talleres' },
+  { v: '6', t: 'ponentes invitados' },
+]
+
+const iniciales = (n: string) => n.replace(/^(Dra?\.|Lic\.|Mtra?\.)\s*/, '').split(/\s+/).slice(0, 2).map(p => p[0]).join('')
+
+const preguntas = [
+  { label: '¿A qué hora debo llegar?', content: 'El registro abre el jueves 26 a las 7:00 h y la primera conferencia inicia a las 8:00 h; la inauguración es a las 9:50 h. El viernes y el sábado el programa comienza a las 8:00 h.' },
+  { label: '¿Qué incluye mi inscripción?', content: 'Acceso a las conferencias de los tres días, incluido el Simposio de Dermatología del sábado, y constancia con valor curricular. Los talleres ($400 c/u) y la Cena de Gala ($1,000 por persona) se pagan por separado.' },
+  { label: '¿Cómo confirmo mi pago?', content: `Después de depositar o transferir a la cuenta BBVA de la Federación, envíe su comprobante por WhatsApp al ${J.contacto.telefono} con su nombre completo. También puede comprar su boleto en ${J.pago.ventaFisica.lugar} (${J.pago.ventaFisica.direccion}).` },
+  { label: '¿Puedo facturar?', content: J.pago.factura },
+  { label: '¿Dónde y cuándo son los talleres?', content: 'En el Salón Misolha de la sede, de 16:00 a 18:00 h: Electrocardiografía para Médicos Generales el jueves 26 y Accesos Vasculares el viernes 27.' },
+  { label: 'Presento un cartel, ¿tengo algún beneficio?', content: 'Sí. Quien presenta un trabajo aceptado obtiene una beca en la inscripción; los tres primeros lugares reciben diploma y premio, y todos los trabajos presentados, constancia con valor curricular.' },
+  { label: '¿Cuál es la cuota para estudiantes?', content: 'Estudiantes y áreas afines a la salud: $550 MXN en cuota regular (la reducida, de $450, aplicó hasta el 15 de octubre). Presente su credencial vigente en el registro.' },
 ]
 
 const toast = useToast()

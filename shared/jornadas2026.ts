@@ -41,12 +41,12 @@ export const JORNADAS_2026 = {
   talleres: {
     costo: 400,
     lista: [
-      { dia: 'Jueves 26 de noviembre', fecha: '2026-11-26', titulo: 'Electrocardiografía para Médicos Generales', icono: 'i-lucide-heart-pulse' },
-      { dia: 'Viernes 27 de noviembre', fecha: '2026-11-27', titulo: 'Accesos Vasculares', icono: 'i-lucide-syringe' },
+      { dia: 'Jueves 26 de noviembre', fecha: '2026-11-26', titulo: 'Electrocardiografía para Médicos Generales', icono: 'i-lucide-heart-pulse', horario: '16:00–18:00 h', imparte: 'Dr. Arturo Piña Flores, cardiólogo intervencionista', lugar: 'Salón Misolha' },
+      { dia: 'Viernes 27 de noviembre', fecha: '2026-11-27', titulo: 'Accesos Vasculares', icono: 'i-lucide-syringe', horario: '16:00–18:00 h', imparte: 'Dr. Víctor Manuel Blanco Martínez, accesos vasculares ecoguiados', lugar: 'Salón Misolha' },
     ],
   },
 
-  cena: { titulo: 'Cena de Gala FEACOMECH', lugar: 'Salón Palenque', costo: 1000 },
+  cena: { titulo: 'Cena de Gala FEACOMECH', lugar: 'Salón Palenque', costo: 1000, cuando: 'Sábado 28 de noviembre, 20:30 h', detalle: 'Con la toma de protesta de la nueva Mesa Directiva, Bienio 2026 – 2028.' },
 
   pago: {
     titular: 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas A.C.',
@@ -103,6 +103,7 @@ export const JORNADAS_2026 = {
     'Colegio de Medicina de Urgencias Chiapas',
     'Colegio de Químicos de Chiapas',
     'Colegio de Profesionales en Psicología del Estado de Chiapas (COPPSECH)',
+    'Colegio de Médicos en Ecografía Diagnóstica de Chiapas (COMEDECH)',
     'Colegio de Ginecólogos y Obstetras en Chiapas',
     'Colegio de Médicos Anatomopatólogos del Estado de Chiapas',
     'Colegio de Oftalmólogos del Estado de Chiapas',
@@ -119,13 +120,14 @@ export const JORNADAS_2026 = {
   avales: ['Asociación Médica Mundial (WMA)', 'Colegio Médico de México (FENACOME)', 'Confederación Médica Latinoamericana y del Caribe'],
 
   patrocinadores: [
-    'La Roche-Posay', 'Vichy', 'CeraVe', 'Elementré', 'Segle', 'Odellā', 'Bioderma', 'LEO Pharma', 'MartiDerm', 'ISDIN',
+    'La Roche-Posay', 'Vichy', 'CeraVe', 'Elementré', 'Segle', 'Odellā', 'PiSA Farmacéutica', 'Bioderma', 'LEO Pharma', 'MartiDerm', 'ISDIN',
     'Catalysis', 'Dermix', 'Pierre Fabre', 'SVR', 'Uppharma', 'Gallantdale', 'Galderma', 'Genové', 'Colorescience', 'Patyka',
-    'Acuderm', 'LabPiña', 'Lab Lam', 'Sanatorio Santa Cecilia', 'H&M Biomedical', 'Laboratorio Senosiain', 'Megalabs',
-    'Laboratorios Rovisan', 'Medical Legal Center', 'Armstrong', 'Instituto Avantilia', 'M8 Pharmaceuticals',
+    'Acuderm', 'LabPiña', 'Lab Lam', 'Sanatorio Santa Cecilia', 'H&M Biomedical', 'ICSMISH', 'Megalabs',
+    'Laboratorios Rovisan', 'Medical Legal Center', 'Armstrong', 'Instituto Avantilia', 'M8 Pharmaceuticals', 'Orthomaster', 'Chopo', 'Etrederm',
   ],
 
   documentos: [
+    { titulo: 'Temario completo', archivo: '/jornadas/temario.pdf', icono: 'i-lucide-calendar-range' },
     { titulo: 'Inscripciones y datos de pago', archivo: '/jornadas/inscripciones-y-pagos.pdf', icono: 'i-lucide-receipt-text' },
     { titulo: 'Convocatoria de carteles científicos', archivo: '/jornadas/convocatoria-carteles.pdf', icono: 'i-lucide-presentation' },
   ],
