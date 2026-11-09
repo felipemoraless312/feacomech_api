@@ -19,7 +19,7 @@
             srcset="/img/jornadas-2025-768.webp 768w, /img/jornadas-2025-1280.webp 1280w, /img/jornadas-2025-1920.webp 1920w"
             sizes="(min-width: 1024px) 60vw, 100vw"
             alt="Integrantes de la Federación reunidos en las Jornadas Médicas FEACOMECH 2025"
-            class="aspect-[16/9] w-full rounded-3xl object-cover shadow-tarjeta"
+            class="aspect-[16/9] w-full rounded-xl object-cover shadow-tarjeta"
             loading="lazy"
           >
           <figcaption class="text-sm text-muted">

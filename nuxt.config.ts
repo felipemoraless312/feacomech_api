@@ -17,9 +17,9 @@ export default defineNuxtConfig({
   // Se descargan al compilar y se sirven desde el propio servidor.
   fonts: {
     families: [
-      { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700], global: true },
-      // Títulos: serif sobria de corte institucional.
-      { name: 'Source Serif 4', provider: 'google', weights: [500, 600, 700], global: true },
+      { name: 'Public Sans', provider: 'google', weights: [400, 500, 600, 700], global: true },
+      // Títulos: Barlow, la misma familia de rótulos espaciados de la papelería oficial.
+      { name: 'Barlow', provider: 'google', weights: [500, 600, 700, 800], global: true },
     ],
   },
 
@@ -29,7 +29,7 @@ export default defineNuxtConfig({
       titleTemplate: '%s · FEACOMECH',
       meta: [
         { name: 'description', content: 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas' },
-        { name: 'theme-color', content: '#3f2759' },
+        { name: 'theme-color', content: '#1f2a6b' },
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },

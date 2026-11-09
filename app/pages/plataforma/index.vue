@@ -1,7 +1,7 @@
 <template>
   <PanelPagina id="resumen" titulo="Resumen">
     <div class="space-y-10">
-      <header class="entrada relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-marca-700 to-marca-950 px-6 py-8 text-white shadow-flotante sm:px-10 sm:py-10">
+      <header class="entrada relative isolate overflow-hidden rounded-xl bg-gradient-to-br from-marca-700 to-marca-950 px-6 py-8 text-white shadow-flotante sm:px-10 sm:py-10">
         <MarcaRed class="girar-lento pointer-events-none absolute -right-24 -top-24 -z-10 size-80 text-white/10 sm:size-96" />
         <p class="text-[15px] capitalize text-white/75">
           {{ fechaHoy }}

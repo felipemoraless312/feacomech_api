@@ -13,6 +13,7 @@
 import 'dotenv/config'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../../server/generated/prisma/client'
+import { JORNADAS_2026 as J } from '../../shared/jornadas2026'
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }) })
 const dia = (iso: string) => new Date(`${iso}T00:00:00Z`)
@@ -296,6 +297,40 @@ async function noticias(autorId: string | null, dermatologia: { id: string }) {
   console.log(`  ${lista.length} noticias con fuente.`)
 }
 
+/** VII Jornadas Académicas FEACOMECH 2026 (documentos oficiales del Comité organizador). */
+async function jornadas2026(dermatologia: { id: string }) {
+  if (await prisma.evento.findUnique({ where: { slug: J.slug } })) return
+  await prisma.evento.create({
+    data: {
+      slug: J.slug,
+      tipo: 'JORNADA',
+      titulo: `${J.edicion} ${J.titulo} y ${J.subtitulo} ${J.anio}`,
+      descripcion: [
+        `${J.bienio}. Tres días de actualización médica organizados por la Federación con ${J.colegios.length} colegios y asociaciones participantes.`,
+        `Incluye los talleres ${J.talleres.lista.map(t => `«${t.titulo}»`).join(' y ')} (costo adicional), la presentación de carteles científicos y la ${J.cena.titulo} en el ${J.cena.lugar}.`,
+        'Información completa, cuotas y datos de pago: /jornadas-2026',
+      ].join('\n\n'),
+      inicio: new Date(J.inicio),
+      fin: new Date(J.fin),
+      modalidad: 'PRESENCIAL',
+      sede: J.sede.nombre,
+      direccion: J.sede.direccion,
+      organizacionId: dermatologia.id,
+      organizador: 'FEACOMECH y Colegio de Chiapas de Dermatología',
+      requisitos: J.cuotas.categorias.map(c => `${c.nombre}: $${c.regular} MXN`).join(' · '),
+      valorCurricular: 'Constancia con valor curricular',
+      inscripcionAbierta: true,
+      estado: 'PUBLICADO',
+      programa: {
+        create: [
+          ...J.talleres.lista.map(t => ({ inicio: new Date(`${t.fecha}T09:00:00-06:00`), titulo: `Taller: ${t.titulo}`, descripcion: `Costo $${J.talleres.costo} MXN. Horario por confirmar en el programa oficial.`, lugar: J.sede.nombre })),
+        ],
+      },
+    },
+  })
+  console.log('  Evento: Jornadas Académicas FEACOMECH 2026.')
+}
+
 async function main() {
   console.log('Cargando información pública de FEACOMECH…')
   const admin = await prisma.usuario.findFirst({ where: { roles: { some: { rol: { clave: 'SUPERADMIN' } } } }, orderBy: { creadoEn: 'asc' }, select: { id: true } })
@@ -303,6 +338,7 @@ async function main() {
   await estructura()
   const dermatologia = await organizaciones()
   await evento(dermatologia)
+  await jornadas2026(dermatologia)
   await vinculacion()
   await noticias(admin?.id ?? null, dermatologia)
   await portada()

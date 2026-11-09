@@ -64,6 +64,7 @@
             </dd>
           </div>
         </dl>
+        <UButton v-if="e.slug === JORNADAS_2026.slug" to="/jornadas-2026" icon="i-lucide-sparkles" label="Micrositio: cuotas, pago y carteles" size="lg" block class="bg-acento-500 text-white hover:bg-acento-600" />
         <template v-if="e.estado === 'PUBLICADO' && !finalizado && e.inscripcionAbierta">
           <UButton :to="`/plataforma/eventos/${e.id}`" icon="i-lucide-ticket" label="Inscribirme" size="lg" block />
           <p class="text-xs text-muted">
@@ -79,6 +80,7 @@
 </template>
 
 <script setup lang="ts">
+import { JORNADAS_2026 } from '#shared/jornadas2026'
 import { NOMBRE_MODALIDAD, NOMBRE_TIPO_EVENTO, type MODALIDADES, type TIPOS_EVENTO } from '#shared/schemas/eventos'
 
 const route = useRoute()

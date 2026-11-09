@@ -34,7 +34,7 @@
       </div>
 
       <!-- Formulario -->
-      <div class="rounded-3xl bg-default p-6 shadow-tarjeta ring-1 ring-default sm:p-8">
+      <div class="rounded-xl bg-default p-6 shadow-tarjeta ring-1 ring-default sm:p-8">
         <div v-if="enviado" class="space-y-4 py-10 text-center">
           <span class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-marca-50 text-marca-600">
             <UIcon name="i-lucide-mail-check" class="size-6" />
