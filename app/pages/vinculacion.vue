@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SitioEncabezado antetitulo="Vinculación" titulo="Vinculación institucional" descripcion="Instituciones colaboradoras, convenios y organismos con los que trabaja la Federación." />
+    <SitioEncabezado antetitulo="Colaboradores" titulo="Colaboradores de la Federación" descripcion="Empresas, instituciones y organismos que colaboran con la Federación." />
 
     <UContainer class="space-y-16 py-14">
       <EstadoVacio v-if="!vinculos?.length" icono="i-lucide-handshake" titulo="Información en preparación" descripcion="La Federación publicará aquí sus convenios y alianzas." />
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { TIPOS_VINCULO } from '#shared/schemas/portal'
 
-useSeoMeta({ title: 'Vinculación', description: 'Convenios, instituciones colaboradoras y organismos relacionados con la Federación.' })
+useSeoMeta({ title: 'Colaboradores', description: 'Convenios, instituciones colaboradoras y organismos relacionados con la Federación.' })
 
 interface Vinculo { tipo: (typeof TIPOS_VINCULO)[number], nombre: string, descripcion: string | null, sitioWeb: string | null, logoId: string | null, fechaFirma: string | null, vigenciaHasta: string | null }
 const { data: vinculos } = await useFetch<Vinculo[]>('/api/publico/vinculos')

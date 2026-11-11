@@ -7,7 +7,7 @@
           :key="t.value"
           :to="{ query: t.value ? { tipo: t.value } : {} }"
           class="shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors"
-          :class="(tipo ?? '') === t.value ? 'bg-primary text-white' : 'bg-default text-muted ring-1 ring-default hover:text-highlighted'"
+          :class="(tipo ?? '') === t.value ? 'bg-acento-500 text-white' : 'bg-white/10 text-white/80 ring-1 ring-white/15 hover:bg-white/20 hover:text-white'"
         >
           {{ t.label }}
         </NuxtLink>

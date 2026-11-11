@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SitioEncabezado antetitulo="Directorio" titulo="Colegios y asociaciones afiliados" descripcion="Organizaciones médicas del estado de Chiapas que forman parte de la Federación.">
+    <SitioEncabezado antetitulo="Directorio" titulo="Colegios agremiados" descripcion="Colegios y asociaciones de la salud de Chiapas que forman parte de la Federación. Consulte su mesa directiva, sitio web y redes sociales.">
       <SitioNavDirectorio />
     </SitioEncabezado>
 
@@ -57,7 +57,7 @@ useSeoMeta({ title: 'Directorio de colegios y asociaciones', description: 'Coleg
 interface OrgPublica { slug: string, tipo: 'COLEGIO' | 'ASOCIACION', nombre: string, siglas: string | null, municipio: string | null, logoId: string | null, descripcion: string | null }
 const { data: organizaciones } = await useFetch<OrgPublica[]>('/api/publico/organizaciones', { default: () => [] })
 
-const busqueda = ref('')
+const busqueda = ref(String(useRoute().query.q ?? ''))
 const tipo = ref('TODAS')
 const pestanas = [{ label: 'Todas', value: 'TODAS' }, { label: 'Colegios', value: 'COLEGIO' }, { label: 'Asociaciones', value: 'ASOCIACION' }]
 const filtradas = computed(() => {
