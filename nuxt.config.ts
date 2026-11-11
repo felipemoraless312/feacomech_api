@@ -29,7 +29,7 @@ export default defineNuxtConfig({
       titleTemplate: '%s · FEACOMECH',
       meta: [
         { name: 'description', content: 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas' },
-        { name: 'theme-color', content: '#1f2a6b' },
+        { name: 'theme-color', content: '#402858' },
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
@@ -44,6 +44,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/plataforma/**': { ssr: false },
     '/imprimir/**': { ssr: false },
+    // «Nosotros» pasó a «Organización».
+    '/nosotros': { redirect: { to: '/organizacion', statusCode: 301 } },
   },
 
   // Sesión: cookie sellada httpOnly (nuxt-auth-utils). maxAge = vida máxima absoluta;
