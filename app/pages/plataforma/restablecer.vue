@@ -74,7 +74,7 @@ const listo = ref(false)
 const { enviando, error, enviar } = useEnvio(form)
 
 async function guardar() {
-  const r = await enviar(() => $fetch('/api/auth/restablecer', { method: 'POST', body: estado }))
+  const r = await enviar(() => $fetch<unknown>('/api/auth/restablecer', { method: 'POST', body: estado }))
   if (r.ok) {
     await useUserSession().clear()
     listo.value = true

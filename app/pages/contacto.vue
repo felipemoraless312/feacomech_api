@@ -124,7 +124,7 @@ const form = useTemplateRef<Form<ContactoInput>>('form')
 const { enviando, error, enviar } = useEnvio(form)
 
 async function enviarMensaje() {
-  const r = await enviar(() => $fetch('/api/publico/contacto', { method: 'POST', body: estado }))
+  const r = await enviar(() => $fetch<unknown>('/api/publico/contacto', { method: 'POST', body: estado }))
   if (r.ok) enviado.value = true
 }
 function reiniciar() {

@@ -7,16 +7,48 @@ node_modules
 dist
 coverage
 server/generated
-.env
-.env.*
-!.env.example
 *.log
 .DS_Store
+
+# Variables de entorno: sólo se versiona la plantilla.
+.env
+.env.*
+.env*
+!.env.example
 
 # Archivos subidos por los usuarios (fuera de public/, se sirven con control de acceso)
 almacen/
 
-# Credenciales locales (no versionar)
-ACCESOS.txt
+# Credenciales y llaves locales (no versionar)
+ACCESOS*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+service-account*.json
+credentials*.json
+
+# Respaldos y volcados de base de datos (contienen datos personales)
+*.dump
+*.backup
+*.bak
+*.sql.gz
+respaldos/
+backup*/
+
+# Material de trabajo de la Federación (documentos originales, datos de pago, etc.).
+# Lo que deba publicarse se copia, revisado, a public/.
+evento/
+*.docx
+*.doc
+*.xlsx
+*.xls
+*.csv
+
+# Configuración local de herramientas
 .vercel
-.env*
+.claude/
+.vscode/
+.idea/

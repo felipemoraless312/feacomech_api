@@ -49,7 +49,7 @@ const enviado = ref(false)
 const { enviando, error, enviar: ejecutar } = useEnvio()
 
 async function enviar() {
-  const r = await ejecutar(() => $fetch('/api/auth/recuperar', { method: 'POST', body: estado }))
+  const r = await ejecutar(() => $fetch<unknown>('/api/auth/recuperar', { method: 'POST', body: estado }))
   if (r.ok) enviado.value = true
 }
 </script>

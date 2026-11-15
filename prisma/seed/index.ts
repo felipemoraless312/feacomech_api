@@ -143,6 +143,13 @@ async function sembrarSuperadmin() {
   if (await prisma.usuario.findUnique({ where: { email } })) return
   const password = process.env.SEED_ADMIN_PASSWORD
   if (!password) throw new Error('Defina SEED_ADMIN_PASSWORD en .env para crear el superadministrador')
+  // En producción no se acepta la contraseña de ejemplo (es pública en .env.example) ni una corta.
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    if (password === 'Feacomech2026!' || password.length < 12) {
+      throw new Error('SEED_ADMIN_PASSWORD de producción debe ser propia (no la de .env.example) y de al menos 12 caracteres')
+    }
+    if (email.endsWith('.local')) throw new Error('SEED_ADMIN_EMAIL de producción debe ser un correo real')
+  }
 
   const rol = await prisma.rol.findUniqueOrThrow({ where: { clave: ROL_SUPERADMIN } })
   await prisma.usuario.create({

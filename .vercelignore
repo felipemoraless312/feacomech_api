@@ -7,8 +7,34 @@ node_modules
 dist
 coverage
 server/generated
+*.log
+
+# Nunca subir secretos, datos ni material interno en un `vercel deploy` desde esta carpeta.
 .env
 .env.*
 almacen
-ACCESOS.txt
-*.log
+ACCESOS*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.dump
+*.backup
+*.bak
+*.sql.gz
+respaldos
+evento
+*.docx
+*.doc
+*.xlsx
+*.xls
+*.csv
+.claude
+.vscode
+.idea
+
+# No se necesitan para compilar ni ejecutar
+tests
+docs
+docker-compose.yml
