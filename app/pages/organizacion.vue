@@ -26,7 +26,7 @@
               Mensaje de bienvenida
             </p>
             <div class="mt-6 flex items-center gap-4">
-              <FotoPerfil nombre="Fanny Kramsky Soto" tamano="3xl" class="size-20 text-2xl ring-4 ring-white/20" />
+              <FotoPerfil :src="BIENVENIDA.foto" nombre="Fanny Kramsky Soto" tamano="3xl" class="size-20 text-2xl ring-4 ring-white/20" />
               <div>
                 <p class="font-display text-2xl font-semibold">
                   {{ BIENVENIDA.autora }}

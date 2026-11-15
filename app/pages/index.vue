@@ -144,7 +144,7 @@
         <div v-revelar class="mx-auto flex flex-col items-center text-center lg:mx-0">
           <div class="relative">
             <div class="absolute inset-0 translate-x-3 translate-y-3 rounded-full border-2 border-acento-500" aria-hidden="true" />
-            <span class="relative flex size-44 items-center justify-center rounded-full bg-gradient-to-br from-marca-600 to-marca-900 font-display text-5xl font-bold tracking-wider text-white ring-8 ring-white dark:ring-marca-950" aria-hidden="true">FK</span>
+            <img :src="BIENVENIDA.foto" :alt="BIENVENIDA.autora" width="176" height="176" loading="lazy" class="relative size-44 rounded-full bg-marca-100 object-cover ring-8 ring-white dark:ring-marca-950">
           </div>
           <p class="mt-6 font-display text-xl font-bold text-highlighted">
             {{ BIENVENIDA.autora }}

@@ -2,7 +2,7 @@
 <template>
   <article class="flex flex-col rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
     <div class="flex items-center gap-4">
-      <FotoPerfil :nombre="nombreSinTitulo" tamano="3xl" class="size-16 shrink-0 text-xl" />
+      <FotoPerfil :src="foto" :nombre="nombreSinTitulo" tamano="3xl" class="size-16 shrink-0 text-xl" />
       <div class="min-w-0">
         <p class="text-xs font-semibold uppercase tracking-wide text-marca-700 dark:text-marca-300">
           {{ cargo }}
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ cargo: string, nombre: string, resena?: string }>()
+const props = defineProps<{ cargo: string, nombre: string, resena?: string, foto?: string }>()
 // Las iniciales del avatar no deben salir de «Dr.», «Dra.», «QFB.», «Ing.»…
 const nombreSinTitulo = computed(() => props.nombre.split(' ').filter(p => !p.endsWith('.') && p !== 'Biomédico').join(' '))
 </script>

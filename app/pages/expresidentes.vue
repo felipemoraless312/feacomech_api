@@ -19,7 +19,7 @@
               {{ e.periodo }}
             </p>
             <div class="mt-3 flex items-center gap-4">
-              <FotoPerfil :nombre="e.nombre.replace(/^Dra?\. /, '')" tamano="3xl" class="size-16 shrink-0 text-xl" />
+              <FotoPerfil :src="e.foto" :nombre="e.nombre.replace(/^Dra?\. /, '')" tamano="3xl" class="size-16 shrink-0 text-xl" />
               <h2 class="font-display text-2xl font-semibold leading-tight text-highlighted">
                 {{ e.nombre }}<span v-if="e.finado" class="text-muted" title="Finado"> †</span>
               </h2>
@@ -49,9 +49,12 @@
             <p class="font-display text-sm font-semibold uppercase tracking-[0.14em] text-acento-600">
               {{ PRESIDENCIA_ACTUAL.periodo }} · Presidencia actual
             </p>
-            <p class="mt-1 font-display text-2xl font-semibold text-highlighted">
-              {{ PRESIDENCIA_ACTUAL.nombre }}
-            </p>
+            <div class="mt-3 flex items-center gap-4">
+              <FotoPerfil :src="PRESIDENCIA_ACTUAL.foto" :nombre="PRESIDENCIA_ACTUAL.nombre.replace(/^Dra?\. /, '')" tamano="3xl" class="size-16 shrink-0 text-xl" />
+              <p class="font-display text-2xl font-semibold leading-tight text-highlighted">
+                {{ PRESIDENCIA_ACTUAL.nombre }}
+              </p>
+            </div>
             <UButton to="/organizacion#bienvenida" label="Mensaje de bienvenida" trailing-icon="i-lucide-arrow-right" color="neutral" variant="link" class="mt-2 px-0" />
           </div>
         </li>

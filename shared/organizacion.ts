@@ -4,9 +4,13 @@
 
 import { MESA_DIRECTIVA_2026 } from './jornadas2026-programa'
 
+/** Fotografía de la presidenta recortada al rostro para avatares (original: /images/fanny_kramsky.jpg). */
+export const FOTO_PRESIDENTA = '/images/fanny_kramsky_rostro.jpg'
+
 /** Mensaje de bienvenida de la presidencia. BORRADOR: pendiente de revisión por la Dra. Kramsky. */
 export const BIENVENIDA = {
   autora: 'Dra. Fanny Kramsky Soto',
+  foto: FOTO_PRESIDENTA,
   cargo: 'Presidenta de la FEACOMECH · Bienio 2026–2028',
   parrafos: [
     'Les doy la más cordial bienvenida a la Federación de Asociaciones y Colegios Médicos del Estado de Chiapas, la casa común de los colegios y asociaciones de profesionales de la salud de nuestro estado.',
@@ -20,19 +24,30 @@ export const BIENVENIDA = {
 export const OBJETIVO_GENERAL
   = 'Agrupar, representar y fortalecer a los colegios y asociaciones de profesionales de la salud del Estado de Chiapas, promoviendo la actualización académica, la ética profesional y la defensa del acto médico en beneficio de sus agremiados y de la sociedad.'
 
-export interface Integrante { cargo: string, nombre: string, resena?: string }
+export interface Integrante { cargo: string, nombre: string, resena?: string, foto?: string }
+
+/**
+ * Fotografías disponibles por nombre (las demás muestran iniciales). Son recortes al rostro
+ * en /public/images; el archivo original se conserva junto a cada uno sin el sufijo «_rostro».
+ */
+const FOTOS: Record<string, string> = {
+  'Dra. Fanny Kramsky Soto': FOTO_PRESIDENTA,
+  'Dr. José Ricardo Tovilla Victoria': '/images/jose_ricardo_tovilla_victoria_rostro.jpg',
+  'Dr. Hernán León Velasco': '/images/hernan_leon_velasco_rostro.jpg',
+  'Dr. Didier Gómez Trujillo': '/images/didier_gomez_trujillo_rostro.jpg',
+}
 
 /** Mesa directiva vigente. Las reseñas curriculares se agregan conforme se reciban. */
 export const MESA_DIRECTIVA: { periodo: string, integrantes: Integrante[] } = {
   periodo: 'Bienio 2026–2028',
-  integrantes: MESA_DIRECTIVA_2026.cargos.map(c => ({ ...c })),
+  integrantes: MESA_DIRECTIVA_2026.cargos.map(c => ({ ...c, foto: FOTOS[c.nombre] })),
 }
 
 /** Consejo consultivo: integrado por los expresidentes de la Federación. */
-export const CONSEJO_CONSULTIVO: Integrante[] = MESA_DIRECTIVA_2026.consejo.map(c => ({
-  cargo: c.finado ? 'Consejero (†)' : 'Consejero',
-  nombre: c.nombre.replace('Radamez', 'Radamés').replace('Dr. Ricardo Tovilla', 'Dr. José Ricardo Tovilla'),
-}))
+export const CONSEJO_CONSULTIVO: Integrante[] = MESA_DIRECTIVA_2026.consejo.map((c) => {
+  const nombre = c.nombre.replace('Radamez', 'Radamés').replace('Dr. Ricardo Tovilla', 'Dr. José Ricardo Tovilla')
+  return { cargo: c.finado ? 'Consejero (†)' : 'Consejero', nombre, foto: FOTOS[nombre] }
+})
 
 export interface Expresidente {
   nombre: string
@@ -42,10 +57,11 @@ export interface Expresidente {
   finado?: boolean
   resena?: string
   logros?: string[]
+  foto?: string
 }
 
 /** Presidentes de la Federación, del más antiguo al más reciente. */
-export const EXPRESIDENTES: Expresidente[] = [
+const LISTA_EXPRESIDENTES: Expresidente[] = [
   {
     nombre: 'Dr. Hernán León Velasco',
     periodo: 'Periodo por documentar',
@@ -85,8 +101,10 @@ export const EXPRESIDENTES: Expresidente[] = [
   },
 ]
 
+export const EXPRESIDENTES: Expresidente[] = LISTA_EXPRESIDENTES.map(e => ({ ...e, foto: e.foto ?? FOTOS[e.nombre] }))
+
 /** Presidencia en funciones (cierra la línea del tiempo de expresidentes). */
-export const PRESIDENCIA_ACTUAL = { nombre: 'Dra. Fanny Kramsky Soto', periodo: '2026 – 2028' }
+export const PRESIDENCIA_ACTUAL = { nombre: 'Dra. Fanny Kramsky Soto', periodo: '2026 – 2028', foto: FOTO_PRESIDENTA }
 
 export const BENEFICIOS = [
   {
