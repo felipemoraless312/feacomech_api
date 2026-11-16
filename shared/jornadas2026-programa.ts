@@ -133,7 +133,7 @@ export const MESA_DIRECTIVA_2026 = {
     { cargo: 'Presidenta', nombre: 'Dra. Fanny Kramsky Soto' },
     { cargo: 'Vicepresidenta', nombre: 'Dra. Isidra Candelario López' },
     { cargo: 'Secretaria Técnica', nombre: 'Dra. María del Carmen Albores Guillén' },
-    { cargo: 'Secretario Administrativo', nombre: 'Ing. Biomédico Alexander Arroyo Núñez' },
+    { cargo: 'Secretario Administrativo', nombre: 'Dr. Alexander Arroyo Núñez' },
     { cargo: 'Tesorera', nombre: 'QFB. Cecilia Cleotilde Velázquez Andrade' },
     { cargo: 'Protesorero', nombre: 'Dr. Humberto Hernández Rojas' },
   ],

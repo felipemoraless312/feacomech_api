@@ -39,3 +39,12 @@ describe('logoVinculo', () => {
     expect(logoVinculo('Secretaría de Salud', 'horizontal')).toBe('/img/vinculacion/salud-chiapas.webp')
   })
 })
+
+describe('MESA_DIRECTIVA', () => {
+  it('incluye la reseña del Dr. Alexander Arroyo Núñez en párrafos', async () => {
+    const { MESA_DIRECTIVA } = await import('../../shared/organizacion')
+    const arroyo = MESA_DIRECTIVA.integrantes.find(i => i.cargo === 'Secretario Administrativo')
+    expect(arroyo?.nombre).toBe('Dr. Alexander Arroyo Núñez')
+    expect(arroyo?.resena?.split(/\n\s*\n/)).toHaveLength(4)
+  })
+})

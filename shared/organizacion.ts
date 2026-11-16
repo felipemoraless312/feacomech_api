@@ -37,10 +37,24 @@ const FOTOS: Record<string, string> = {
   'Dr. Didier Gómez Trujillo': '/img/personas/didier-gomez-trujillo-rostro.jpg',
 }
 
+/**
+ * Reseñas curriculares de la mesa directiva, por nombre. Párrafos separados por una línea en
+ * blanco. Se agregan conforme cada integrante entrega su perfil (documento revisado y corregido).
+ */
+const RESENAS: Record<string, string> = {
+  // «Perfil profesional Alexander Arroyo Núñez FEACOMECH.docx», noviembre de 2026.
+  'Dr. Alexander Arroyo Núñez': [
+    'Profesor e investigador en ingeniería con más de 25 años de trayectoria ininterrumpida en el desarrollo tecnológico. Su carrera se distingue por su dedicación a la investigación, la docencia y el avance científico; en la Federación aporta su experiencia como asesor tecnológico de la comunidad de profesionales de la salud.',
+    'Es ingeniero en Electrónica por el Instituto Tecnológico de Tuxtla Gutiérrez, maestro en Ciencias en Ingeniería Electrónica por la Universidad Politécnica de Valencia (España) y doctor en Ingeniería Aplicada por la Universidad TENAM. Ha cursado además estudios de posgrado, alta especialidad y diplomados en instituciones nacionales e internacionales.',
+    'Durante casi diez años fue jefe de proyectos en un grupo de investigación del Instituto ITACA, en la Ciudad Politécnica de la Innovación de la Universidad Politécnica de Valencia. Fue director de Ingeniería Biomédica en la Universidad Politécnica de Chiapas por más de siete años y, a nivel nacional, coordinó el diseño curricular del programa de Ingeniería Biomédica del subsistema de Universidades Tecnológicas y Politécnicas.',
+    'Es autor de múltiples artículos científicos y ha sido ponente en congresos nacionales e internacionales. Ha contribuido a la formación de numerosas generaciones de ingenieros en Biomédica y Mecatrónica. Por su aportación y apoyo a la FEACOMECH, fue invitado a integrar la Mesa Directiva como Secretario Administrativo para el bienio 2026–2028.',
+  ].join('\n\n'),
+}
+
 /** Mesa directiva vigente. Las reseñas curriculares se agregan conforme se reciban. */
 export const MESA_DIRECTIVA: { periodo: string, integrantes: Integrante[] } = {
   periodo: 'Bienio 2026–2028',
-  integrantes: MESA_DIRECTIVA_2026.cargos.map(c => ({ ...c, foto: FOTOS[c.nombre] })),
+  integrantes: MESA_DIRECTIVA_2026.cargos.map(c => ({ ...c, foto: FOTOS[c.nombre], resena: RESENAS[c.nombre] })),
 }
 
 /** Consejo consultivo: integrado por los expresidentes de la Federación. */

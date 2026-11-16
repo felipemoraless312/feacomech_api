@@ -17,9 +17,11 @@
         Reseña curricular
         <UIcon name="i-lucide-chevron-down" class="size-4 transition-transform group-open:rotate-180" />
       </summary>
-      <p class="mt-2 text-sm leading-relaxed text-muted">
-        {{ resena || 'Reseña curricular en preparación.' }}
-      </p>
+      <div class="mt-2 space-y-2.5 text-sm leading-relaxed text-muted">
+        <p v-for="(parrafo, i) in parrafos" :key="i">
+          {{ parrafo }}
+        </p>
+      </div>
     </details>
   </article>
 </template>
@@ -27,5 +29,7 @@
 <script setup lang="ts">
 const props = defineProps<{ cargo: string, nombre: string, resena?: string, foto?: string }>()
 // Las iniciales del avatar no deben salir de «Dr.», «Dra.», «QFB.», «Ing.»…
-const nombreSinTitulo = computed(() => props.nombre.split(' ').filter(p => !p.endsWith('.') && p !== 'Biomédico').join(' '))
+const nombreSinTitulo = computed(() => props.nombre.split(' ').filter(p => !p.endsWith('.')).join(' '))
+// Las reseñas largas vienen en párrafos separados por una línea en blanco.
+const parrafos = computed(() => (props.resena || 'Reseña curricular en preparación.').split(/\n\s*\n/))
 </script>
