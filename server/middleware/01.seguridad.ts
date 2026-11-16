@@ -10,4 +10,8 @@ export default defineEventHandler((event) => {
   if (event.path.startsWith('/api/') || event.path.startsWith('/plataforma') || event.path.startsWith('/imprimir')) {
     setResponseHeader(event, 'Cache-Control', 'no-store')
   }
+  // Registro en sede de las Jornadas: enlace oculto (QR), fuera de buscadores y cachés.
+  if (event.path.startsWith('/jornadas-2026/registro')) {
+    setResponseHeaders(event, { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' })
+  }
 })

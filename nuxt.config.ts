@@ -44,6 +44,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/plataforma/**': { ssr: false },
     '/imprimir/**': { ssr: false },
+    // Registro en sede (enlace oculto por QR): sólo en el navegador, guarda el pase en el teléfono.
+    '/jornadas-2026/registro/**': { ssr: false },
     // «Nosotros» pasó a «Organización».
     '/nosotros': { redirect: { to: '/organizacion', statusCode: 301 } },
   },

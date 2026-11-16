@@ -87,6 +87,7 @@ const OPCIONES: Opcion[][] = [
     { label: 'Vinculación', icon: 'i-lucide-handshake', permiso: 'contenido.administrar', to: '/plataforma/vinculacion' },
     { label: 'Mensajes de contacto', icon: 'i-lucide-mail', permiso: 'contacto.ver', to: '/plataforma/mensajes' },
     { label: 'Gestión de eventos', icon: 'i-lucide-calendar-cog', permiso: 'evento.gestionar', to: '/plataforma/eventos/gestion' },
+    { label: 'Registro Jornadas 2026', icon: 'i-lucide-scan-qr-code', permiso: 'evento.gestionar', to: '/plataforma/eventos/registro-jornadas' },
     { label: 'Censo médico', icon: 'i-lucide-chart-pie', permiso: 'censo.ver', to: '/plataforma/censo' },
     { label: 'Reportes', icon: 'i-lucide-chart-column', permiso: 'reporte.ver', to: '/plataforma/reportes' },
     { label: 'Configuración', icon: 'i-lucide-settings', algunPermiso: ['config.administrar', 'rol.administrar', 'auditoria.ver', 'contenido.administrar'], to: '/plataforma/configuracion' },
