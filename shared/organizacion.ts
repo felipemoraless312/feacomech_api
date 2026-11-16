@@ -36,6 +36,7 @@ const FOTOS: Record<string, string> = {
   'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco-rostro.jpg',
   'Dr. Didier Gómez Trujillo': '/img/personas/didier-gomez-trujillo-rostro.jpg',
   'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez-rostro.jpg',
+  'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade-rostro.jpg',
 }
 
 /**
@@ -56,6 +57,7 @@ const RETRATOS: Record<string, string> = {
   'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco.jpg',
   'Dr. José Ricardo Tovilla Victoria': '/img/personas/jose-ricardo-tovilla-victoria.jpg',
   'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez.jpg',
+  'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade.jpg',
 }
 
 /**
@@ -69,6 +71,13 @@ const RESENAS: Record<string, string> = {
     'Es ingeniero en Electrónica por el Instituto Tecnológico de Tuxtla Gutiérrez, maestro en Ciencias en Ingeniería Electrónica por la Universidad Politécnica de Valencia (España) y doctor en Ingeniería Aplicada por la Universidad TENAM. Ha cursado además estudios de posgrado, alta especialidad y diplomados en instituciones nacionales e internacionales.',
     'Durante casi diez años fue jefe de proyectos en un grupo de investigación del Instituto ITACA, en la Ciudad Politécnica de la Innovación de la Universidad Politécnica de Valencia. Fue director de Ingeniería Biomédica en la Universidad Politécnica de Chiapas por más de siete años y, a nivel nacional, coordinó el diseño curricular del programa de Ingeniería Biomédica del subsistema de Universidades Tecnológicas y Politécnicas.',
     'Es autor de múltiples artículos científicos y ha sido ponente en congresos nacionales e internacionales. Ha contribuido a la formación de numerosas generaciones de ingenieros en Biomédica y Mecatrónica. Por su aportación y apoyo a la FEACOMECH, fue invitado a integrar la Mesa Directiva como Secretario Administrativo para el bienio 2026–2028.',
+  ].join('\n\n'),
+  // CV condensado de la QFB. Velázquez Andrade, noviembre de 2026 (sin datos de contacto).
+  'QFB. Cecilia Clotilde Velázquez Andrade': [
+    'Química farmacéutica bióloga, con orientación en bioquímica y microbiología, con amplia experiencia en salud pública, control de calidad, análisis clínicos y farmacia. Su trayectoria se distingue por la gestión y el aseguramiento de la calidad, la bioseguridad y el diagnóstico epidemiológico.',
+    'Es egresada de la Facultad de Química de la Universidad Nacional Autónoma de México (UNAM) como química farmacéutica bióloga (bioquímica microbióloga). Ha complementado su formación con diplomados en hematología, VIH, microbiología clínica, bioética, parasitología y enfermedades tropicales, entre otros.',
+    'En el Laboratorio Estatal de Salud Pública se ha desempeñado en las áreas de parasitología, diagnóstico epidemiológico, entomología médica, citopatología, redes de laboratorio, bioseguridad y biocustodia, y gestión y aseguramiento de la calidad. Cuenta además con experiencia en el análisis fisicoquímico y microbiológico del agua, en laboratorio de análisis clínicos y como responsable de farmacia, a cargo del control de inventarios, la dispensación de medicamentos y la atención farmacéutica.',
+    'Forma parte de la Mesa Directiva de la FEACOMECH como Tesorera durante el bienio 2026–2028.',
   ].join('\n\n'),
 }
 

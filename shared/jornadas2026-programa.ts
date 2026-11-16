@@ -134,7 +134,7 @@ export const MESA_DIRECTIVA_2026 = {
     { cargo: 'Vicepresidenta', nombre: 'Dra. Isidra Candelario López' },
     { cargo: 'Secretaria Técnica', nombre: 'Dra. María del Carmen Albores Guillén' },
     { cargo: 'Secretario Administrativo', nombre: 'Dr. Alexander Arroyo Núñez' },
-    { cargo: 'Tesorera', nombre: 'QFB. Cecilia Cleotilde Velázquez Andrade' },
+    { cargo: 'Tesorera', nombre: 'QFB. Cecilia Clotilde Velázquez Andrade' },
     { cargo: 'Protesorero', nombre: 'Dr. Humberto Hernández Rojas' },
   ],
   consejo: [

@@ -53,7 +53,7 @@ describe('personas con página propia', () => {
   it('genera direcciones limpias y únicas, y encuentra a cada integrante', async () => {
     const { PERSONAS, buscarPersona, slugPersona } = await import('../../shared/organizacion')
     expect(slugPersona('Dr. Alexander Arroyo Núñez')).toBe('alexander-arroyo-nunez')
-    expect(slugPersona('QFB. Cecilia Cleotilde Velázquez Andrade')).toBe('cecilia-cleotilde-velazquez-andrade')
+    expect(slugPersona('QFB. Cecilia Clotilde Velázquez Andrade')).toBe('cecilia-clotilde-velazquez-andrade')
     expect(new Set(PERSONAS.map(p => p.slug)).size).toBe(PERSONAS.length)
     const arroyo = buscarPersona('alexander-arroyo-nunez')
     expect(arroyo?.organo).toBe('Mesa directiva')
