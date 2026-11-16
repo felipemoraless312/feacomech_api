@@ -38,6 +38,12 @@ const FOTOS: Record<string, string> = {
   'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez-rostro.jpg',
 }
 
+/**
+ * Fotos sin fondo (recortadas) en /public/img/personas/recortes, para mostrar a la persona sobre
+ * el escudo de la Federación en su página. Si no hay, se usa el retrato con marco.
+ */
+const RECORTES: Record<string, string> = {}
+
 /** Retratos verticales para la página de cada persona (si no hay, se usa el recorte al rostro). */
 const RETRATOS: Record<string, string> = {
   'Dra. Fanny Kramsky Soto': '/img/personas/fanny-kramsky.jpg',
@@ -208,6 +214,8 @@ export interface Persona extends Integrante {
   periodo: string
   /** Foto vertical para la página (o el recorte al rostro). */
   retrato?: string
+  /** La misma foto sin fondo (PNG/WebP transparente): se muestra sobre el escudo. */
+  recorte?: string
 }
 
 /** «Dr. Alexander Arroyo Núñez» → «alexander-arroyo-nunez». */
@@ -225,6 +233,7 @@ const comoPersona = (i: Integrante, organo: Persona['organo'], periodo: string):
   organo,
   periodo,
   retrato: RETRATOS[i.nombre] ?? i.foto,
+  recorte: RECORTES[i.nombre],
 })
 
 /** Mesa directiva y consejo consultivo. Los consejeros toman su reseña de la galería de expresidentes. */
