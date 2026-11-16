@@ -1,13 +1,15 @@
 <template>
   <div>
     <SitioEncabezado antetitulo="Noticias" titulo="Comunicados y noticias" descripcion="Comunicados oficiales, noticias institucionales, actividades y publicaciones de la Federación y sus organizaciones.">
-      <nav class="-mx-1 flex gap-1 overflow-x-auto pb-1" aria-label="Tipos de noticia">
+      <nav class="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Tipos de noticia">
         <NuxtLink
           v-for="t in tipos"
           :key="t.value"
           :to="{ query: t.value ? { tipo: t.value } : {} }"
           class="shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors"
-          :class="(tipo ?? '') === t.value ? 'bg-acento-500 text-white' : 'bg-white/10 text-white/80 ring-1 ring-white/15 hover:bg-white/20 hover:text-white'"
+          :class="(tipo ?? '') === t.value
+            ? 'bg-acento-500 text-white shadow-[0_6px_16px_-6px_rgb(217_106_34/0.6)]'
+            : 'bg-white/85 text-marca-800 ring-1 ring-marca-200 hover:bg-white hover:text-marca-950 hover:ring-marca-300 dark:bg-white/10 dark:text-white/85 dark:ring-white/15 dark:hover:bg-white/20 dark:hover:text-white'"
         >
           {{ t.label }}
         </NuxtLink>
