@@ -131,7 +131,7 @@
         <span class="flex flex-wrap items-center gap-x-4 gap-y-1">
           <NuxtLink to="/desarrollo" class="group inline-flex items-center gap-1 hover:text-muted">
             <UIcon name="i-lucide-code-xml" class="size-3.5 transition-colors group-hover:text-acento-500" />
-            Desarrollo web: Ing. Luis Felipe Morales
+            Desarrollo web: Ing. Luis Felipe Morales · Numma
           </NuxtLink>
           <NuxtLink to="/aviso-de-privacidad" class="hover:text-muted">
             Aviso de privacidad

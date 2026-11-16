@@ -31,6 +31,35 @@
           <iframe :src="mapa.embed" title="Ubicación de la Federación" class="h-64 w-full" loading="lazy" referrerpolicy="no-referrer" />
           <a :href="mapa.enlace" target="_blank" rel="noopener" class="block bg-muted px-4 py-2 text-sm text-primary hover:underline">Abrir en el mapa</a>
         </div>
+
+        <!-- Quién desarrolló la plataforma -->
+        <NuxtLink
+          to="/desarrollo"
+          class="elevar group relative block overflow-hidden rounded-2xl bg-gradient-to-br from-marca-50 via-default to-acento-50 p-5 shadow-tarjeta ring-1 ring-default dark:from-marca-950 dark:via-default dark:to-marca-950"
+        >
+          <p class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-acento-600 dark:text-acento-400">
+            <UIcon name="i-lucide-code-xml" class="size-3.5" />
+            Desarrollo de la plataforma
+          </p>
+          <div class="mt-3 flex items-center gap-4">
+            <FotoPerfil :src="DESARROLLADOR.foto" nombre="Luis Felipe Morales Gutiérrez" class="size-16 shrink-0 ring-2 ring-white transition-transform duration-500 group-hover:scale-105 dark:ring-marca-900" />
+            <div class="min-w-0">
+              <p class="font-display text-lg font-semibold leading-snug text-highlighted">
+                {{ DESARROLLADOR.nombre }}
+              </p>
+              <p class="text-sm text-toned">
+                {{ DESARROLLADOR.cargo }}
+              </p>
+            </div>
+          </div>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Diseñó y desarrolló este portal y la plataforma de afiliados de la Federación.
+          </p>
+          <span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+            Conozca su perfil
+            <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform group-hover:translate-x-1" />
+          </span>
+        </NuxtLink>
       </div>
 
       <!-- Formulario -->
@@ -85,6 +114,7 @@
 </template>
 
 <script setup lang="ts">
+import { DESARROLLADOR } from '#shared/desarrollo'
 import type { Form } from '@nuxt/ui'
 import { contactoSchema, type ContactoInput } from '#shared/schemas/portal'
 
