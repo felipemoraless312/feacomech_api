@@ -47,6 +47,9 @@ evento/
 *.xls
 *.csv
 
+# Documentación de operación del servidor (IP, accesos, rutas): el repositorio es público.
+SERVER_SETUP.md
+
 # Configuración local de herramientas
 .vercel
 .claude/
