@@ -1,7 +1,7 @@
 <template>
   <NuxtLink :to="`/noticias/${noticia.slug}`" class="group flex flex-col overflow-hidden rounded-2xl bg-default shadow-tarjeta ring-1 ring-default transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-flotante">
     <div class="aspect-[16/9] overflow-hidden bg-marca-50 dark:bg-marca-950">
-      <img v-if="noticia.portadaId" :src="`/api/archivos/${noticia.portadaId}`" alt="" class="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy">
+      <img v-if="noticia.portadaId" :src="`/api/archivos/${noticia.portadaId}`" alt="" class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy">
       <div v-else class="flex size-full items-center justify-center">
         <MarcaRed class="size-40 text-marca-200 dark:text-marca-800" />
       </div>

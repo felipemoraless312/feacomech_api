@@ -25,7 +25,10 @@
     </header>
 
     <UContainer class="max-w-3xl space-y-8 pb-20">
-      <img v-if="n.portadaId" :src="`/api/archivos/${n.portadaId}`" alt="" class="entrada aspect-[16/8] w-full rounded-xl object-cover shadow-tarjeta">
+      <!-- Proporción original (banners horizontales y carteles verticales se ven completos); clic = tamaño real -->
+      <a v-if="n.portadaId" :href="`/api/archivos/${n.portadaId}`" target="_blank" rel="noopener" class="entrada block" title="Ver imagen en tamaño completo">
+        <img :src="`/api/archivos/${n.portadaId}`" :alt="n.titulo" class="mx-auto h-auto max-h-[85vh] w-auto max-w-full rounded-xl shadow-tarjeta">
+      </a>
       <p v-if="n.resumen" class="text-xl leading-relaxed text-highlighted">
         {{ n.resumen }}
       </p>

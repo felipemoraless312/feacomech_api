@@ -59,7 +59,7 @@
             <!-- Destacada -->
             <NuxtLink :to="`/noticias/${destacada!.slug}`" class="elevar group grid overflow-hidden rounded-2xl bg-default shadow-tarjeta ring-1 ring-default sm:grid-cols-[1.1fr_1fr]">
               <div class="aspect-[16/10] overflow-hidden bg-gradient-to-br from-marca-100 via-marca-50 to-acento-50 sm:aspect-auto dark:from-marca-900 dark:to-marca-950">
-                <img v-if="destacada!.portadaId" :src="`/api/archivos/${destacada!.portadaId}`" alt="" class="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
+                <img v-if="destacada!.portadaId" :src="`/api/archivos/${destacada!.portadaId}`" alt="" class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]">
                 <div v-else class="relative flex size-full min-h-48 items-center justify-center">
                   <MarcaRed class="girar-lento absolute size-72 text-marca-300/40" />
                   <img src="/img/escudo-160.png" alt="" class="relative h-20 w-auto transition-transform duration-500 group-hover:scale-110">

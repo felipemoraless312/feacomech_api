@@ -2,7 +2,7 @@
 <template>
   <NuxtLink :to="to" class="group flex flex-col overflow-hidden rounded-2xl bg-default shadow-tarjeta ring-1 ring-default transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-flotante">
     <div class="relative aspect-[16/8] overflow-hidden bg-marca-50 dark:bg-marca-950">
-      <img v-if="evento.portadaId" :src="`/api/archivos/${evento.portadaId}`" alt="" class="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy">
+      <img v-if="evento.portadaId" :src="`/api/archivos/${evento.portadaId}`" alt="" class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" loading="lazy">
       <MarcaRed v-else class="absolute -right-10 -top-10 size-56 text-marca-200 dark:text-marca-800" />
       <EventosFecha :fecha="evento.inicio" class="absolute left-4 top-4 shadow-tarjeta" />
       <UBadge v-if="evento.estado === 'CANCELADO'" label="Cancelado" color="error" class="absolute right-4 top-4" />
