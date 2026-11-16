@@ -1,5 +1,6 @@
 <!-- Inicio del portal: portada, mensaje de la presidencia, instituciones aliadas, trámites
-     frecuentes y después lo que pasa en la Federación (noticias y agenda) y quiénes la integran. -->
+     frecuentes, noticias y próximos eventos, colegios agremiados y beneficios. La trayectoria
+     vive en /organizacion#trayectoria y el historial de actividades en /noticias?tipo=ACTIVIDAD. -->
 <template>
   <div>
     <SitioPortada
@@ -288,42 +289,6 @@
       </div>
     </UContainer>
 
-    <!-- Historial de actividades -->
-    <section v-if="actividades.length" class="bg-muted py-16 sm:py-20">
-      <UContainer class="space-y-8">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div v-revelar>
-            <p class="rotulo">
-              Historial
-            </p>
-            <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-highlighted">
-              Actividades realizadas
-            </h2>
-          </div>
-          <UButton to="/noticias?tipo=ACTIVIDAD" label="Ver historial" trailing-icon="i-lucide-arrow-right" color="neutral" variant="ghost" />
-        </div>
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <SitioTarjetaNoticia v-for="n in actividades" :key="n.slug" v-revelar :noticia="n" />
-        </div>
-      </UContainer>
-    </section>
-
-    <!-- Trayectoria -->
-    <UContainer v-if="portada?.hitos.length" class="space-y-14 py-16 sm:py-20">
-      <div v-revelar class="mx-auto max-w-2xl space-y-3 text-center">
-        <p class="rotulo">
-          Desde {{ portada.hitos[0]!.anio }}
-        </p>
-        <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">
-          Nuestra trayectoria
-        </h2>
-      </div>
-      <SitioTrayectoria :hitos="portada.hitos" />
-      <div class="text-center">
-        <UButton to="/expresidentes" label="Conozca a nuestros expresidentes" trailing-icon="i-lucide-arrow-right" color="neutral" variant="outline" />
-      </div>
-    </UContainer>
-
     <!-- Censo médico (sólo cifras agregadas, y sólo con datos suficientes) -->
     <section v-if="mostrarCenso" class="bg-muted py-16 sm:py-20">
       <UContainer class="space-y-10">
@@ -372,7 +337,6 @@ interface Inicio {
   portada: DatosPortada
   noticias: NoticiaPublica[]
   eventos: EventoPublico[]
-  actividades: NoticiaPublica[]
   vinculos: InstitucionVinculada[]
 }
 interface CensoPublico {
@@ -397,8 +361,6 @@ const tramites = [
   { to: '/constancias', icono: 'i-lucide-award', titulo: 'Descargar mi constancia', texto: 'De las Jornadas y demás eventos.', accion: 'Buscar constancia' },
 ]
 
-// Las actividades que ya están en «Lo más reciente» no se repiten.
-const actividades = computed(() => (inicio.value?.actividades ?? []).filter(a => !inicio.value?.noticias.some(n => n.slug === a.slug)))
 
 // Cifras de la portada (con su fuente); si no hay, las de la plataforma.
 const cifras = computed(() => {
@@ -433,10 +395,21 @@ const agenda = computed<ItemAgenda[]>(() => {
     items.push({ clave: a.fecha, dia: String(Number(a.fecha.slice(8, 10))), mes: MESES[Number(a.fecha.slice(5, 7)) - 1]!, titulo: a.titulo, lugar: a.lugar || undefined, to: a.url || undefined, externo: !!a.url })
   }
   for (const e of inicio.value?.eventos ?? []) {
+    // Las Jornadas ya van arriba, destacadas y con su micrositio.
+    if (e.slug === JORNADAS_2026.slug && items.some(i => i.destacado)) continue
     const d = new Date(e.inicio)
     items.push({ clave: d.toISOString().slice(0, 10), dia: String(d.getDate()), mes: MESES[d.getMonth()]!, titulo: e.titulo, lugar: e.sede ?? undefined, to: `/eventos/${e.slug}` })
   }
-  return items.sort((a, b) => a.clave.localeCompare(b.clave)).slice(0, 4)
+  // Un mismo evento puede estar capturado en la agenda de la portada y como evento publicado:
+  // se deja el primero (el destacado o la fecha capturada) por día y título.
+  const vistos = new Set<string>()
+  const unicos = items.filter((i) => {
+    const llave = `${i.clave}|${i.titulo.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().slice(0, 24)}`
+    if (vistos.has(llave)) return false
+    vistos.add(llave)
+    return true
+  })
+  return unicos.sort((a, b) => a.clave.localeCompare(b.clave)).slice(0, 4)
 })
 
 // Con muy pocos registros la gráfica pública no dice nada y podría identificar personas.

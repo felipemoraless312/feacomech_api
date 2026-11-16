@@ -23,7 +23,7 @@
       </GrupoDatos>
 
       <!-- Trayectoria -->
-      <GrupoDatos titulo="Trayectoria (hitos)">
+      <GrupoDatos titulo="Trayectoria (hitos) · se muestra en Organización">
         <template #acciones>
           <UButton icon="i-lucide-plus" label="Agregar" size="xs" color="neutral" variant="ghost" @click="estado.hitos.push({ anio: '', titulo: '', texto: '' })" />
         </template>

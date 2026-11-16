@@ -76,6 +76,22 @@
           <SitioTexto :texto="institucion?.historia" />
         </section>
 
+        <!-- Trayectoria: hitos capturados en Configuración → Página de inicio -->
+        <section v-if="hitos?.length" id="trayectoria" class="scroll-mt-24 space-y-10">
+          <div v-revelar class="space-y-2">
+            <p class="rotulo">
+              Desde {{ hitos[0]!.anio }}
+            </p>
+            <h2 class="font-display text-3xl font-semibold tracking-tight text-highlighted">
+              Nuestra trayectoria
+            </h2>
+          </div>
+          <SitioTrayectoria :hitos="hitos" />
+          <div class="text-center">
+            <UButton to="/expresidentes" label="Conozca a nuestros expresidentes" trailing-icon="i-lucide-arrow-right" color="neutral" variant="outline" />
+          </div>
+        </section>
+
         <!-- Mesa directiva -->
         <section id="mesa-directiva" class="scroll-mt-24 space-y-6">
           <div v-revelar class="flex flex-wrap items-end justify-between gap-3">
@@ -112,9 +128,10 @@
 <script setup lang="ts">
 import { BIENVENIDA, CONSEJO_CONSULTIVO, EXPRESIDENTES, MESA_DIRECTIVA, OBJETIVO_GENERAL } from '#shared/organizacion'
 
-useSeoMeta({ title: 'Organización', description: 'Bienvenida de la presidencia, objetivo, misión, visión, mesa directiva y consejo consultivo de la FEACOMECH.' })
+useSeoMeta({ title: 'Organización', description: 'Bienvenida de la presidencia, objetivo, misión, visión, historia y trayectoria, mesa directiva y consejo consultivo de la FEACOMECH.' })
 
 const { data: institucion } = await useInstitucion()
+const { data: hitos } = await useFetch('/api/publico/trayectoria')
 
 const identidad = computed(() => [
   { t: 'Objetivo', i: 'i-lucide-flag', v: OBJETIVO_GENERAL },
@@ -132,6 +149,7 @@ const secciones = computed(() => [
   { id: 'bienvenida', titulo: 'Bienvenida' },
   { id: 'objetivo', titulo: 'Objetivo, misión y visión' },
   ...(institucion.value?.presentacion || institucion.value?.historia ? [{ id: 'historia', titulo: 'Historia' }] : []),
+  ...(hitos.value?.length ? [{ id: 'trayectoria', titulo: 'Trayectoria' }] : []),
   { id: 'mesa-directiva', titulo: 'Mesa directiva' },
   { id: 'consejo-consultivo', titulo: 'Consejo consultivo' },
 ])
