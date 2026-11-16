@@ -98,16 +98,16 @@
           >
             <!-- Relleno de color que sube al pasar el cursor -->
             <span class="tramite-relleno absolute inset-0 -z-10 bg-gradient-to-br from-marca-700 via-marca-600 to-acento-500" aria-hidden="true" />
-            <span class="pointer-events-none absolute -right-2 -top-4 font-display text-8xl font-bold text-marca-100 transition-colors duration-500 group-hover:text-white/10 dark:text-marca-900" aria-hidden="true">{{ n + 1 }}</span>
+            <span class="pointer-events-none absolute right-5 top-4 font-display text-5xl font-bold leading-none tabular-nums text-marca-100 transition-colors duration-500 group-hover:text-white/20 sm:right-6 sm:top-5 sm:text-6xl dark:text-marca-900" aria-hidden="true">{{ String(n + 1).padStart(2, '0') }}</span>
             <span class="tramite-icono relative flex size-12 items-center justify-center rounded-xl bg-marca-100 text-marca-700 transition-colors duration-500 group-hover:bg-white/15 group-hover:text-white dark:bg-marca-900 dark:text-marca-200">
               <UIcon :name="t.icono" class="icono-salto size-6" />
             </span>
-            <span class="relative mt-auto pt-5 sm:pt-8">
+            <span class="relative flex flex-1 flex-col pt-5 sm:pt-8">
               <span class="block font-display text-lg font-semibold leading-tight text-highlighted transition-colors duration-500 group-hover:text-white">
                 {{ t.titulo }}
               </span>
               <span class="mt-1.5 block text-sm leading-snug text-muted transition-colors duration-500 group-hover:text-white/80">{{ t.texto }}</span>
-              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors duration-500 group-hover:text-white">
+              <span class="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary transition-colors duration-500 group-hover:text-white">
                 {{ t.accion }}
                 <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-1.5" />
               </span>
