@@ -8,10 +8,12 @@ export const DESARROLLADOR = {
   foto: '/img/personas/luis-felipe-morales-gutierrez-rostro.jpg',
   retrato: '/img/personas/luis-felipe-morales-gutierrez.jpg',
   recorte: '/img/personas/recortes/luis-felipe-morales-gutierrez.webp',
-  /** Resumen profesional (párrafos). */
+  /** Resumen profesional (párrafos), en el mismo estilo que las reseñas de la mesa directiva. */
   resumen: [
-    'Ingeniero biomédico y CEO de Numma, empresa de tecnología clínica y telecomunicaciones que desarrolla plataformas de gestión clínica y administrativa para consultorios, clínicas, hospitales e instituciones. Su trabajo integra ingeniería biomédica, desarrollo de software e infraestructura tecnológica en soluciones completas: de la asesoría y la instalación al mantenimiento y el soporte técnico.',
-    'En la FEACOMECH diseñó y desarrolló el portal institucional y la plataforma de afiliados, incluida la infraestructura y la seguridad del servidor que la aloja. Es creador del maletín de telesalud BioKit Rural y profesor de asignatura en la Universidad Politécnica de Chiapas.',
+    'Ingeniero biomédico y CEO de Numma, empresa de tecnología clínica y telecomunicaciones. Su trabajo se distingue por unir la ingeniería biomédica, el desarrollo de software y la infraestructura tecnológica en soluciones que acercan la tecnología a la atención de la salud.',
+    'Es ingeniero biomédico por la Universidad Politécnica de Chiapas. Cuenta con experiencia en infraestructura y arquitectura de redes, cableado estructurado certificado y sistemas de videovigilancia IP para sedes corporativas, así como en el mantenimiento de equipo médico crítico en entornos hospitalarios. Tiene además experiencia docente a nivel licenciatura en ingeniería biomédica y tecnología.',
+    'Al frente de Numma desarrolla plataformas de gestión clínica y administrativa para consultorios, clínicas, hospitales e instituciones, entre ellas expediente clínico electrónico, facturación electrónica y control de accesos, y ofrece un servicio integral que abarca la asesoría, la instalación, el mantenimiento y el soporte técnico.',
+    'Es creador del maletín de telesalud BioKit Rural, desarrolló la plataforma de registro del Día del Médico y participa en campañas de mastografía en conjunto con CEPREC. Para la FEACOMECH diseñó y desarrolló el portal institucional y la plataforma de afiliados, incluida la infraestructura y la seguridad del servidor que la aloja.',
   ],
   /** Áreas en las que desarrolla tecnología (a partir del catálogo de Numma y su trayectoria). */
   especialidades: [
@@ -28,7 +30,7 @@ export const DESARROLLADOR = {
     {
       icono: 'i-lucide-network',
       titulo: 'Infraestructura y telecomunicaciones',
-      texto: 'Cableado estructurado certificado, redes, servidores y sistemas de videovigilancia IP con monitoreo centralizado para sedes corporativas.',
+      texto: 'Arquitectura de redes, cableado estructurado certificado a nivel corporativo, servidores y sistemas de videovigilancia IP con monitoreo centralizado.',
     },
     {
       icono: 'i-lucide-heart-pulse',
@@ -46,7 +48,7 @@ export const DESARROLLADOR = {
   /** Trayectoria resumida, de lo más reciente a lo más antiguo. */
   trayectoria: [
     { cargo: 'CEO', lugar: 'Numma', periodo: 'Actual' },
-    { cargo: 'Profesor de asignatura', lugar: 'Universidad Politécnica de Chiapas', periodo: '2025 – actual' },
+    { cargo: 'Docencia', lugar: 'Nivel licenciatura · Ingeniería biomédica y tecnología', periodo: '2025 – actual' },
     { cargo: 'Supervisor técnico de infraestructura corporativa', lugar: 'SICOP', periodo: '2024 – 2026' },
     { cargo: 'Técnico biomédico', lugar: 'ISSTECH, Hospital de Especialidades «Vida Mejor» · Sanatorio Muñoa', periodo: '2023 – 2024' },
     { cargo: 'Ingeniería Biomédica', lugar: 'Universidad Politécnica de Chiapas', periodo: '2021 – 2025' },
