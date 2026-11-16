@@ -58,7 +58,7 @@
                   {{ p.nombre }}
                 </p>
                 <p class="truncate text-sm text-muted">
-                  {{ [p.especialidad, p.subespecialidad].filter(Boolean).join(' · ') || 'Medicina' }}
+                  {{ [p.profesion, p.especialidad, p.subespecialidad].filter(Boolean).join(' · ') || 'Medicina' }}
                 </p>
               </div>
             </li>
@@ -100,7 +100,7 @@ interface Ficha {
   slug: string, tipo: 'COLEGIO' | 'ASOCIACION', nombre: string, siglas: string | null, descripcion: string | null, fechaConstitucion: string | null
   municipio: string | null, direccion: string | null, telefono: string | null, email: string | null, sitioWeb: string | null, logoId: string | null
   mesaDirectiva: EstructuraPublicaDto
-  integrantes: number, profesionales: { nombre: string, especialidad: string | null, subespecialidad: string | null, fotoId: string | null }[]
+  integrantes: number, profesionales: { nombre: string, profesion: string | null, especialidad: string | null, subespecialidad: string | null, fotoId: string | null }[]
 }
 const { data: org, error } = await useFetch<Ficha>(`/api/publico/organizaciones/${route.params.slug}`)
 if (error.value) throw createError({ statusCode: 404, statusMessage: 'Organización no encontrada', fatal: true })

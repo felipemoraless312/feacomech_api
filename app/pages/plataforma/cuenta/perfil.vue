@@ -19,8 +19,8 @@
           <h1 class="font-display text-2xl font-semibold tracking-tight text-highlighted sm:text-3xl">
             {{ nombreCompleto(cuenta) }}
           </h1>
-          <p v-if="cuenta.profesion" class="font-medium text-toned">
-            {{ cuenta.profesion }}
+          <p v-if="cuenta.profesion || cuenta.colegios.length" class="font-medium text-toned">
+            {{ [cuenta.profesion, ...cuenta.colegios.map(o => o.siglas || o.nombre)].filter(Boolean).join(' · ') }}
           </p>
           <p class="text-muted">
             {{ cuenta.email }}

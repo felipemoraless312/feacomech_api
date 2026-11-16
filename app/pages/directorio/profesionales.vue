@@ -29,7 +29,7 @@
               {{ p.nombre }}
             </p>
             <p class="text-sm text-muted">
-              {{ [p.especialidad, p.subespecialidad].filter(Boolean).join(' · ') || 'Medicina' }}
+              {{ [p.profesion, p.especialidad, p.subespecialidad].filter(Boolean).join(' · ') || 'Medicina' }}
             </p>
             <p v-if="p.institucion" class="text-sm text-dimmed">
               {{ p.institucion }}
@@ -66,7 +66,7 @@ watch([q, especialidad], () => (numeroPagina.value = 1))
 const { data: especialidades } = await useFetch<{ id: string, nombre: string }[]>('/api/publico/especialidades', { default: () => [] })
 const opciones = computed(() => [{ label: 'Todas las especialidades', value: TODAS }, ...especialidades.value.map(e => ({ label: e.nombre, value: e.id }))])
 
-interface Profesional { nombre: string, fotoId: string | null, especialidad: string | null, subespecialidad: string | null, institucion: string | null, organizaciones: { nombre: string, slug: string }[] }
+interface Profesional { nombre: string, fotoId: string | null, profesion: string | null, especialidad: string | null, subespecialidad: string | null, institucion: string | null, organizaciones: { nombre: string, slug: string }[] }
 const { data: pagina, status } = await useFetch<{ total: number, datos: Profesional[] }>('/api/publico/profesionales', {
   query: computed(() => ({ q: q.value || undefined, especialidadId: especialidad.value === TODAS ? undefined : especialidad.value, pagina: numeroPagina.value, porPagina: POR_PAGINA })),
 })

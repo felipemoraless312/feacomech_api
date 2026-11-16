@@ -23,8 +23,8 @@
               <p class="font-display text-xl font-bold text-highlighted">
                 {{ r.nombre }}
               </p>
-              <p v-if="r.especialidad" class="-mt-2 text-sm text-muted">
-                {{ r.especialidad }}
+              <p v-if="r.profesion || r.especialidad" class="-mt-2 text-sm text-muted">
+                {{ [r.profesion, r.especialidad].filter(Boolean).join(' · ') }}
               </p>
             </div>
 

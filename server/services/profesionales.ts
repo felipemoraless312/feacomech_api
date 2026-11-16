@@ -111,7 +111,7 @@ export async function profesionalesPublicos(q: { q?: string, especialidadId?: st
       skip: (q.pagina - 1) * q.porPagina,
       take: q.porPagina,
       select: {
-        nombre: true, apellidoPaterno: true, apellidoMaterno: true,
+        nombre: true, apellidoPaterno: true, apellidoMaterno: true, profesion: true,
         perfil: { select: { fotoId: true, mostrarInstitucion: true, institucionTrabajo: true, especialidad: { select: { nombre: true } }, subespecialidad: { select: { nombre: true } } } },
         membresias: {
           where: { estado: 'ACTIVA', organizacion: { publica: true, estadoAfiliacion: 'AFILIADA' } },
@@ -127,6 +127,7 @@ export async function profesionalesPublicos(q: { q?: string, especialidadId?: st
     datos: filas.map(u => ({
       nombre: [u.nombre, u.apellidoPaterno, u.apellidoMaterno].filter(Boolean).join(' '),
       fotoId: u.perfil?.fotoId ?? null,
+      profesion: u.profesion,
       especialidad: u.perfil?.especialidad?.nombre ?? null,
       subespecialidad: u.perfil?.subespecialidad?.nombre ?? null,
       institucion: u.perfil?.mostrarInstitucion ? u.perfil.institucionTrabajo : null,

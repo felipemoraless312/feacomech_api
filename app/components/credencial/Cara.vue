@@ -1,5 +1,5 @@
 <!-- Una cara de la credencial digital (proporción de tarjeta CR80: 85.6 × 54 mm).
-     Frente: escudo, foto, nombre, especialidad y colegio. Reverso: QR de verificación y folio. -->
+     Frente: escudo, foto, profesión, nombre, especialidad y colegio (si lo hay). Reverso: QR de verificación y folio. -->
 <template>
   <div class="cara relative isolate flex size-full flex-col overflow-hidden rounded-2xl text-marca-950 ring-1 ring-marca-200/70" :class="cara === 'frente' ? 'cara-frente' : 'cara-reverso'">
     <MarcaRed class="pointer-events-none absolute -right-16 -top-20 -z-10 size-64 text-marca-300/35" />
@@ -26,7 +26,7 @@
         <span v-else class="relative flex aspect-[4/5] w-[5.6em] items-center justify-center rounded-[0.75em] bg-marca-100 font-display text-[1.6em] font-bold text-marca-600">{{ iniciales }}</span>
       </div>
       <div class="min-w-0 flex-1">
-        <p class="text-[0.55em] font-semibold uppercase tracking-[0.16em] text-acento-600">Médico afiliado</p>
+        <p class="truncate text-[0.55em] font-semibold uppercase tracking-[0.16em] text-acento-600">{{ c.profesion || 'Médico afiliado' }}</p>
         <p class="mt-[0.15em] font-display text-[1.25em] font-bold leading-[1.1] text-marca-900">{{ c.nombre }}</p>
         <p v-if="c.especialidad" class="mt-[0.3em] text-[0.72em] font-medium leading-snug text-gris-700">
           {{ c.especialidad }}<template v-if="c.subespecialidad"> · {{ c.subespecialidad }}</template>

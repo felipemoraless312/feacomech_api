@@ -32,6 +32,7 @@ async function datosCredencial(usuarioId: string) {
       nombre: true,
       apellidoPaterno: true,
       apellidoMaterno: true,
+      profesion: true,
       perfil: {
         select: {
           cedulaProfesional: true,
@@ -73,6 +74,7 @@ export async function miCredencial(usuarioId: string) {
     folio: folioDe(u.id),
     codigo: codigoCredencial(u.id),
     nombre: d.nombre,
+    profesion: u.profesion,
     vigente: d.vigente,
     validado: d.validado,
     estadoValidacion: u.perfil?.estadoValidacion ?? 'PENDIENTE',
@@ -109,6 +111,7 @@ export async function verificarCredencial(codigo: string) {
     vigente: d.vigente,
     folio: folioDe(u.id),
     nombre: d.nombre,
+    profesion: u.profesion,
     especialidad: u.perfil?.especialidad?.nombre ?? null,
     // La foto sólo si su titular la hizo pública (consentimiento del directorio).
     fotoId: u.perfil?.publicarDirectorio ? u.perfil.fotoId : null,

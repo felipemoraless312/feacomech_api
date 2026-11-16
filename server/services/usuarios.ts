@@ -32,12 +32,13 @@ const SELECT_USUARIO = {
     orderBy: { asignadoEn: 'asc' },
   },
   perfil: { select: { estadoValidacion: true, fotoId: true, especialidad: { select: { nombre: true } } } },
+  membresias: { where: { estado: 'ACTIVA' }, orderBy: { desde: 'asc' }, select: { organizacion: { select: { nombre: true, siglas: true } } } },
 } as const satisfies Prisma.UsuarioSelect
 
 type FilaUsuario = Prisma.UsuarioGetPayload<{ select: typeof SELECT_USUARIO }>
 
 function aDto(u: FilaUsuario) {
-  const { roles, perfil, ...resto } = u
+  const { roles, perfil, membresias, ...resto } = u
   return {
     ...resto,
     /** Roles generales (los edita este formulario). */
@@ -47,6 +48,8 @@ function aDto(u: FilaUsuario) {
     especialidad: perfil?.especialidad?.nombre ?? null,
     estadoValidacion: perfil?.estadoValidacion ?? null,
     fotoId: perfil?.fotoId ?? null,
+    /** Colegios o asociaciones donde tiene membresía activa. */
+    colegios: membresias.map(m => m.organizacion.siglas || m.organizacion.nombre),
     /** Nunca ha entrado: la invitación sigue pendiente. */
     sinActivar: !u.ultimoAcceso,
   }

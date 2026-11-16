@@ -158,11 +158,12 @@ const columnas: TableColumn<UsuarioDto>[] = [
     id: 'profesion',
     header: 'Profesión',
     cell: ({ row }) => {
-      const { profesion, especialidad } = row.original
-      if (!profesion && !especialidad) return h('span', { class: 'text-dimmed' }, '—')
+      const { profesion, especialidad, colegios } = row.original
+      if (!profesion && !especialidad && !colegios.length) return h('span', { class: 'text-dimmed' }, '—')
       return h('div', { class: 'min-w-0' }, [
         h('p', { class: profesion ? 'text-highlighted' : 'text-dimmed' }, profesion ?? 'Sin profesión'),
         especialidad ? h('p', { class: 'text-xs text-muted' }, especialidad) : null,
+        colegios.length ? h('p', { class: 'text-xs text-muted' }, colegios.join(' · ')) : null,
       ])
     },
   },

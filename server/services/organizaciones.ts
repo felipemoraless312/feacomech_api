@@ -360,7 +360,7 @@ export async function fichaPublica(slug: string) {
       select: {
         usuario: {
           select: {
-            nombre: true, apellidoPaterno: true, apellidoMaterno: true,
+            nombre: true, apellidoPaterno: true, apellidoMaterno: true, profesion: true,
             perfil: { select: { fotoId: true, especialidad: { select: { nombre: true } }, subespecialidad: { select: { nombre: true } } } },
           },
         },
@@ -374,6 +374,7 @@ export async function fichaPublica(slug: string) {
     integrantes,
     profesionales: profesionales.map(({ usuario: u }) => ({
       nombre: [u.nombre, u.apellidoPaterno, u.apellidoMaterno].filter(Boolean).join(' '),
+      profesion: u.profesion,
       especialidad: u.perfil?.especialidad?.nombre ?? null,
       subespecialidad: u.perfil?.subespecialidad?.nombre ?? null,
       fotoId: u.perfil?.fotoId ?? null,

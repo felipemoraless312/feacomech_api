@@ -41,10 +41,16 @@ export async function obtenerMiCuenta(usuarioId: string) {
       telefono: true,
       creadoEn: true,
       perfil: { select: SELECT_PERFIL },
+      membresias: {
+        where: { estado: 'ACTIVA' },
+        orderBy: { desde: 'asc' },
+        select: { organizacion: { select: { id: true, nombre: true, siglas: true } } },
+      },
     },
   })
   const { roles } = await accesoDeUsuario(usuarioId)
-  return { ...u, roles }
+  const { membresias, ...resto } = u
+  return { ...resto, roles, colegios: membresias.map(m => m.organizacion) }
 }
 export type MiCuentaDto = Awaited<ReturnType<typeof obtenerMiCuenta>>
 
