@@ -1,7 +1,8 @@
-<!-- Plataforma privada: barra lateral con el menú según los permisos del usuario -->
+<!-- Plataforma privada: barra lateral con el menú según los permisos del usuario.
+     La administración se agrupa en secciones plegables y todo se encuentra con Ctrl + K. -->
 <template>
   <UDashboardGroup unit="rem" storage="local" class="portal">
-    <UDashboardSidebar collapsible resizable :default-size="16" :ui="{ footer: 'border-t border-default py-3' }">
+    <UDashboardSidebar collapsible resizable :default-size="16" :ui="{ footer: 'border-t border-default py-3', body: 'gap-3' }">
       <template #header="{ collapsed }">
         <NuxtLink to="/plataforma" class="flex items-center">
           <MarcaLogo :compacto="collapsed" />
@@ -9,6 +10,8 @@
       </template>
 
       <template #default="{ collapsed }">
+        <UDashboardSearchButton :collapsed="collapsed" label="Buscar…" class="bg-default/70 ring-default" />
+
         <UNavigationMenu
           v-for="(grupo, i) in menu"
           :key="i"
@@ -16,7 +19,12 @@
           :collapsed="collapsed"
           orientation="vertical"
           color="neutral"
-          :ui="{ link: 'px-2.5 py-1.5 text-[13px] transition-colors before:transition-all before:duration-200 hover:before:bg-white/70 data-active:font-semibold data-active:text-marca-700 data-active:before:bg-white data-active:before:shadow-tarjeta data-active:before:ring-1 data-active:before:ring-marca-100 dark:hover:before:bg-white/5 dark:data-active:text-marca-200 dark:data-active:before:bg-marca-900 dark:data-active:before:ring-white/10', linkLeadingIcon: 'transition-transform duration-200 group-hover:scale-110 group-data-active:text-marca-600 dark:group-data-active:text-marca-300', label: 'text-[11px] font-semibold uppercase tracking-wide text-dimmed' }"
+          :ui="{
+            link: 'px-2.5 py-1.5 text-[13px] transition-colors before:transition-all before:duration-200 hover:before:bg-white/70 data-active:font-semibold data-active:text-marca-700 data-active:before:bg-white data-active:before:shadow-tarjeta data-active:before:ring-1 data-active:before:ring-marca-100 dark:hover:before:bg-white/5 dark:data-active:text-marca-200 dark:data-active:before:bg-marca-900 dark:data-active:before:ring-white/10',
+            linkLeadingIcon: 'transition-transform duration-200 group-hover:scale-110 group-data-active:text-marca-600 dark:group-data-active:text-marca-300',
+            label: 'text-[11px] font-semibold uppercase tracking-wide text-dimmed',
+            childList: 'ms-4 border-s border-default ps-1.5',
+          }"
           tooltip
           popover
         />
@@ -39,74 +47,19 @@
       </template>
     </UDashboardSidebar>
 
+    <UDashboardSearch :groups="busqueda" placeholder="¿A dónde quiere ir?" :color-mode="false" />
+
     <slot />
   </UDashboardGroup>
 </template>
 
 <script setup lang="ts">
-import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
-import type { Permiso } from '#shared/permisos'
+import type { DropdownMenuItem } from '@nuxt/ui'
 
 const { user, clear } = useUserSession()
-const { puede, acceso, limpiar } = usePermisos()
-const { noLeidas } = useNotificaciones()
+const { acceso, limpiar } = usePermisos()
+const { menu, busqueda } = useMenuPlataforma()
 useSondeoNotificaciones()
-
-type Opcion = NavigationMenuItem & { permiso?: Permiso, algunPermiso?: Permiso[], proximamente?: boolean, notificaciones?: boolean }
-
-// Las opciones "proximamente" se muestran deshabilitadas (sin enlace) hasta que su fase
-// esté implementada; ver docs/DIAGNOSTICO.md §10.
-const OPCIONES: Opcion[][] = [
-  [
-    { label: 'Resumen', icon: 'i-lucide-layout-dashboard', to: '/plataforma', exact: true },
-  ],
-  [
-    { label: 'Comunidad', type: 'label' },
-    { label: 'Comunidad médica', icon: 'i-lucide-messages-square', to: '/plataforma/comunidad' },
-    { label: 'Eventos', icon: 'i-lucide-calendar-days', to: '/plataforma/eventos', exact: true },
-    { label: 'Documentos', icon: 'i-lucide-library', to: '/plataforma/documentos' },
-    { label: 'Directorio', icon: 'i-lucide-building-2', to: '/directorio', target: '_blank' },
-  ],
-  [
-    { label: 'Mi cuenta', type: 'label' },
-    { label: 'Mi perfil', icon: 'i-lucide-id-card', to: '/plataforma/cuenta/perfil' },
-    { label: 'Notificaciones', icon: 'i-lucide-bell', to: '/plataforma/notificaciones', notificaciones: true },
-    { label: 'Seguridad', icon: 'i-lucide-shield-check', to: '/plataforma/cuenta/seguridad' },
-    { label: 'Credencial digital', icon: 'i-lucide-badge-check', to: '/plataforma/cuenta/credencial' },
-  ],
-  [
-    { label: 'Administración', type: 'label' },
-    { label: 'Usuarios', icon: 'i-lucide-user-cog', permiso: 'usuario.ver', to: '/plataforma/usuarios' },
-    { label: 'Profesionales', icon: 'i-lucide-stethoscope', permiso: 'profesional.ver', to: '/plataforma/profesionales' },
-    { label: 'Colegios y asociaciones', icon: 'i-lucide-landmark', permiso: 'organizacion.ver', to: '/plataforma/organizaciones' },
-    { label: 'Mesa directiva', icon: 'i-lucide-users-round', permiso: 'estructura.administrar', to: '/plataforma/estructura', exact: true, exactQuery: true },
-    { label: 'Consejo consultivo', icon: 'i-lucide-scale', permiso: 'estructura.administrar', to: '/plataforma/estructura?organo=CONSEJO_CONSULTIVO', exactQuery: true },
-    { label: 'Afiliaciones', icon: 'i-lucide-file-check-2', algunPermiso: ['afiliacion.solicitar', 'afiliacion.validar', 'organizacion.administrar'], to: '/plataforma/afiliaciones' },
-    { label: 'Comunidad y foro', icon: 'i-lucide-shield-check', algunPermiso: ['comunidad.moderar', 'grupo.administrar'], to: '/plataforma/moderacion' },
-    { label: 'Noticias', icon: 'i-lucide-newspaper', algunPermiso: ['noticia.publicar', 'noticia.administrar'], to: '/plataforma/noticias' },
-    { label: 'Vinculación', icon: 'i-lucide-handshake', permiso: 'contenido.administrar', to: '/plataforma/vinculacion' },
-    { label: 'Mensajes de contacto', icon: 'i-lucide-mail', permiso: 'contacto.ver', to: '/plataforma/mensajes' },
-    { label: 'Gestión de eventos', icon: 'i-lucide-calendar-cog', permiso: 'evento.gestionar', to: '/plataforma/eventos/gestion' },
-    { label: 'Registro Jornadas 2026', icon: 'i-lucide-scan-qr-code', permiso: 'evento.gestionar', to: '/plataforma/eventos/registro-jornadas' },
-    { label: 'Censo médico', icon: 'i-lucide-chart-pie', permiso: 'censo.ver', to: '/plataforma/censo' },
-    { label: 'Reportes', icon: 'i-lucide-chart-column', permiso: 'reporte.ver', to: '/plataforma/reportes' },
-    { label: 'Configuración', icon: 'i-lucide-settings', algunPermiso: ['config.administrar', 'rol.administrar', 'auditoria.ver', 'contenido.administrar'], to: '/plataforma/configuracion' },
-  ],
-]
-
-const menu = computed(() =>
-  OPCIONES.map(grupo =>
-    grupo
-      .filter(o => (!o.permiso || puede(o.permiso)) && (!o.algunPermiso || o.algunPermiso.some(p => puede(p))))
-      .map(({ permiso: _p, algunPermiso: _a, proximamente, notificaciones, ...o }) =>
-        proximamente
-          ? { ...o, disabled: true, badge: { label: 'Pronto', color: 'neutral' as const, variant: 'soft' as const, size: 'sm' as const } }
-          : notificaciones && noLeidas.value
-            ? { ...o, badge: { label: String(noLeidas.value), color: 'primary' as const, variant: 'solid' as const, size: 'sm' as const } }
-            : o,
-      ),
-  ).filter(g => g.some(o => o.type !== 'label')),
-)
 
 async function salir() {
   await $fetch('/api/auth/logout', { method: 'POST' })
@@ -124,7 +77,7 @@ const menuUsuario = computed<DropdownMenuItem[][]>(() => [
   [
     { label: 'Mi perfil', icon: 'i-lucide-id-card', to: '/plataforma/cuenta/perfil' },
     { label: 'Seguridad', icon: 'i-lucide-shield-check', to: '/plataforma/cuenta/seguridad' },
-    { label: 'Portal público', icon: 'i-lucide-globe', to: '/' },
+    { label: 'Portal público', icon: 'i-lucide-globe', to: '/', target: '_blank' },
   ],
   [{ label: 'Cerrar sesión', icon: 'i-lucide-log-out', color: 'error', onSelect: salir }],
 ])

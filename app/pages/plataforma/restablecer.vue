@@ -26,10 +26,14 @@
         Enlace no válido
       </h1>
       <p class="text-sm text-muted">
-        El enlace ya se usó, venció o está incompleto. Solicite uno nuevo.
+        El enlace ya se usó, venció o está incompleto.
+        {{ puerta ? 'Solicite uno nuevo.' : 'Pida a la Federación un enlace nuevo.' }}
       </p>
-      <UButton to="/plataforma/recuperar" label="Solicitar un enlace nuevo" block size="xl" />
-      <UButton to="/plataforma/login" label="Iniciar sesión" color="neutral" variant="ghost" block />
+      <template v-if="puerta">
+        <UButton to="/plataforma/recuperar" label="Solicitar un enlace nuevo" block size="xl" />
+        <UButton to="/plataforma/login" label="Iniciar sesión" color="neutral" variant="ghost" block />
+      </template>
+      <UButton v-else to="/contacto" label="Contactar a la Federación" block size="xl" />
     </div>
 
     <template v-else>
@@ -66,6 +70,11 @@ const route = useRoute()
 const token = typeof route.query.token === 'string' ? route.query.token : ''
 
 const { data: consulta, status } = await useFetch(`/api/auth/token/${encodeURIComponent(token || 'x')}`, { server: false })
+// Sin enlace vigente, sólo se ofrece ir al inicio de sesión a quien ya tiene la puerta abierta.
+const puerta = ref(false)
+watch(consulta, async (c) => {
+  if (c && !c.valido) puerta.value = await puertaAbierta()
+}, { immediate: true })
 const esInvitacion = computed(() => consulta.value?.valido && consulta.value.tipo === 'INVITACION')
 
 const form = useTemplateRef<Form<RestablecerInput>>('form')

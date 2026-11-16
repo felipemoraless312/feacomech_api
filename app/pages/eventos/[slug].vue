@@ -66,9 +66,12 @@
         </dl>
         <UButton v-if="e.slug === JORNADAS_2026.slug" to="/jornadas-2026" icon="i-lucide-sparkles" label="Micrositio: cuotas, pago y carteles" size="lg" block class="bg-acento-500 text-white hover:bg-acento-600" />
         <template v-if="e.estado === 'PUBLICADO' && !finalizado && e.inscripcionAbierta">
-          <UButton :to="`/plataforma/eventos/${e.id}`" icon="i-lucide-ticket" label="Inscribirme" size="lg" block />
+          <UButton v-if="enlacePlataforma" :to="`/plataforma/eventos/${e.id}`" icon="i-lucide-ticket" label="Inscribirme" size="lg" block />
           <p class="text-xs text-muted">
             La inscripción se hace desde la plataforma con su cuenta de afiliado.
+            <template v-if="!enlacePlataforma">
+              Si aún no tiene acceso, <NuxtLink to="/contacto" class="font-medium text-primary hover:underline">solicítelo a la Federación</NuxtLink>.
+            </template>
           </p>
         </template>
         <p v-else-if="finalizado" class="text-sm text-muted">
@@ -82,6 +85,8 @@
 <script setup lang="ts">
 import { JORNADAS_2026 } from '#shared/jornadas2026'
 import { NOMBRE_MODALIDAD, NOMBRE_TIPO_EVENTO, type MODALIDADES, type TIPOS_EVENTO } from '#shared/schemas/eventos'
+
+const enlacePlataforma = useEnlacePlataforma()
 
 const route = useRoute()
 interface Actividad { id: string, inicio: string, fin: string | null, titulo: string, descripcion: string | null, ponentes: string | null, lugar: string | null }

@@ -21,7 +21,7 @@
           <NuxtLink to="/contacto" class="hidden items-center gap-1.5 text-marca-800/80 transition-colors hover:text-marca-950 md:flex dark:text-marca-100/80 dark:hover:text-white">
             <UIcon name="i-lucide-mail" class="size-4" />Contacto
           </NuxtLink>
-          <NuxtLink to="/plataforma" class="flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 font-semibold text-marca-800 shadow-sm ring-1 ring-marca-200 transition-all hover:bg-white hover:shadow-md dark:bg-white/10 dark:text-white dark:ring-white/15">
+          <NuxtLink v-if="enlacePlataforma" to="/plataforma" class="flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 font-semibold text-marca-800 shadow-sm ring-1 ring-marca-200 transition-all hover:bg-white hover:shadow-md dark:bg-white/10 dark:text-white dark:ring-white/15">
             <UIcon name="i-lucide-lock" class="size-3.5" />Plataforma
           </NuxtLink>
         </nav>
@@ -67,7 +67,7 @@
         <div class="mt-6 grid gap-3">
           <UButton to="/admision" icon="i-lucide-user-plus" label="Afíliese a la Federación" block class="bg-acento-500 text-white hover:bg-acento-600" />
           <UButton to="/constancias" icon="i-lucide-award" label="Descargar mi constancia" block color="neutral" variant="outline" />
-          <UButton to="/plataforma" icon="i-lucide-lock" label="Acceso a la plataforma" block />
+          <UButton v-if="enlacePlataforma" to="/plataforma" icon="i-lucide-lock" label="Acceso a la plataforma" block />
         </div>
       </template>
     </UHeader>
@@ -149,6 +149,9 @@
 
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
+
+// La plataforma no se anuncia: el enlace sólo aparece a quien ya entró desde este navegador.
+const enlacePlataforma = useEnlacePlataforma()
 
 const { data: institucion } = await useInstitucion()
 
@@ -248,7 +251,6 @@ const gruposPie = [
     { label: 'Noticias y eventos', to: '/noticias' },
     { label: 'Descargar constancias', to: '/constancias' },
     { label: 'Documentos', to: '/documentos' },
-    { label: 'Plataforma para afiliados', to: '/plataforma' },
     { label: 'Contacto', to: '/contacto' },
   ] },
 ]

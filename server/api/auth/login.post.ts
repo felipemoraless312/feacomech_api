@@ -1,6 +1,7 @@
 import { loginSchema } from '../../../shared/schemas/auth'
 import { iniciarSesion } from '../../services/auth'
 import { abrirSesion } from '../../services/sesiones'
+import { abrirPuerta } from '../../utils/puerta'
 
 export default defineEventHandler(async (event) => {
   const ctx = contextoDe(event)
@@ -10,5 +11,6 @@ export default defineEventHandler(async (event) => {
   const usuario = await iniciarSesion(datos, ctx)
   const sesionId = await abrirSesion(usuario.id, ctx)
   await replaceUserSession(event, { user: usuario, sesionId })
+  abrirPuerta(event) // renueva la vigencia de la puerta
   return { usuario }
 })

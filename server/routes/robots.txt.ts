@@ -1,5 +1,6 @@
-// robots.txt: el portal público se indexa; la plataforma, las impresiones, la API, el
-// registro en sede y las páginas de verificación (datos de personas) no.
+// robots.txt: el portal público se indexa; la API, el registro en sede y las páginas de
+// verificación (datos de personas) no. La plataforma no se menciona para no señalarla: se
+// excluye con la cabecera X-Robots-Tag (01.seguridad) y la puerta la oculta (03.puerta).
 import { urlPublica } from '~~/server/utils/correo'
 
 export default defineEventHandler((event) => {
@@ -8,8 +9,6 @@ export default defineEventHandler((event) => {
   return [
     'User-agent: *',
     'Allow: /',
-    'Disallow: /plataforma',
-    'Disallow: /imprimir',
     'Disallow: /api/',
     'Disallow: /jornadas-2026/registro',
     'Disallow: /verificar',

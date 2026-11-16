@@ -61,6 +61,9 @@ export default defineNuxtConfig({
   // Sesión: cookie sellada httpOnly (nuxt-auth-utils). maxAge = vida máxima absoluta;
   // la inactividad se controla en server/middleware/02.sesion.ts.
   runtimeConfig: {
+    // Clave del enlace secreto /acceso/<clave> que muestra el inicio de sesión (NUXT_CLAVE_ACCESO,
+    // 24+ caracteres). Vacía = puerta desactivada (desarrollo). Ver server/utils/puerta.ts.
+    claveAcceso: '',
     session: {
       name: 'feacomech-sesion',
       password: '', // NUXT_SESSION_PASSWORD

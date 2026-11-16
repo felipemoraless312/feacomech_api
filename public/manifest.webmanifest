@@ -3,7 +3,7 @@
   "short_name": "FEACOMECH",
   "description": "Federación de Asociaciones y Colegios Médicos del Estado de Chiapas",
   "lang": "es-MX",
-  "start_url": "/plataforma",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#f9f7fc",
@@ -14,7 +14,6 @@
     { "src": "/img/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Mi credencial", "url": "/plataforma/cuenta/credencial", "icons": [{ "src": "/img/icono-192.png", "sizes": "192x192" }] },
     { "name": "Constancias", "url": "/constancias", "icons": [{ "src": "/img/icono-192.png", "sizes": "192x192" }] }
   ]
 }
