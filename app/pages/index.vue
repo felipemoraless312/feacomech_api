@@ -161,10 +161,15 @@
             <!-- Resto, en lista -->
             <ul class="divide-y divide-default border-y border-default">
               <li v-for="n in inicio.noticias.slice(1)" :key="n.slug">
-                <NuxtLink :to="`/noticias/${n.slug}`" class="group flex gap-4 py-4">
-                  <span class="w-20 shrink-0 pt-0.5 text-xs font-semibold uppercase tracking-wide text-dimmed">{{ formatoFecha(n.publicadaEn) }}</span>
+                <NuxtLink :to="`/noticias/${n.slug}`" class="group flex items-center gap-4 py-4">
+                  <!-- Miniatura: la portada de la noticia o, si no tiene, el escudo -->
+                  <span class="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-marca-100 via-marca-50 to-acento-50 ring-1 ring-default sm:w-28 dark:from-marca-900 dark:to-marca-950">
+                    <img v-if="n.portadaId" :src="`/api/archivos/${n.portadaId}`" alt="" loading="lazy" class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+                    <img v-else src="/img/marca/escudo-160.png" alt="" loading="lazy" class="absolute inset-0 m-auto h-3/5 w-auto opacity-80">
+                  </span>
                   <span class="min-w-0">
-                    <span class="block font-semibold leading-snug text-highlighted group-hover:text-primary">{{ n.titulo }}</span>
+                    <span class="block text-xs font-semibold uppercase tracking-wide text-dimmed">{{ formatoFecha(n.publicadaEn) }}</span>
+                    <span class="mt-0.5 line-clamp-2 block font-semibold leading-snug text-highlighted group-hover:text-primary">{{ n.titulo }}</span>
                     <span v-if="n.resumen" class="mt-1 line-clamp-1 block text-sm text-muted">{{ n.resumen }}</span>
                   </span>
                 </NuxtLink>
