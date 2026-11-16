@@ -1,5 +1,5 @@
-<!-- Inicio del portal. Ordenado por lo que viene a hacer la gente: trámites primero, luego lo
-     que pasa en la Federación (noticias y agenda), quién la dirige y quiénes la integran. -->
+<!-- Inicio del portal: portada, mensaje de la presidencia, instituciones aliadas, trámites
+     frecuentes y después lo que pasa en la Federación (noticias y agenda) y quiénes la integran. -->
 <template>
   <div>
     <SitioPortada
@@ -10,33 +10,112 @@
       :cifras="cifras.slice(0, 3)"
     />
 
-    <!-- ¿Qué desea hacer? — trámites frecuentes, montados sobre la portada -->
-    <UContainer class="relative z-10 -mt-10 sm:-mt-14">
-      <div v-revelar.escala class="overflow-hidden rounded-2xl bg-default/95 shadow-flotante ring-1 ring-default backdrop-blur">
-        <p class="border-b border-default px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.2em] text-marca-700 dark:text-marca-300">
-          ¿Qué desea hacer?
-        </p>
-        <div class="grid divide-y divide-default sm:grid-cols-2 sm:divide-x lg:grid-cols-4 lg:divide-y-0">
+    <!-- Bienvenida de la presidenta -->
+    <section class="relative isolate overflow-hidden bg-marca-50 py-16 sm:py-20 dark:bg-marca-950/50">
+      <MarcaRed class="pointer-events-none absolute -right-32 -top-32 -z-10 size-[32rem] text-marca-300/40 dark:text-marca-800/40" />
+      <UContainer class="grid items-center gap-10 lg:grid-cols-[auto_1fr]">
+        <div v-revelar.izquierda class="mx-auto flex flex-col items-center text-center lg:mx-0">
+          <div class="relative">
+            <div class="girar-lento absolute -inset-3 rounded-full border-2 border-dashed border-acento-400/70" aria-hidden="true" />
+            <img :src="BIENVENIDA.foto" :alt="BIENVENIDA.autora" width="176" height="176" loading="lazy" class="relative size-44 rounded-full bg-marca-100 object-cover ring-8 ring-white dark:ring-marca-950">
+          </div>
+          <p class="mt-6 font-display text-xl font-bold text-highlighted">
+            {{ BIENVENIDA.autora }}
+          </p>
+          <p class="text-sm text-muted">
+            Presidenta · Bienio 2026–2028
+          </p>
+        </div>
+        <div v-revelar="100">
+          <p class="rotulo">
+            Mensaje de bienvenida
+          </p>
+          <blockquote class="mt-4 font-display text-2xl font-medium leading-snug text-marca-900 text-balance sm:text-3xl dark:text-white">
+            «{{ BIENVENIDA.parrafos[1] }}»
+          </blockquote>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <UButton to="/organizacion#bienvenida" label="Leer el mensaje completo" trailing-icon="i-lucide-arrow-right" />
+            <UButton to="/organizacion#mesa-directiva" label="Conozca a la mesa directiva" color="neutral" variant="outline" />
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Vinculación institucional: dependencias de gobierno con las que hay convenio o colaboración -->
+    <section v-if="inicio?.vinculos.length" class="relative isolate overflow-hidden py-16 sm:py-20">
+      <MarcaRed class="girar-lento pointer-events-none absolute -left-40 top-1/2 -z-10 size-[30rem] -translate-y-1/2 text-marca-200/40 dark:text-white/5" />
+      <UContainer class="space-y-10">
+        <div class="mx-auto max-w-2xl space-y-3 text-center">
+          <p v-revelar class="text-sm font-semibold uppercase tracking-[0.16em] text-acento-600 dark:text-acento-400">
+            Vinculación institucional
+          </p>
+          <h2 v-revelar="60" class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">
+            Instituciones aliadas
+          </h2>
+          <p v-revelar="120" class="text-[17px] leading-relaxed text-muted">
+            Trabajamos con las instituciones públicas de Chiapas en capacitación, promoción de la salud
+            y el fortalecimiento del ejercicio profesional.
+          </p>
+        </div>
+        <div class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2" :class="{ 'lg:grid-cols-3': inicio.vinculos.length > 2 }">
+          <SitioTarjetaInstitucion
+            v-for="(v, n) in inicio.vinculos"
+            :key="v.nombre"
+            v-revelar.escala="n * 120"
+            :vinculo="v"
+            :indice="n"
+            compacto
+          />
+        </div>
+        <div class="flex justify-center">
+          <UButton to="/vinculacion" label="Conocer la vinculación institucional" trailing-icon="i-lucide-arrow-right" color="neutral" variant="outline" size="lg" class="rounded-full" />
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- ¿Qué desea hacer? — trámites frecuentes -->
+    <section class="relative isolate overflow-hidden bg-muted py-16 sm:py-20">
+      <UContainer class="space-y-10">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p v-revelar class="rotulo">
+              Trámites frecuentes
+            </p>
+            <h2 v-revelar="60" class="mt-2 font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">
+              ¿Qué desea hacer?
+            </h2>
+          </div>
+          <UButton v-revelar="120" to="/contacto" label="¿Otra consulta? Escríbanos" trailing-icon="i-lucide-message-circle" color="neutral" variant="ghost" />
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <NuxtLink
-            v-for="t in tramites"
+            v-for="(t, n) in tramites"
             :key="t.to"
+            v-revelar="n * 110"
             :to="t.to"
-            class="group flex items-start gap-4 p-5 transition-colors hover:bg-marca-50 sm:p-6 dark:hover:bg-marca-950/60"
+            class="tramite group relative isolate flex flex-col sm:min-h-52 overflow-hidden rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default"
+            :style="{ '--retraso-pulso': `${n * 0.6}s` }"
           >
-            <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-marca-100 text-marca-700 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-acento-500 group-hover:to-acento-400 group-hover:text-white group-hover:shadow-[0_8px_18px_-6px_rgb(217_106_34/0.6)] dark:bg-marca-900 dark:text-marca-200">
-              <UIcon :name="t.icono" class="icono-salto size-5" />
+            <!-- Relleno de color que sube al pasar el cursor -->
+            <span class="tramite-relleno absolute inset-0 -z-10 bg-gradient-to-br from-marca-700 via-marca-600 to-acento-500" aria-hidden="true" />
+            <span class="pointer-events-none absolute -right-2 -top-4 font-display text-8xl font-bold text-marca-100 transition-colors duration-500 group-hover:text-white/10 dark:text-marca-900" aria-hidden="true">{{ n + 1 }}</span>
+            <span class="tramite-icono relative flex size-12 items-center justify-center rounded-xl bg-marca-100 text-marca-700 transition-colors duration-500 group-hover:bg-white/15 group-hover:text-white dark:bg-marca-900 dark:text-marca-200">
+              <UIcon :name="t.icono" class="icono-salto size-6" />
             </span>
-            <span class="min-w-0">
-              <span class="flex items-center gap-1 font-display text-[17px] font-semibold leading-tight text-highlighted">
+            <span class="relative mt-auto pt-5 sm:pt-8">
+              <span class="block font-display text-lg font-semibold leading-tight text-highlighted transition-colors duration-500 group-hover:text-white">
                 {{ t.titulo }}
-                <UIcon name="i-lucide-arrow-right" class="size-4 -translate-x-1 text-acento-500 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
               </span>
-              <span class="mt-1 block text-sm leading-snug text-muted">{{ t.texto }}</span>
+              <span class="mt-1.5 block text-sm leading-snug text-muted transition-colors duration-500 group-hover:text-white/80">{{ t.texto }}</span>
+              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors duration-500 group-hover:text-white">
+                {{ t.accion }}
+                <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+              </span>
             </span>
           </NuxtLink>
         </div>
-      </div>
-    </UContainer>
+      </UContainer>
+    </section>
 
     <!-- Noticias y eventos -->
     <section class="py-16 sm:py-20">
@@ -134,37 +213,6 @@
             <span><strong class="font-semibold">¿Asistió a un evento?</strong> Descargue su constancia con su nombre o correo.</span>
           </NuxtLink>
         </aside>
-      </UContainer>
-    </section>
-
-    <!-- Bienvenida de la presidenta -->
-    <section class="relative isolate overflow-hidden bg-marca-50 py-16 sm:py-20 dark:bg-marca-950/50">
-      <MarcaRed class="pointer-events-none absolute -right-32 -top-32 -z-10 size-[32rem] text-marca-300/40 dark:text-marca-800/40" />
-      <UContainer class="grid items-center gap-10 lg:grid-cols-[auto_1fr]">
-        <div v-revelar.izquierda class="mx-auto flex flex-col items-center text-center lg:mx-0">
-          <div class="relative">
-            <div class="girar-lento absolute -inset-3 rounded-full border-2 border-dashed border-acento-400/70" aria-hidden="true" />
-            <img :src="BIENVENIDA.foto" :alt="BIENVENIDA.autora" width="176" height="176" loading="lazy" class="relative size-44 rounded-full bg-marca-100 object-cover ring-8 ring-white dark:ring-marca-950">
-          </div>
-          <p class="mt-6 font-display text-xl font-bold text-highlighted">
-            {{ BIENVENIDA.autora }}
-          </p>
-          <p class="text-sm text-muted">
-            Presidenta · Bienio 2026–2028
-          </p>
-        </div>
-        <div v-revelar="100">
-          <p class="rotulo">
-            Mensaje de bienvenida
-          </p>
-          <blockquote class="mt-4 font-display text-2xl font-medium leading-snug text-marca-900 text-balance sm:text-3xl dark:text-white">
-            «{{ BIENVENIDA.parrafos[1] }}»
-          </blockquote>
-          <div class="mt-7 flex flex-wrap gap-3">
-            <UButton to="/organizacion#bienvenida" label="Leer el mensaje completo" trailing-icon="i-lucide-arrow-right" />
-            <UButton to="/organizacion#mesa-directiva" label="Conozca a la mesa directiva" color="neutral" variant="outline" />
-          </div>
-        </div>
       </UContainer>
     </section>
 
@@ -301,38 +349,13 @@
         </div>
       </UContainer>
     </section>
-
-    <!-- Colaboradores -->
-    <UContainer v-if="inicio?.vinculos.length" class="space-y-8 py-16">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <h2 v-revelar class="font-display text-2xl font-bold tracking-tight text-highlighted">
-          Colaboradores
-        </h2>
-        <UButton to="/vinculacion" label="Todos los colaboradores" trailing-icon="i-lucide-arrow-right" color="neutral" variant="ghost" />
-      </div>
-      <div class="flex flex-wrap items-center gap-4">
-        <component
-          :is="v.sitioWeb ? 'a' : 'div'"
-          v-for="v in inicio.vinculos"
-          :key="v.nombre"
-          v-revelar
-          :href="v.sitioWeb ?? undefined"
-          :target="v.sitioWeb ? '_blank' : undefined"
-          rel="noopener"
-          class="flex items-center gap-3 rounded-xl bg-default px-4 py-3 ring-1 ring-default transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-tarjeta"
-          :title="v.nombre"
-        >
-          <LogoOrganizacion :logo-id="v.logoId" :src="logoVinculo(v.nombre)" :nombre="v.nombre" />
-          <span class="max-w-48 text-sm font-medium text-highlighted">{{ v.nombre }}</span>
-        </component>
-      </div>
-    </UContainer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { JORNADAS_2026 } from '#shared/jornadas2026'
-import { BENEFICIOS, BIENVENIDA, logoVinculo } from '#shared/organizacion'
+import { BENEFICIOS, BIENVENIDA } from '#shared/organizacion'
+import type { InstitucionVinculada } from '~/components/sitio/TarjetaInstitucion.vue'
 import type { DatosPortada } from '#shared/parametros'
 import { NOMBRE_NOTICIA } from '#shared/schemas/portal'
 import { formatoFecha } from '#shared/texto'
@@ -350,7 +373,7 @@ interface Inicio {
   noticias: NoticiaPublica[]
   eventos: EventoPublico[]
   actividades: NoticiaPublica[]
-  vinculos: { nombre: string, sitioWeb: string | null, logoId: string | null }[]
+  vinculos: InstitucionVinculada[]
 }
 interface CensoPublico {
   totales: { registrados: number, afiliados: number, organizacionesAfiliadas: number, municipios: number, especialidades: number }
@@ -368,10 +391,10 @@ const destacada = computed(() => inicio.value?.noticias[0])
 const busqueda = ref('')
 
 const tramites = [
-  { to: '/admision#colegio', icono: 'i-lucide-landmark', titulo: 'Afiliar mi colegio', texto: 'Requisitos y pasos para incorporarse.' },
-  { to: '/admision#individual', icono: 'i-lucide-stethoscope', titulo: 'Afiliarme como profesional', texto: 'A través de un colegio agremiado.' },
-  { to: '/directorio', icono: 'i-lucide-search', titulo: 'Encontrar un colegio', texto: 'Directorio, mesas directivas y contacto.' },
-  { to: '/constancias', icono: 'i-lucide-award', titulo: 'Descargar mi constancia', texto: 'De las Jornadas y demás eventos.' },
+  { to: '/admision#colegio', icono: 'i-lucide-landmark', titulo: 'Afiliar mi colegio', texto: 'Requisitos y pasos para incorporarse.', accion: 'Ver requisitos' },
+  { to: '/admision#individual', icono: 'i-lucide-stethoscope', titulo: 'Afiliarme como profesional', texto: 'A través de un colegio agremiado.', accion: 'Cómo afiliarme' },
+  { to: '/directorio', icono: 'i-lucide-search', titulo: 'Encontrar un colegio', texto: 'Directorio, mesas directivas y contacto.', accion: 'Ir al directorio' },
+  { to: '/constancias', icono: 'i-lucide-award', titulo: 'Descargar mi constancia', texto: 'De las Jornadas y demás eventos.', accion: 'Buscar constancia' },
 ]
 
 // Las actividades que ya están en «Lo más reciente» no se repiten.
@@ -419,3 +442,48 @@ const agenda = computed<ItemAgenda[]>(() => {
 // Con muy pocos registros la gráfica pública no dice nada y podría identificar personas.
 const mostrarCenso = computed(() => (censo.value?.totales.registrados ?? 0) >= 20)
 </script>
+
+<style scoped>
+/* «¿Qué desea hacer?»: el color sube desde abajo al pasar el cursor y la tarjeta se eleva. */
+.tramite {
+  transition: transform 0.4s var(--curva-salida), box-shadow 0.4s var(--curva-salida);
+}
+.tramite-relleno {
+  transform: translateY(101%);
+  transition: transform 0.55s var(--curva-salida);
+}
+@media (hover: hover) {
+  .tramite:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-flotante);
+  }
+  .tramite:hover .tramite-relleno {
+    transform: translateY(0);
+  }
+}
+.tramite:focus-visible {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 3px;
+}
+/* Pulso suave y alternado de los iconos: invita a tocar también en el celular. */
+.tramite-icono::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgb(217 106 34 / 0.45);
+  animation: fea-tramite-pulso 4s ease-out var(--retraso-pulso, 0s) infinite;
+}
+@keyframes fea-tramite-pulso {
+  0% { box-shadow: 0 0 0 0 rgb(217 106 34 / 0.45); }
+  45%, 100% { box-shadow: 0 0 0 14px rgb(217 106 34 / 0); }
+}
+.tramite:hover .tramite-icono::after {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tramite, .tramite-relleno { transition: none; }
+  .tramite:hover { transform: none; }
+  .tramite-icono::after { animation: none; }
+}
+</style>

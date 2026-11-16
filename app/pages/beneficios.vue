@@ -35,7 +35,7 @@
         </p>
         <div class="mt-7 flex flex-wrap gap-3">
           <UButton to="/admision" label="Proceso de admisión" size="lg" class="bg-white text-marca-900 hover:bg-marca-50" />
-          <UButton to="/vinculacion" label="Convenios y colaboradores" size="lg" class="bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
+          <UButton to="/vinculacion" label="Convenios e instituciones aliadas" size="lg" class="bg-white/10 text-white ring-1 ring-white/30 hover:bg-white/20" />
         </div>
       </section>
     </UContainer>

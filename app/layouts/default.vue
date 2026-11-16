@@ -217,7 +217,7 @@ const enlaces: NavigationMenuItem[] = [
     ],
   },
   { label: 'Colegios agremiados', to: '/directorio' },
-  { label: 'Colaboradores', to: '/vinculacion' },
+  { label: 'Vinculación', to: '/vinculacion' },
   {
     label: 'Noticias y eventos',
     to: '/noticias',
@@ -245,7 +245,7 @@ const gruposPie = [
     { label: 'Admisión', to: '/admision' },
     { label: 'Beneficios', to: '/beneficios' },
     { label: 'Colegios agremiados', to: '/directorio' },
-    { label: 'Colaboradores', to: '/vinculacion' },
+    { label: 'Vinculación institucional', to: '/vinculacion' },
   ] },
   { titulo: 'Servicios', enlaces: [
     { label: 'Noticias y eventos', to: '/noticias' },

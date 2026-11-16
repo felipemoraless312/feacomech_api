@@ -157,15 +157,19 @@ export const ADMISION = {
  * fondo blanco). Se usan mientras el vínculo no tenga un logo subido desde la plataforma; los
  * originales recibidos están en docs/imagenes-originales/vinculacion.
  */
-const LOGOS_VINCULOS: { claves: string[], logo: string }[] = [
-  { claves: ['congreso', 'chiapas'], logo: '/img/vinculacion/congreso-chiapas.webp' },
+const LOGOS_VINCULOS: { claves: string[], logo: string, horizontal?: string }[] = [
+  { claves: ['congreso', 'chiapas'], logo: '/img/vinculacion/congreso-chiapas.webp', horizontal: '/img/vinculacion/congreso-chiapas-horizontal.webp' },
   { claves: ['secretaria', 'salud'], logo: '/img/vinculacion/salud-chiapas.webp' },
 ]
 
 const sinAcentos = (t: string) => t.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
 
-/** Logo estático de una institución vinculada, por su nombre (tolera acentos y mayúsculas). */
-export function logoVinculo(nombre: string): string | undefined {
+/**
+ * Logo estático de una institución vinculada, por su nombre (tolera acentos y mayúsculas).
+ * `horizontal` da la versión completa con texto, si existe, para espacios anchos.
+ */
+export function logoVinculo(nombre: string, forma: 'cuadrado' | 'horizontal' = 'cuadrado'): string | undefined {
   const n = sinAcentos(nombre)
-  return LOGOS_VINCULOS.find(l => l.claves.every(c => n.includes(c)))?.logo
+  const l = LOGOS_VINCULOS.find(l => l.claves.every(c => n.includes(c)))
+  return forma === 'horizontal' ? (l?.horizontal ?? l?.logo) : l?.logo
 }

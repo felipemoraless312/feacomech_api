@@ -34,5 +34,8 @@ describe('logoVinculo', () => {
     expect(logoVinculo('Secretaría de Salud del Estado de Chiapas')).toBe('/img/vinculacion/salud-chiapas.webp')
     expect(logoVinculo('Secretaria de Salud')).toBe('/img/vinculacion/salud-chiapas.webp')
     expect(logoVinculo('Universidad Autónoma de Chiapas')).toBeUndefined()
+    // Versión ancha cuando existe; si no, la cuadrada.
+    expect(logoVinculo('Congreso del Estado de Chiapas', 'horizontal')).toBe('/img/vinculacion/congreso-chiapas-horizontal.webp')
+    expect(logoVinculo('Secretaría de Salud', 'horizontal')).toBe('/img/vinculacion/salud-chiapas.webp')
   })
 })
