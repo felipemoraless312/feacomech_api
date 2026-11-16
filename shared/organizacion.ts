@@ -39,10 +39,16 @@ const FOTOS: Record<string, string> = {
 }
 
 /**
- * Fotos sin fondo (recortadas) en /public/img/personas/recortes, para mostrar a la persona sobre
- * el escudo de la Federación en su página. Si no hay, se usa el retrato con marco.
+ * Fotos sin fondo en /public/img/personas/recortes (busto, 560×700, WebP transparente), para
+ * mostrar a la persona sobre el escudo de la Federación en su página. Se generan con rembg
+ * (modelo u2net_human_seg); si no hay, se usa el retrato con marco de arco.
  */
-const RECORTES: Record<string, string> = {}
+const RECORTES: Record<string, string> = {
+  'Dra. Fanny Kramsky Soto': '/img/personas/recortes/fanny-kramsky.webp',
+  'Dr. Alexander Arroyo Núñez': '/img/personas/recortes/alexander-arroyo-nunez.webp',
+  'Dr. Hernán León Velasco': '/img/personas/recortes/hernan-leon-velasco.webp',
+  'Dr. José Ricardo Tovilla Victoria': '/img/personas/recortes/jose-ricardo-tovilla-victoria.webp',
+}
 
 /** Retratos verticales para la página de cada persona (si no hay, se usa el recorte al rostro). */
 const RETRATOS: Record<string, string> = {
