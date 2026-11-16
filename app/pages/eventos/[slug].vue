@@ -1,6 +1,6 @@
 <template>
   <div v-if="e">
-    <section class="relative isolate overflow-hidden bg-gradient-to-br from-marca-800 to-marca-950 text-white">
+    <section class="relative isolate overflow-hidden bg-gradient-to-br from-marca-700 via-marca-600 to-marca-500 text-white">
       <img v-if="e.portadaId" :src="`/api/archivos/${e.portadaId}`" alt="" class="absolute inset-0 -z-20 size-full object-cover opacity-30">
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-marca-950 via-marca-950/70 to-transparent" />
       <UContainer class="py-14 sm:py-20">
@@ -96,4 +96,9 @@ if (error.value) throw createError({ statusCode: 404, statusMessage: 'Evento no 
 const finalizado = computed(() => !!e.value && new Date(e.value.fin) < new Date())
 
 useSeoMeta({ title: () => e.value?.titulo ?? 'Evento', description: () => e.value?.descripcion.slice(0, 160) })
+useCompartir({
+  titulo: () => e.value?.titulo,
+  descripcion: () => e.value?.descripcion.slice(0, 200),
+  imagen: () => e.value?.portadaId ? `/api/archivos/${e.value.portadaId}` : null,
+})
 </script>

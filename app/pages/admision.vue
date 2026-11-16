@@ -2,8 +2,8 @@
   <div>
     <SitioEncabezado antetitulo="Admisión" titulo="Únase a la FEACOMECH" descripcion="La Federación recibe a colegios y asociaciones de la salud, y a profesionales a través de ellos.">
       <div class="flex flex-wrap gap-2">
-        <UButton to="#colegio" label="Soy un colegio" icon="i-lucide-landmark" size="lg" class="bg-white text-marca-900 hover:bg-marca-50" />
-        <UButton to="#individual" label="Soy profesional de la salud" icon="i-lucide-stethoscope" size="lg" class="bg-white/10 text-white ring-1 ring-white/25 hover:bg-white/20" />
+        <UButton to="#colegio" label="Soy un colegio" icon="i-lucide-landmark" size="lg" class="rounded-full bg-marca-600 px-5 text-white shadow-[0_8px_20px_-8px_rgb(102_71_139/0.7)] hover:bg-marca-700" />
+        <UButton to="#individual" label="Soy profesional de la salud" icon="i-lucide-stethoscope" size="lg" class="rounded-full bg-white/80 px-5 text-marca-800 ring-1 ring-marca-200 backdrop-blur hover:bg-white" />
       </div>
     </SitioEncabezado>
 

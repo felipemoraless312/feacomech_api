@@ -1,7 +1,7 @@
 <template>
   <PanelPagina id="resumen" titulo="Resumen">
     <div class="space-y-10">
-      <header class="entrada relative isolate overflow-hidden rounded-xl bg-gradient-to-br from-marca-700 to-marca-950 px-6 py-8 text-white shadow-flotante sm:px-10 sm:py-10">
+      <header class="entrada relative isolate overflow-hidden rounded-xl bg-gradient-to-br from-marca-700 via-marca-600 to-marca-500 px-6 py-8 text-white shadow-flotante sm:px-10 sm:py-10">
         <MarcaRed class="girar-lento pointer-events-none absolute -right-24 -top-24 -z-10 size-80 text-white/10 sm:size-96" />
         <p class="text-[15px] capitalize text-white/75">
           {{ fechaHoy }}
@@ -49,16 +49,16 @@
         </div>
       </section>
 
-      <GrupoDatos titulo="Estado de la plataforma">
-        <div class="flex gap-4 px-5 py-4 text-[15px]">
-          <UIcon name="i-lucide-hammer" class="mt-0.5 size-5 shrink-0 text-marca-600" />
-          <p class="text-muted">
-            La plataforma se construye por fases. Los módulos marcados como
-            <span class="font-medium text-highlighted">«Pronto»</span> en el menú se habilitarán
-            conforme se terminen, y sus indicadores aparecerán aquí con datos reales.
-          </p>
-        </div>
-      </GrupoDatos>
+      <NuxtLink to="/plataforma/cuenta/credencial" class="elevar group flex items-center gap-4 rounded-xl bg-gradient-to-r from-marca-50 via-default to-acento-50 p-5 shadow-tarjeta ring-1 ring-default">
+        <span class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-marca-100 text-marca-700 transition-colors duration-300 group-hover:bg-acento-500 group-hover:text-white">
+          <UIcon name="i-lucide-badge-check" class="icono-salto size-6" />
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block font-display text-lg font-semibold text-highlighted">Mi credencial digital</span>
+          <span class="block text-sm text-muted">Con código QR para comprobar su afiliación en cualquier momento. Puede imprimirla.</span>
+        </span>
+        <UIcon name="i-lucide-arrow-right" class="size-5 shrink-0 text-dimmed transition-transform group-hover:translate-x-1 group-hover:text-primary" />
+      </NuxtLink>
     </div>
   </PanelPagina>
 </template>

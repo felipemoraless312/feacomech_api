@@ -42,42 +42,48 @@
   --color-acento-900: #672e17;
   --color-acento-950: #381509;
 
-  /* Grises neutros */
-  --color-gris-50: #f5f5f7;
-  --color-gris-100: #ececf0;
-  --color-gris-200: #dcdce1;
-  --color-gris-300: #c7c7cc;
-  --color-gris-400: #a1a1a6;
-  --color-gris-500: #86868b;
-  --color-gris-600: #6e6e73;
-  --color-gris-700: #48484a;
-  --color-gris-800: #2c2c2e;
-  --color-gris-900: #1d1d1f;
-  --color-gris-950: #111112;
+  /* Grises con un leve matiz lavanda: armonizan con el morado sin verse "sucios". */
+  --color-gris-50: #f8f7fb;
+  --color-gris-100: #f0eef5;
+  --color-gris-200: #e2dfea;
+  --color-gris-300: #cbc7d6;
+  --color-gris-400: #a6a1b4;
+  --color-gris-500: #858096;
+  --color-gris-600: #6a6578;
+  --color-gris-700: #4a4656;
+  --color-gris-800: #2e2b37;
+  --color-gris-900: #1f1c26;
+  --color-gris-950: #121016;
 }
 
 :root {
-  --ui-radius: 0.375rem;
+  --ui-radius: 0.5rem;
   --ui-header-height: 4.5rem;
 
+  /* Fondos claros con matiz lavanda; el blanco puro queda para tarjetas y superficies. */
   --ui-bg: #ffffff;
-  --ui-bg-muted: var(--color-gris-50);
-  --ui-bg-elevated: var(--color-gris-100);
-  --ui-bg-accented: var(--color-gris-200);
-  --ui-border: rgb(0 0 0 / 0.08);
-  --ui-border-muted: rgb(0 0 0 / 0.05);
-  --ui-border-accented: rgb(0 0 0 / 0.14);
+  --ui-bg-muted: #f9f7fc;
+  --ui-bg-elevated: #f2eff8;
+  --ui-bg-accented: #e7e2f0;
+  --ui-border: rgb(64 40 88 / 0.09);
+  --ui-border-muted: rgb(64 40 88 / 0.05);
+  --ui-border-accented: rgb(64 40 88 / 0.16);
   --ui-text: var(--color-gris-800);
   --ui-text-highlighted: var(--color-gris-900);
   --ui-text-muted: var(--color-gris-600);
   --ui-text-dimmed: var(--color-gris-500);
 
-  --sombra-tarjeta: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04);
-  --sombra-flotante: 0 12px 48px rgb(0 0 0 / 0.14), 0 2px 6px rgb(0 0 0 / 0.06);
+  /* Sombras teñidas de morado: más suaves y "luminosas" que el gris neutro. */
+  --sombra-tarjeta: 0 1px 2px rgb(64 40 88 / 0.05), 0 6px 20px -4px rgb(64 40 88 / 0.08);
+  --sombra-flotante: 0 24px 56px -12px rgb(64 40 88 / 0.22), 0 4px 12px rgb(64 40 88 / 0.06);
+
+  /* Curvas de animación compartidas */
+  --curva-salida: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --curva-resorte: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .dark {
-  --ui-bg: #000000;
+  --ui-bg: #0f0c14;
   --ui-bg-muted: var(--color-gris-950);
   --ui-bg-elevated: var(--color-gris-900);
   --ui-bg-accented: var(--color-gris-800);
@@ -128,11 +134,39 @@
   }
   .dark .rotulo { color: var(--color-marca-300); }
 
-  /* Franja tricolor fina (azul → cobre), firma gráfica de la Federación. */
+  /* Filete de la Federación: degradado continuo morado → lavanda → cobre que fluye despacio,
+     con un destello que lo recorre. `filete-resplandor` añade un halo suave debajo. */
   .filete-marca {
-    height: 4px;
-    background: linear-gradient(90deg, var(--color-marca-800) 0 55%, var(--color-acento-500) 55% 100%);
+    position: relative;
+    height: 3px;
+    overflow: hidden;
+    background: linear-gradient(90deg,
+      var(--color-marca-700), var(--color-marca-500), var(--color-marca-300),
+      var(--color-acento-300), var(--color-acento-500), var(--color-marca-500), var(--color-marca-700));
+    background-size: 200% 100%;
+    animation: fea-filete 14s linear infinite;
   }
+  .filete-marca::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 30%;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.85), transparent);
+    transform: translateX(-100%);
+    animation: fea-filete-destello 6s cubic-bezier(0.45, 0, 0.55, 1) 1s infinite;
+  }
+  /* La sombra propia no la recorta overflow: hidden, así el destello queda dentro del filete. */
+  .filete-resplandor {
+    box-shadow: 0 2px 14px -1px rgb(157 124 194 / 0.55), 0 1px 6px rgb(229 132 63 / 0.25);
+  }
+}
+
+@keyframes fea-filete {
+  to { background-position: -200% 0; }
+}
+@keyframes fea-filete-destello {
+  0% { transform: translateX(-100%); }
+  45%, 100% { transform: translateX(440%); }
 }
 
 /* Sombras como tokens de Tailwind (shadow-tarjeta, shadow-flotante) para que
@@ -146,17 +180,6 @@
    Animaciones. Todas se desactivan con "reducir movimiento".
    --------------------------------------------------------------------------- */
 
-/* Aparición al desplazarse (directiva v-revelar, app/plugins/revelar.ts) */
-.revelar-oculto {
-  opacity: 0;
-  transform: translateY(28px);
-}
-.revelar-visible {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
-  transition-delay: var(--retraso, 0ms);
-}
 
 /* Acercamiento lento de la fotografía de portada */
 @keyframes fea-acercamiento {
@@ -169,12 +192,13 @@
 }
 
 /* Entrada escalonada del texto del encabezado */
+/* Sólo opacidad y transform (sin filter: blur): se resuelve en la GPU, fluido en teléfonos. */
 @keyframes fea-entrada {
-  from { opacity: 0; transform: translateY(22px); filter: blur(6px); }
-  to { opacity: 1; transform: none; filter: none; }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
 }
 .entrada {
-  animation: fea-entrada 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: fea-entrada 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   animation-delay: var(--retraso, 0ms);
 }
 
@@ -237,8 +261,193 @@
   animation: fea-destello 7s linear infinite;
 }
 
+/* ---------------------------------------------------------------------------
+   Fondos y microinteracciones de la paleta clara (lavanda + cobre).
+   --------------------------------------------------------------------------- */
+
+/* Aurora: manchas de color difuminadas que se desplazan muy despacio.
+   Uso: <div class="aurora" /> dentro de un contenedor relative isolate overflow-hidden. */
+.aurora {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+.aurora::before,
+.aurora::after {
+  content: '';
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 9999px;
+  /* Sin filter: blur — el degradado radial ya difumina; el desenfoque sobre manchas de 60vmax
+     era lo más costoso de la página en teléfonos. */
+  opacity: var(--aurora-opacidad, 0.55);
+}
+.aurora::before {
+  top: -30vmax;
+  left: -18vmax;
+  background: radial-gradient(circle, var(--aurora-1, var(--color-marca-200)) 0%, transparent 65%);
+  animation: fea-aurora-a 26s ease-in-out infinite alternate;
+}
+.aurora::after {
+  bottom: -32vmax;
+  right: -20vmax;
+  background: radial-gradient(circle, var(--aurora-2, var(--color-acento-100)) 0%, transparent 65%);
+  animation: fea-aurora-b 32s ease-in-out infinite alternate;
+}
+@keyframes fea-aurora-a {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(14vmax, 8vmax) scale(1.15); }
+}
+@keyframes fea-aurora-b {
+  from { transform: translate(0, 0) scale(1.1); }
+  to { transform: translate(-12vmax, -10vmax) scale(0.95); }
+}
+
+/* Puntos finos de fondo (retícula de puntos lavanda) */
+.puntos {
+  background-image: radial-gradient(circle at 1px 1px, rgb(102 71 139 / 0.16) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Texto con degradado morado → cobre que se desplaza lentamente */
+.texto-degradado {
+  background: linear-gradient(100deg, var(--color-marca-600), var(--color-acento-500) 50%, var(--color-marca-600));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: fea-degradado 8s linear infinite;
+}
+@keyframes fea-degradado {
+  to { background-position: 200% center; }
+}
+
+/* Tarjeta que se eleva al pasar el cursor */
+.elevar {
+  transition: transform 0.35s var(--curva-salida), box-shadow 0.35s var(--curva-salida), background-color 0.2s;
+}
+@media (hover: hover) {
+  .elevar:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-flotante);
+  }
+}
+
+/* Icono que "salta" un poco cuando se pasa el cursor sobre su grupo */
+.group:hover .icono-salto {
+  animation: fea-salto 0.5s var(--curva-resorte);
+}
+@keyframes fea-salto {
+  40% { transform: translateY(-4px) scale(1.08); }
+}
+
+/* Enlace con subrayado que crece desde la izquierda */
+.subrayado {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1.5px;
+  transition: background-size 0.3s var(--curva-salida);
+}
+.subrayado:hover,
+.group:hover .subrayado {
+  background-size: 100% 1.5px;
+}
+
+/* Brillo que cruza un botón cada cierto tiempo (llamadas a la acción importantes) */
+.boton-brillo {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.boton-brillo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.55) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: fea-brillo 5s ease-in-out 2s infinite;
+  pointer-events: none;
+}
+@keyframes fea-brillo {
+  0%, 70% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+/* Aparición al desplazarse (directiva v-revelar, app/plugins/revelar.ts). Va después de las
+   utilidades para que su transición mande mientras dura; al terminar, la directiva quita la
+   clase y el elemento recupera sus propias transiciones (p. ej. .elevar). */
+.revelar-oculto {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.revelar-visible {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.9s var(--curva-salida), transform 0.9s var(--curva-salida);
+  transition-delay: var(--retraso, 0ms);
+}
+/* Variantes de v-revelar: v-revelar.escala, v-revelar.izquierda, v-revelar.derecha */
+.revelar-oculto[data-revelar="escala"] { transform: scale(0.94); }
+.revelar-oculto[data-revelar="izquierda"] { transform: translateX(-36px); }
+.revelar-oculto[data-revelar="derecha"] { transform: translateX(36px); }
+
+/* Plataforma: los bloques de la página entran escalonados */
+.portal [data-slot="body"] > :nth-child(2) { animation-delay: 50ms; }
+.portal [data-slot="body"] > :nth-child(3) { animation-delay: 100ms; }
+.portal [data-slot="body"] > :nth-child(4) { animation-delay: 150ms; }
+.portal [data-slot="body"] > :nth-child(n+5) { animation-delay: 200ms; }
+
+/* Transición entre páginas (View Transitions API; los navegadores sin soporte navegan sin efecto) */
+::view-transition-old(root) {
+  animation: fea-vt-salida 0.18s ease-in both;
+}
+::view-transition-new(root) {
+  animation: fea-vt-entrada 0.38s var(--curva-salida) both;
+}
+@keyframes fea-vt-salida {
+  to { opacity: 0; }
+}
+@keyframes fea-vt-entrada {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+/* Botón «volver arriba» */
+.volver-arriba {
+  transition: opacity 0.3s, transform 0.3s var(--curva-resorte);
+}
+.volver-arriba[data-visible="false"] {
+  opacity: 0;
+  transform: translateY(16px) scale(0.8);
+  pointer-events: none;
+}
+
+/* Con la entrada del inicio (SitioIntro), la portada espera a que arranque la secuencia
+   (html.intro-lista) y anima al subir la cortina. Si se salta con un clic, anima enseguida. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.sin-intro):not(.intro-saltada) .con-intro .portada :is(.entrada, .palabra) {
+    animation-delay: calc(var(--retraso, 0ms) + 1.9s);
+  }
+  html:not(.sin-intro):not(.intro-lista) .con-intro .portada :is(.entrada, .palabra) {
+    animation-play-state: paused;
+  }
+}
+
+/* Pantallas táctiles (teléfonos y tabletas): fuera las animaciones decorativas infinitas.
+   No aportan información y gastan batería y GPU; las entradas y transiciones se conservan. */
+@media (hover: none) {
+  .aurora::before, .aurora::after, .girar-lento, .flotar, .acercamiento {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .portal [data-slot="body"] > * { animation: none; }
   .revelar-oculto { opacity: 1; transform: none; }
   .acercamiento, .entrada, .girar-lento, .rebote, .franja, .flotar, .destello { animation: none; }
+  .filete-marca, .filete-marca::after { animation: none; }
+  .aurora::before, .aurora::after, .texto-degradado, .boton-brillo::after, .icono-salto { animation: none !important; }
+  .elevar:hover { transform: none; }
+  .revelar-oculto[data-revelar] { transform: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }

@@ -106,6 +106,10 @@ const { data: org, error } = await useFetch<Ficha>(`/api/publico/organizaciones/
 if (error.value) throw createError({ statusCode: 404, statusMessage: 'Organización no encontrada', fatal: true })
 
 useSeoMeta({ title: () => org.value?.nombre ?? 'Organización', description: () => org.value?.descripcion?.slice(0, 160) ?? undefined })
+useCompartir({
+  titulo: () => org.value?.nombre,
+  descripcion: () => org.value?.descripcion?.slice(0, 200),
+})
 
 const contacto = computed(() => {
   const o = org.value

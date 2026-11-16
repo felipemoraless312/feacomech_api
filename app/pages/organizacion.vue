@@ -20,7 +20,7 @@
       <div class="min-w-0 space-y-20">
         <!-- Bienvenida -->
         <section id="bienvenida" v-revelar class="scroll-mt-24">
-          <div class="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-marca-700 via-marca-800 to-marca-950 p-8 text-white sm:p-12">
+          <div class="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-marca-700 via-marca-600 to-marca-500 p-8 shadow-flotante text-white sm:p-12">
             <MarcaRed class="pointer-events-none absolute -bottom-32 -right-24 -z-10 size-96 text-white/10" />
             <p class="text-sm font-semibold uppercase tracking-[0.16em] text-marca-200">
               Mensaje de bienvenida

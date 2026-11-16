@@ -9,7 +9,7 @@ export default defineAppConfig({
     },
 
     button: {
-      slots: { base: 'rounded-md font-semibold tracking-[0.01em] transition-[background-color,color]' },
+      slots: { base: 'rounded-lg font-semibold tracking-[0.01em] transition-[background-color,color,box-shadow,transform] duration-200 active:scale-[0.97]' },
     },
     badge: {
       slots: { base: 'rounded-sm font-semibold uppercase tracking-wide text-[11px]' },
@@ -34,12 +34,12 @@ export default defineAppConfig({
       slots: { label: 'text-[13px] font-medium text-muted', help: 'text-xs' },
     },
     card: {
-      slots: { root: 'rounded-lg shadow-tarjeta' },
+      slots: { root: 'rounded-xl shadow-tarjeta' },
       variants: { variant: { outline: { root: 'bg-default ring-0 divide-y divide-default' } } },
     },
     pageCard: {
       slots: {
-        root: 'rounded-lg transition-[box-shadow] duration-200',
+        root: 'rounded-xl transition-[box-shadow,transform] duration-300',
         leadingIcon: 'size-7 stroke-[1.5] text-primary',
         title: 'text-[17px] font-semibold tracking-tight text-highlighted',
         description: 'text-[15px] leading-relaxed text-muted',
@@ -49,7 +49,7 @@ export default defineAppConfig({
           outline: { root: 'bg-default ring-0 shadow-tarjeta' },
           subtle: { root: 'bg-muted ring-0' },
         },
-        to: { true: { root: 'hover:shadow-flotante' } },
+        to: { true: { root: 'hover:shadow-flotante hover:-translate-y-1' } },
       },
     },
     pageHero: {
@@ -80,8 +80,8 @@ export default defineAppConfig({
     },
     modal: {
       slots: {
-        overlay: 'bg-marca-950/40',
-        content: 'rounded-lg shadow-flotante ring-0 divide-y-0',
+        overlay: 'bg-marca-900/25 backdrop-blur-[2px]',
+        content: 'rounded-2xl shadow-flotante ring-0 divide-y-0',
         header: 'px-6 pt-6 pb-2 min-h-0',
         title: 'text-lg font-semibold tracking-tight',
         body: 'px-6 py-4',
@@ -98,12 +98,12 @@ export default defineAppConfig({
       slots: {
         thead: 'border-b border-default',
         th: 'text-xs font-medium uppercase tracking-wide text-dimmed',
-        tbody: 'divide-y divide-default [&>tr]:transition-colors [&>tr:hover]:bg-muted/60',
+        tbody: 'divide-y divide-default [&>tr]:transition-colors [&>tr:hover]:bg-marca-50/60 dark:[&>tr:hover]:bg-white/5',
         td: 'text-sm py-3.5',
       },
     },
     dashboardSidebar: {
-      slots: { root: 'bg-muted border-e border-default', body: 'gap-6' },
+      slots: { root: 'bg-gradient-to-b from-marca-50 to-muted border-e border-default dark:from-marca-950/40', body: 'gap-6' },
     },
     dashboardNavbar: {
       slots: { root: 'bg-default/72 backdrop-blur-xl backdrop-saturate-150 border-b border-default', title: 'text-[17px] tracking-tight' },

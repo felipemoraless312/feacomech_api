@@ -16,7 +16,7 @@
           :collapsed="collapsed"
           orientation="vertical"
           color="neutral"
-          :ui="{ link: 'px-2.5 py-1.5 text-[13px] transition-colors data-active:font-semibold data-active:text-marca-700 data-active:before:bg-marca-50 dark:data-active:text-marca-300 dark:data-active:before:bg-marca-950', linkLeadingIcon: 'group-data-active:text-marca-600', label: 'text-[11px] font-semibold uppercase tracking-wide text-dimmed' }"
+          :ui="{ link: 'px-2.5 py-1.5 text-[13px] transition-colors before:transition-all before:duration-200 hover:before:bg-white/70 data-active:font-semibold data-active:text-marca-700 data-active:before:bg-white data-active:before:shadow-tarjeta data-active:before:ring-1 data-active:before:ring-marca-100 dark:hover:before:bg-white/5 dark:data-active:text-marca-200 dark:data-active:before:bg-marca-900 dark:data-active:before:ring-white/10', linkLeadingIcon: 'transition-transform duration-200 group-hover:scale-110 group-data-active:text-marca-600 dark:group-data-active:text-marca-300', label: 'text-[11px] font-semibold uppercase tracking-wide text-dimmed' }"
           tooltip
           popover
         />
@@ -72,7 +72,7 @@ const OPCIONES: Opcion[][] = [
     { label: 'Mi perfil', icon: 'i-lucide-id-card', to: '/plataforma/cuenta/perfil' },
     { label: 'Notificaciones', icon: 'i-lucide-bell', to: '/plataforma/notificaciones', notificaciones: true },
     { label: 'Seguridad', icon: 'i-lucide-shield-check', to: '/plataforma/cuenta/seguridad' },
-    { label: 'Credencial digital', icon: 'i-lucide-badge-check', proximamente: true },
+    { label: 'Credencial digital', icon: 'i-lucide-badge-check', to: '/plataforma/cuenta/credencial' },
   ],
   [
     { label: 'Administración', type: 'label' },

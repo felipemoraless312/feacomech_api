@@ -29,11 +29,19 @@ export default defineNuxtConfig({
       titleTemplate: '%s · FEACOMECH',
       meta: [
         { name: 'description', content: 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas' },
-        { name: 'theme-color', content: '#402858' },
+        { name: 'theme-color', content: '#f9f7fc' },
+        // Al compartir en redes (cada página puede sobrescribirlos; ver useCompartir).
+        { property: 'og:site_name', content: 'FEACOMECH' },
+        { property: 'og:locale', content: 'es_MX' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        // App instalable en el teléfono (manifest.webmanifest)
+        { name: 'apple-mobile-web-app-title', content: 'FEACOMECH' },
+        { name: 'mobile-web-app-capable', content: 'yes' },
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/manifest.webmanifest' },
       ],
     },
   },
@@ -60,6 +68,11 @@ export default defineNuxtConfig({
       // En producción sólo por HTTPS. En desarrollo se permite HTTP para probar desde un
       // teléfono en la red local; "localhost" ya es seguro.
       cookie: { sameSite: 'lax', secure: process.env.NODE_ENV === 'production' },
+    },
+    public: {
+      // Dirección pública del sitio para enlaces absolutos (imágenes al compartir, sitemap).
+      // NUXT_PUBLIC_URL_PUBLICA; si falta, en el servidor se usa NUXT_URL_PUBLICA (nunca la petición).
+      urlPublica: '',
     },
   },
 
@@ -88,6 +101,12 @@ export default defineNuxtConfig({
         },
       ],
     },
+  },
+
+  // Transición suave entre páginas con la View Transitions API (estilos en main.css).
+  // Los navegadores sin soporte navegan normal; se respeta "reducir movimiento".
+  experimental: {
+    viewTransition: true,
   },
 
   typescript: {

@@ -49,7 +49,11 @@ if (error.value) throw createError({ statusCode: 404, statusMessage: 'Noticia no
 useSeoMeta({
   title: () => n.value?.titulo ?? 'Noticia',
   description: () => n.value?.resumen ?? n.value?.contenido.slice(0, 160),
-  ogTitle: () => n.value?.titulo,
-  ogType: 'article',
+})
+useCompartir({
+  tipo: 'article',
+  titulo: () => n.value?.titulo,
+  descripcion: () => n.value?.resumen ?? n.value?.contenido.slice(0, 200),
+  imagen: () => n.value?.portadaId ? `/api/archivos/${n.value.portadaId}` : null,
 })
 </script>

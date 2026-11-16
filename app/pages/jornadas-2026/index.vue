@@ -436,10 +436,8 @@ const descripcion = `${J.edicion} Jornadas Académicas FEACOMECH y Simposio de D
 useSeoMeta({
   title: titulo,
   description: descripcion,
-  ogTitle: titulo,
-  ogDescription: descripcion,
-  ogImage: '/img/escudo-512.png',
 })
+useCompartir({ titulo, descripcion })
 useHead({
   script: [{
     type: 'application/ld+json',

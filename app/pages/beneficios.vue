@@ -25,7 +25,7 @@
         </article>
       </div>
 
-      <section v-revelar class="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-marca-700 to-marca-950 px-8 py-12 text-white sm:px-12">
+      <section v-revelar class="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-marca-700 via-marca-600 to-marca-500 px-8 py-12 shadow-flotante text-white sm:px-12">
         <MarcaRed class="pointer-events-none absolute -bottom-32 -right-24 -z-10 size-96 text-white/10" />
         <h2 class="max-w-xl font-display text-3xl font-semibold leading-tight">
           ¿Desea sumarse?

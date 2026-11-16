@@ -12,7 +12,7 @@
 
     <!-- ¿Qué desea hacer? — trámites frecuentes, montados sobre la portada -->
     <UContainer class="relative z-10 -mt-10 sm:-mt-14">
-      <div class="overflow-hidden rounded-xl bg-default shadow-flotante ring-1 ring-default">
+      <div v-revelar.escala class="overflow-hidden rounded-2xl bg-default/95 shadow-flotante ring-1 ring-default backdrop-blur">
         <p class="border-b border-default px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.2em] text-marca-700 dark:text-marca-300">
           ¿Qué desea hacer?
         </p>
@@ -23,8 +23,8 @@
             :to="t.to"
             class="group flex items-start gap-4 p-5 transition-colors hover:bg-marca-50 sm:p-6 dark:hover:bg-marca-950/60"
           >
-            <span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-marca-800 text-white transition-colors group-hover:bg-acento-500">
-              <UIcon :name="t.icono" class="size-5" />
+            <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-marca-100 text-marca-700 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-acento-500 group-hover:to-acento-400 group-hover:text-white group-hover:shadow-[0_8px_18px_-6px_rgb(217_106_34/0.6)] dark:bg-marca-900 dark:text-marca-200">
+              <UIcon :name="t.icono" class="icono-salto size-5" />
             </span>
             <span class="min-w-0">
               <span class="flex items-center gap-1 font-display text-[17px] font-semibold leading-tight text-highlighted">
@@ -57,12 +57,12 @@
 
           <template v-if="inicio?.noticias.length">
             <!-- Destacada -->
-            <NuxtLink :to="`/noticias/${destacada!.slug}`" class="group grid overflow-hidden rounded-xl bg-default shadow-tarjeta ring-1 ring-default transition-shadow hover:shadow-flotante sm:grid-cols-[1.1fr_1fr]">
-              <div class="aspect-[16/10] overflow-hidden bg-marca-800 sm:aspect-auto">
+            <NuxtLink :to="`/noticias/${destacada!.slug}`" class="elevar group grid overflow-hidden rounded-2xl bg-default shadow-tarjeta ring-1 ring-default sm:grid-cols-[1.1fr_1fr]">
+              <div class="aspect-[16/10] overflow-hidden bg-gradient-to-br from-marca-100 via-marca-50 to-acento-50 sm:aspect-auto dark:from-marca-900 dark:to-marca-950">
                 <img v-if="destacada!.portadaId" :src="`/api/archivos/${destacada!.portadaId}`" alt="" class="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
                 <div v-else class="relative flex size-full min-h-48 items-center justify-center">
-                  <MarcaRed class="absolute size-72 text-white/10" />
-                  <img src="/img/escudo-160.png" alt="" class="relative h-20 w-auto opacity-90">
+                  <MarcaRed class="girar-lento absolute size-72 text-marca-300/40" />
+                  <img src="/img/escudo-160.png" alt="" class="relative h-20 w-auto transition-transform duration-500 group-hover:scale-110">
                 </div>
               </div>
               <div class="flex flex-col p-6">
@@ -75,7 +75,7 @@
                 <p v-if="destacada!.resumen" class="mt-3 line-clamp-4 text-[15px] leading-relaxed text-muted">
                   {{ destacada!.resumen }}
                 </p>
-                <span class="mt-auto pt-4 text-sm font-semibold text-primary">Leer nota →</span>
+                <span class="mt-auto flex items-center gap-1 pt-4 text-sm font-semibold text-primary">Leer nota <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform group-hover:translate-x-1" /></span>
               </div>
             </NuxtLink>
             <!-- Resto, en lista -->
@@ -107,14 +107,14 @@
           <ul v-if="agenda.length" class="space-y-3">
             <li v-for="a in agenda" :key="a.titulo">
               <component
-                :is="a.to ? resolveComponent('NuxtLink') : 'div'"
+                :is="a.to ? NuxtLink : 'div'"
                 :to="a.to"
                 :target="a.externo ? '_blank' : undefined"
-                class="group flex gap-4 rounded-xl p-3 ring-1 transition-colors"
-                :class="a.destacado ? 'bg-marca-800 text-white ring-marca-800 hover:bg-marca-900' : 'bg-default ring-default hover:bg-muted'"
+                class="elevar group flex gap-4 rounded-xl p-3 ring-1"
+                :class="a.destacado ? 'bg-gradient-to-br from-marca-600 to-marca-500 text-white ring-marca-500' : 'bg-default ring-default hover:bg-marca-50/60'"
               >
                 <span class="w-16 shrink-0 overflow-hidden rounded-lg text-center ring-1" :class="a.destacado ? 'ring-white/20' : 'ring-default'">
-                  <span class="block py-0.5 text-[10px] font-bold uppercase tracking-wider text-white" :class="a.destacado ? 'bg-acento-500' : 'bg-marca-700'">{{ a.mes }}</span>
+                  <span class="block py-0.5 text-[10px] font-bold uppercase tracking-wider text-white" :class="a.destacado ? 'bg-acento-500' : 'bg-marca-500'">{{ a.mes }}</span>
                   <span class="block py-1.5 font-display text-2xl font-bold leading-none" :class="a.destacado ? 'text-white' : 'text-highlighted'">{{ a.dia }}</span>
                 </span>
                 <span class="min-w-0 self-center">
@@ -141,9 +141,9 @@
     <section class="relative isolate overflow-hidden bg-marca-50 py-16 sm:py-20 dark:bg-marca-950/50">
       <MarcaRed class="pointer-events-none absolute -right-32 -top-32 -z-10 size-[32rem] text-marca-300/40 dark:text-marca-800/40" />
       <UContainer class="grid items-center gap-10 lg:grid-cols-[auto_1fr]">
-        <div v-revelar class="mx-auto flex flex-col items-center text-center lg:mx-0">
+        <div v-revelar.izquierda class="mx-auto flex flex-col items-center text-center lg:mx-0">
           <div class="relative">
-            <div class="absolute inset-0 translate-x-3 translate-y-3 rounded-full border-2 border-acento-500" aria-hidden="true" />
+            <div class="girar-lento absolute -inset-3 rounded-full border-2 border-dashed border-acento-400/70" aria-hidden="true" />
             <img :src="BIENVENIDA.foto" :alt="BIENVENIDA.autora" width="176" height="176" loading="lazy" class="relative size-44 rounded-full bg-marca-100 object-cover ring-8 ring-white dark:ring-marca-950">
           </div>
           <p class="mt-6 font-display text-xl font-bold text-highlighted">
@@ -169,8 +169,9 @@
     </section>
 
     <!-- Colegios agremiados -->
-    <section class="relative isolate overflow-hidden bg-marca-900 text-white">
-      <MarcaRed class="pointer-events-none absolute -right-40 -top-40 -z-10 size-[36rem] text-white/[0.06]" />
+    <section class="relative isolate overflow-hidden bg-gradient-to-br from-marca-700 via-marca-600 to-marca-500 text-white">
+      <div class="aurora [--aurora-1:var(--color-marca-400)] [--aurora-2:var(--color-acento-400)] [--aurora-opacidad:0.45]" />
+      <MarcaRed class="girar-lento pointer-events-none absolute -right-40 -top-40 -z-10 size-[36rem] text-white/[0.09]" />
       <UContainer class="grid gap-10 py-16 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:items-center">
         <div v-revelar>
           <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-acento-300">
@@ -179,31 +180,31 @@
           <h2 class="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">
             Una red de colegios y asociaciones de la salud en todo Chiapas
           </h2>
-          <p class="mt-4 max-w-lg text-white/75">
+          <p class="mt-4 max-w-lg text-white/85">
             Consulte cada colegio, su mesa directiva y sus datos de contacto, sitio web y redes sociales.
           </p>
           <form class="mt-7 flex max-w-md gap-2" @submit.prevent="navigateTo({ path: '/directorio', query: busqueda ? { q: busqueda } : {} })">
             <UInput v-model="busqueda" icon="i-lucide-search" placeholder="Buscar colegio o especialidad" class="flex-1" :ui="{ base: 'bg-white text-gris-900 placeholder:text-gris-500' }" />
-            <UButton type="submit" label="Buscar" class="bg-acento-500 text-white hover:bg-acento-600" />
+            <UButton type="submit" label="Buscar" class="bg-acento-500 text-white shadow-lg hover:bg-acento-600" />
           </form>
         </div>
-        <dl class="grid grid-cols-3 gap-px overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/10">
-          <div v-for="c in cifrasColegios" :key="c.etiqueta" v-revelar class="bg-marca-900 p-5 text-center sm:p-7">
+        <dl class="grid grid-cols-3 gap-3">
+          <div v-for="(c, i) in cifrasColegios" :key="c.etiqueta" v-revelar.escala="i * 90" class="rounded-2xl bg-white/10 p-5 text-center ring-1 ring-white/20 backdrop-blur-md transition-colors hover:bg-white/15 sm:p-7">
             <dd class="font-display text-4xl font-bold text-white sm:text-5xl">
               <SitioContador :valor="c.valor" />
             </dd>
-            <dt class="mt-2 text-xs leading-snug text-white/65 sm:text-sm">
+            <dt class="mt-2 text-xs leading-snug text-white/80 sm:text-sm">
               {{ c.etiqueta }}
             </dt>
           </div>
         </dl>
       </UContainer>
       <!-- Cinta de colegios -->
-      <div class="overflow-hidden border-t border-white/10 bg-marca-950/60 py-3.5">
+      <div class="overflow-hidden border-t border-white/15 bg-marca-900/25 py-3.5">
         <div class="franja flex w-max gap-10" style="--duracion: 240s">
           <template v-for="copia in 2" :key="copia">
-            <span v-for="c in JORNADAS_2026.colegios" :key="`${copia}-${c}`" class="flex items-center gap-10 whitespace-nowrap font-display text-sm font-semibold uppercase tracking-[0.12em] text-white/80" :aria-hidden="copia === 2">
-              {{ c }}<span class="size-1.5 rotate-45 bg-acento-400" />
+            <span v-for="c in JORNADAS_2026.colegios" :key="`${copia}-${c}`" class="flex items-center gap-10 whitespace-nowrap font-display text-sm font-semibold uppercase tracking-[0.12em] text-white/90" :aria-hidden="copia === 2">
+              {{ c }}<span class="size-1.5 rotate-45 bg-acento-300" />
             </span>
           </template>
         </div>
@@ -221,12 +222,15 @@
             Lo que la Federación hace por usted
           </h2>
         </div>
-        <UButton to="/admision" label="Cómo afiliarse" trailing-icon="i-lucide-arrow-right" class="bg-acento-500 text-white hover:bg-acento-600" />
+        <UButton to="/admision" label="Cómo afiliarse" trailing-icon="i-lucide-arrow-right" class="rounded-full bg-acento-500 px-4 text-white shadow-[0_8px_20px_-8px_rgb(217_106_34/0.7)] hover:bg-acento-600" />
       </div>
-      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        <div v-for="(b, i) in BENEFICIOS" :key="b.titulo" v-revelar="i * 70" class="border-t-2 border-marca-800 pt-5 dark:border-marca-400">
-          <UIcon :name="b.icono" class="size-7 text-acento-500" />
-          <h3 class="mt-3 font-display text-lg font-bold text-highlighted">
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div v-for="(b, i) in BENEFICIOS" :key="b.titulo" v-revelar="i * 80" class="elevar group relative overflow-hidden rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
+          <div class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-marca-500 to-acento-400 transition-transform duration-500 group-hover:scale-x-100" />
+          <span class="flex size-12 items-center justify-center rounded-xl bg-acento-50 text-acento-600 transition-colors duration-300 group-hover:bg-acento-500 group-hover:text-white dark:bg-acento-950">
+            <UIcon :name="b.icono" class="icono-salto size-6" />
+          </span>
+          <h3 class="mt-4 font-display text-lg font-bold text-highlighted">
             {{ b.titulo }}
           </h3>
           <p class="mt-1.5 text-sm leading-relaxed text-muted">
@@ -237,7 +241,7 @@
     </UContainer>
 
     <!-- Historial de actividades -->
-    <section v-if="actividades.length" class="bg-muted/70 py-16 sm:py-20">
+    <section v-if="actividades.length" class="bg-muted py-16 sm:py-20">
       <UContainer class="space-y-8">
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div v-revelar>
@@ -273,7 +277,7 @@
     </UContainer>
 
     <!-- Censo médico (sólo cifras agregadas, y sólo con datos suficientes) -->
-    <section v-if="mostrarCenso" class="bg-muted/70 py-16 sm:py-20">
+    <section v-if="mostrarCenso" class="bg-muted py-16 sm:py-20">
       <UContainer class="space-y-10">
         <div v-revelar class="max-w-2xl space-y-3">
           <p class="rotulo">
@@ -288,10 +292,10 @@
           </p>
         </div>
         <div class="grid gap-6 lg:grid-cols-2">
-          <div v-revelar class="rounded-xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
+          <div v-revelar.izquierda class="rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
             <GraficaBarras :barras="censo!.porRegion" titulo="Por región" />
           </div>
-          <div v-revelar="80" class="rounded-xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
+          <div v-revelar.derecha="80" class="rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
             <GraficaBarras :barras="censo!.porEspecialidad" titulo="Por especialidad" />
           </div>
         </div>
@@ -336,6 +340,7 @@ import type { NoticiaPublica } from '~~/server/services/noticias'
 import type { EventoPublico } from '~~/server/services/eventos'
 
 useSeoMeta({ title: 'Inicio', description: 'Federación de Asociaciones y Colegios Médicos del Estado de Chiapas' })
+useCompartir({ titulo: 'FEACOMECH · Federación de Asociaciones y Colegios Médicos del Estado de Chiapas', descripcion: 'Por la dignificación y unión profesional. Colegios agremiados, noticias, eventos académicos y constancias.' })
 
 const { data: institucion } = await useInstitucion()
 
@@ -356,6 +361,8 @@ const { data: inicio } = await useFetch<Inicio>('/api/publico/inicio')
 // El censo se carga en el navegador, después de lo principal.
 const { data: censo } = useFetch<CensoPublico>('/api/publico/censo', { lazy: true, server: false })
 
+// Se resuelve aquí: llamado dentro de la plantilla, Vue no lo encuentra al renderizar en el servidor.
+const NuxtLink = resolveComponent('NuxtLink')
 const portada = computed(() => inicio.value?.portada)
 const destacada = computed(() => inicio.value?.noticias[0])
 const busqueda = ref('')

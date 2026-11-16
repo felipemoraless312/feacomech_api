@@ -3,9 +3,9 @@
      tarjeta al centro. -->
 <template>
   <div class="grid min-h-svh lg:grid-cols-[1.1fr_1fr]">
-    <aside class="relative isolate hidden overflow-hidden bg-gradient-to-br from-marca-800 to-marca-950 lg:block">
-      <img src="/img/jornadas-2025-1280.webp" alt="" aria-hidden="true" class="absolute inset-0 -z-20 size-full object-cover opacity-35">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-marca-950 via-marca-900/80 to-marca-800/50" />
+    <aside class="relative isolate hidden overflow-hidden bg-gradient-to-br from-marca-600 to-marca-800 lg:block">
+      <img src="/img/jornadas-2025-1280.webp" alt="" aria-hidden="true" class="acercamiento absolute inset-0 -z-20 size-full object-cover opacity-45">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-marca-800/95 via-marca-600/70 to-marca-400/30" />
       <MarcaRed class="girar-lento pointer-events-none absolute -bottom-48 -left-40 -z-10 size-[40rem] text-white/10" />
       <div class="flex h-full flex-col justify-between p-12 text-white">
         <NuxtLink to="/" aria-label="Ir al portal público" class="w-fit">
@@ -25,7 +25,7 @@
       </div>
     </aside>
 
-    <div class="relative isolate flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-marca-700 to-marca-950 px-4 py-12 lg:bg-none lg:bg-muted">
+    <div class="relative isolate flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-marca-600 via-marca-500 to-acento-400 px-4 py-12 lg:bg-none lg:bg-muted">
       <MarcaRed class="pointer-events-none absolute -right-32 -top-32 -z-10 size-96 text-white/10 lg:hidden" />
       <div class="entrada w-full max-w-[400px]">
         <NuxtLink to="/" class="mb-8 flex justify-center lg:hidden" aria-label="Ir al portal público">

@@ -1,5 +1,6 @@
 // Directiva v-revelar: el elemento aparece suavemente al entrar en pantalla.
 //   <div v-revelar>…</div>        <div v-revelar="120">…</div>  (retraso en ms)
+//   Variantes: v-revelar.escala, v-revelar.izquierda, v-revelar.derecha (por defecto, de abajo).
 // En el servidor no hace nada: el contenido se entrega visible (buscadores, sin JavaScript).
 // En el cliente sólo oculta lo que todavía está fuera de pantalla, así no parpadea lo que
 // ya se ve. Con "reducir movimiento" no se aplica.
@@ -12,6 +13,14 @@ function mostrar(el: Element) {
   el.classList.remove('revelar-oculto')
   el.classList.add('revelar-visible')
   observador?.unobserve(el)
+  // Al terminar la aparición se retira la clase para no pisar las transiciones propias del
+  // elemento (elevación al pasar el cursor, etc.).
+  const fin = (e: Event) => {
+    if (e.target !== el || (e as TransitionEvent).propertyName !== 'opacity') return
+    el.classList.remove('revelar-visible')
+    el.removeEventListener('transitionend', fin)
+  }
+  el.addEventListener('transitionend', fin)
 }
 
 // Red de seguridad: si el visitante baja muy rápido (o salta con un enlace del menú), el
@@ -39,10 +48,12 @@ function obtenerObservador() {
 
 const revelar: Directive<HTMLElement, number | undefined> = {
   getSSRProps: () => ({}),
-  mounted(el, { value }) {
+  mounted(el, { value, modifiers }) {
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return // ya visible
     if (value) el.style.setProperty('--retraso', `${value}ms`)
+    const variante = (['escala', 'izquierda', 'derecha'] as const).find(v => modifiers[v])
+    if (variante) el.dataset.revelar = variante
     el.classList.add('revelar-oculto')
     obtenerObservador().observe(el)
   },
