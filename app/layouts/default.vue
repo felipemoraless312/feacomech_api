@@ -128,9 +128,15 @@
 
       <UContainer class="flex flex-wrap items-center justify-between gap-3 border-t border-default py-5 text-xs text-dimmed">
         <span>© {{ new Date().getFullYear() }} {{ institucion?.siglas ?? 'FEACOMECH' }}<template v-if="contacto"> · {{ contacto }}</template></span>
-        <NuxtLink to="/aviso-de-privacidad" class="hover:text-muted">
-          Aviso de privacidad
-        </NuxtLink>
+        <span class="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <NuxtLink to="/desarrollo" class="group inline-flex items-center gap-1 hover:text-muted">
+            <UIcon name="i-lucide-code-xml" class="size-3.5 transition-colors group-hover:text-acento-500" />
+            Desarrollo web: Ing. Luis Felipe Morales
+          </NuxtLink>
+          <NuxtLink to="/aviso-de-privacidad" class="hover:text-muted">
+            Aviso de privacidad
+          </NuxtLink>
+        </span>
       </UContainer>
     </footer>
 

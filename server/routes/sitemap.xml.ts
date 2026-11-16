@@ -7,7 +7,7 @@ const FIJAS = [
   '/', '/organizacion', '/expresidentes', '/admision', '/beneficios', '/directorio',
   '/directorio/mesa-directiva', '/directorio/consejo-consultivo', '/directorio/profesionales',
   '/vinculacion', '/noticias', '/eventos', '/documentos', '/constancias', '/contacto',
-  '/jornadas-2026', '/aviso-de-privacidad',
+  '/jornadas-2026', '/aviso-de-privacidad', '/desarrollo',
 ]
 
 const escapar = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
