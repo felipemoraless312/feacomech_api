@@ -10,17 +10,18 @@
       <article class="relative isolate mx-auto max-w-6xl overflow-hidden rounded-3xl bg-gradient-to-br from-marca-50 via-default to-acento-50 p-6 shadow-flotante ring-1 ring-default sm:p-10 lg:p-14 dark:from-marca-950 dark:via-default dark:to-marca-950">
         <MarcaRed class="girar-lento pointer-events-none absolute -right-40 -top-40 -z-10 size-[34rem] text-marca-200/50 dark:text-white/5" />
 
-        <div class="grid items-center gap-10 lg:grid-cols-[auto_1fr] lg:gap-16">
+        <!-- En pantallas grandes la foto flota a la izquierda, alineada con el rótulo, y el texto
+             la rodea (sin huecos debajo de la foto). En el celular, todo apilado y centrado. -->
+        <div class="flow-root">
           <SitioRetratoInstitucional
             v-revelar.izquierda
             :src="d.retrato"
             :recorte="d.recorte"
             :alt="`Fotografía de ${d.nombre}`"
-            class="!max-w-80 sm:w-80 lg:w-96 lg:!max-w-96"
+            class="mb-10 !max-w-80 sm:w-80 lg:float-left lg:mb-6 lg:mr-14 lg:w-80"
           />
 
-          <!-- En el celular todo va centrado; en pantallas grandes, alineado a la izquierda -->
-          <div v-revelar="80" class="min-w-0 text-center lg:text-left">
+          <div v-revelar="80" class="text-center lg:text-left">
             <p class="rotulo">
               Diseño y desarrollo web
             </p>

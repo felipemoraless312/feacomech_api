@@ -12,7 +12,7 @@ export const DESARROLLADOR = {
   resumen: [
     'Ingeniero biomédico y CEO de Numma, empresa de tecnología clínica y telecomunicaciones. Su trabajo se distingue por unir la ingeniería biomédica, el desarrollo de software y la infraestructura tecnológica en soluciones que acercan la tecnología a la atención de la salud.',
     'Es ingeniero biomédico por la Universidad Politécnica de Chiapas. Cuenta con experiencia en infraestructura y arquitectura de redes, cableado estructurado certificado y sistemas de videovigilancia IP para sedes corporativas, así como en el mantenimiento de equipo médico crítico en entornos hospitalarios. Tiene además experiencia docente a nivel licenciatura en ingeniería biomédica y tecnología.',
-    'Al frente de Numma desarrolla plataformas de gestión clínica y administrativa para consultorios, clínicas, hospitales e instituciones, entre ellas expediente clínico electrónico, facturación electrónica y control de accesos, y ofrece un servicio integral que abarca la asesoría, la instalación, el mantenimiento y el soporte técnico.',
+    'Al frente de Numma desarrolla plataformas de gestión clínica y administrativa para consultorios, clínicas, hospitales e instituciones, entre ellas expediente clínico electrónico, facturación electrónica y control de accesos. Trabaja con protocolos de interoperabilidad clínica HL7 y en la migración e integración de datos de equipos médicos a plataformas digitales, y ofrece un servicio integral que abarca la asesoría, la instalación, el mantenimiento y el soporte técnico.',
     'Es creador del maletín de telesalud BioKit Rural, desarrolló la plataforma de registro de la Carrera del Día del Médico en Chiapas y participa en campañas de mastografía en conjunto con CEPREC. Para la FEACOMECH diseñó y desarrolló el portal institucional y la plataforma de afiliados, incluida la infraestructura y la seguridad del servidor que la aloja.',
   ],
   /** Áreas en las que desarrolla tecnología (a partir del catálogo de Numma y su experiencia). */
@@ -34,8 +34,8 @@ export const DESARROLLADOR = {
     },
     {
       icono: 'i-lucide-heart-pulse',
-      titulo: 'Ingeniería biomédica',
-      texto: 'Mantenimiento de equipo médico crítico, telesalud para zonas rurales y software para el procesamiento y análisis de imágenes biomédicas.',
+      titulo: 'Ingeniería biomédica e interoperabilidad',
+      texto: 'Protocolos HL7 y migración de datos de equipos médicos a plataformas digitales; mantenimiento de equipo médico crítico, telesalud para zonas rurales y procesamiento de imágenes biomédicas.',
     },
   ],
   /** Proyectos destacados, con enlace a una fuente cuando la hay. */
