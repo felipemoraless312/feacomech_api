@@ -1,5 +1,5 @@
-<!-- Alta y edición de usuarios (identidad y roles). Los datos profesionales los captura
-     cada usuario en "Mi perfil". -->
+<!-- Alta y edición de usuarios (identidad, profesión y roles). Los demás datos profesionales
+     los captura cada usuario en "Mi perfil". -->
 <template>
   <UForm ref="form" :schema="usuarioAdminSchema" :state="estado" class="space-y-6" @submit="guardar">
     <div class="grid gap-4 sm:grid-cols-2">
@@ -14,6 +14,15 @@
       </UFormField>
       <UFormField label="Teléfono" name="telefono">
         <UInput v-model="estado.telefono" type="tel" class="w-full" />
+      </UFormField>
+      <UFormField label="Profesión" name="profesion" class="sm:col-span-2" help="Elija una de la lista o escriba otra.">
+        <UInputMenu
+          v-model="estado.profesion"
+          :items="PROFESIONES"
+          mode="autocomplete"
+          placeholder="Ej. Médico cirujano, Ingeniería biomédica…"
+          class="w-full"
+        />
       </UFormField>
       <UFormField label="Correo electrónico" name="email" required class="sm:col-span-2" :help="usuario ? undefined : 'Recibirá un enlace para activar su cuenta y definir su contraseña.'">
         <UInput v-model="estado.email" type="email" class="w-full" />
@@ -61,6 +70,7 @@
 <script setup lang="ts">
 import type { Form } from '@nuxt/ui'
 import { ROL_SUPERADMIN } from '#shared/permisos'
+import { PROFESIONES } from '#shared/profesiones'
 import type { EstadoFormulario } from '#shared/schemas/comunes'
 import { usuarioAdminSchema, type UsuarioAdminInput } from '#shared/schemas/usuario'
 import type { UsuarioDto } from '~~/server/services/usuarios'
@@ -79,6 +89,7 @@ const estado = reactive<EstadoFormulario<UsuarioAdminInput>>({
   nombre: props.usuario?.nombre ?? '',
   apellidoPaterno: props.usuario?.apellidoPaterno ?? '',
   apellidoMaterno: props.usuario?.apellidoMaterno ?? '',
+  profesion: props.usuario?.profesion ?? '',
   telefono: props.usuario?.telefono ?? '',
   rolIds: props.usuario?.roles.map(r => r.id) ?? [],
 })

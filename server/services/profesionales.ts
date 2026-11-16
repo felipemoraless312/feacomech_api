@@ -46,7 +46,7 @@ export async function listarProfesionales(q: z.output<typeof profesionalesQuery>
       skip: (q.pagina - 1) * q.porPagina,
       take: q.porPagina,
       select: {
-        id: true, nombre: true, apellidoPaterno: true, apellidoMaterno: true, email: true, telefono: true, activo: true, creadoEn: true,
+        id: true, nombre: true, apellidoPaterno: true, apellidoMaterno: true, profesion: true, email: true, telefono: true, activo: true, creadoEn: true,
         perfil: {
           select: {
             fotoId: true, cedulaProfesional: true, cedulaEspecialidad: true, estadoValidacion: true, validadoEn: true, motivoRechazo: true,

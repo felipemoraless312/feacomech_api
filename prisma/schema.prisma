@@ -221,6 +221,8 @@ model Usuario {
   nombre              String
   apellidoPaterno     String
   apellidoMaterno     String?
+  /// Profesión (médico cirujano, enfermería, odontología…). La asigna la Federación.
+  profesion           String?
   telefono            String?
   activo              Boolean   @default(true)
   versionSesion       Int       @default(0) // incrementar = invalidar sesiones abiertas

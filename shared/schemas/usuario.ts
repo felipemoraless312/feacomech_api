@@ -8,6 +8,8 @@ export const usuarioAdminSchema = z.object({
   nombre: requerido(80),
   apellidoPaterno: requerido(80),
   apellidoMaterno: opcional(80),
+  /** Profesión del integrante (texto libre con sugerencias). */
+  profesion: opcional(80),
   telefono,
   rolIds: z.array(z.uuid()).max(20).default([]),
 })

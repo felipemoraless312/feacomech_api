@@ -155,9 +155,16 @@ const columnas: TableColumn<UsuarioDto>[] = [
       : h('span', { class: 'text-dimmed' }, 'Sin roles'),
   },
   {
-    id: 'especialidad',
-    header: 'Especialidad',
-    cell: ({ row }) => row.original.especialidad ?? h('span', { class: 'text-dimmed' }, '—'),
+    id: 'profesion',
+    header: 'Profesión',
+    cell: ({ row }) => {
+      const { profesion, especialidad } = row.original
+      if (!profesion && !especialidad) return h('span', { class: 'text-dimmed' }, '—')
+      return h('div', { class: 'min-w-0' }, [
+        h('p', { class: profesion ? 'text-highlighted' : 'text-dimmed' }, profesion ?? 'Sin profesión'),
+        especialidad ? h('p', { class: 'text-xs text-muted' }, especialidad) : null,
+      ])
+    },
   },
   {
     accessorKey: 'ultimoAcceso',

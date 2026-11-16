@@ -12,12 +12,16 @@
           <UDropdownMenu :items="opcionesFoto" :content="{ align: 'start' }">
             <UButton icon="i-lucide-camera" size="xs" color="neutral" variant="solid" class="absolute -bottom-1 -right-1 rounded-full ring-2 ring-default" :loading="subiendo" aria-label="Cambiar foto" />
           </UDropdownMenu>
-          <input ref="selectorFoto" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="subirFoto">
+          <input ref="selectorFoto" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="elegirFoto">
+          <RecortadorFoto v-model:open="recortando" :archivo="fotoElegida" @listo="subirFoto" />
         </div>
         <div class="min-w-0 space-y-1">
           <h1 class="font-display text-2xl font-semibold tracking-tight text-highlighted sm:text-3xl">
             {{ nombreCompleto(cuenta) }}
           </h1>
+          <p v-if="cuenta.profesion" class="font-medium text-toned">
+            {{ cuenta.profesion }}
+          </p>
           <p class="text-muted">
             {{ cuenta.email }}
           </p>
@@ -31,13 +35,14 @@
         <GrupoDatos titulo="Datos personales">
           <FilaDato etiqueta="Nombre" :valor="nombreCompleto(cuenta)" />
           <FilaDato etiqueta="Correo" :valor="cuenta.email" />
+          <FilaDato etiqueta="Profesión" :valor="cuenta.profesion" />
           <div class="px-5 py-4">
             <UFormField label="Teléfono de contacto" name="telefono">
               <UInput v-model="estado.telefono" type="tel" autocomplete="tel" class="w-full sm:max-w-xs" />
             </UFormField>
           </div>
           <p class="px-5 py-3 text-xs text-dimmed">
-            Para corregir su nombre o correo, comuníquese con la Federación.
+            Para corregir su nombre, correo o profesión, comuníquese con la Federación.
           </p>
         </GrupoDatos>
 
@@ -212,26 +217,53 @@ async function guardar() {
   }
 }
 
-// --- Foto
+// --- Foto: se elige, se recorta en el navegador y se sube ya encuadrada.
 const selectorFoto = useTemplateRef<HTMLInputElement>('selectorFoto')
 const subiendo = ref(false)
+const recortando = ref(false)
+const fotoElegida = shallowRef<Blob | null>(null)
+const MAX_ORIGINAL = 25 * 1024 * 1024 // la foto original puede ser grande: lo que se sube es el recorte
 
 const opcionesFoto = computed<DropdownMenuItem[][]>(() => [
-  [{ label: cuenta.value?.perfil?.fotoId ? 'Cambiar foto' : 'Subir foto', icon: 'i-lucide-upload', onSelect: () => selectorFoto.value?.click() }],
+  [
+    { label: cuenta.value?.perfil?.fotoId ? 'Cambiar foto' : 'Subir foto', icon: 'i-lucide-upload', onSelect: () => selectorFoto.value?.click() },
+    ...(cuenta.value?.perfil?.fotoId ? [{ label: 'Ajustar foto actual', icon: 'i-lucide-crop', onSelect: ajustarActual }] : []),
+  ],
   ...(cuenta.value?.perfil?.fotoId ? [[{ label: 'Quitar foto', icon: 'i-lucide-trash-2', color: 'error' as const, onSelect: quitarFoto }]] : []),
 ])
 
-async function subirFoto(e: Event) {
+function elegirFoto(e: Event) {
   const input = e.target as HTMLInputElement
   const archivo = input.files?.[0]
   input.value = ''
   if (!archivo) return
-  if (archivo.size > 3 * 1024 * 1024) {
-    toast.add({ title: 'La foto supera el máximo de 3 MB', color: 'error', icon: 'i-lucide-circle-alert' })
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(archivo.type)) {
+    toast.add({ title: 'Elija una imagen JPG, PNG o WebP', color: 'error', icon: 'i-lucide-circle-alert' })
     return
   }
+  if (archivo.size > MAX_ORIGINAL) {
+    toast.add({ title: 'La imagen es demasiado grande (máx. 25 MB)', color: 'error', icon: 'i-lucide-circle-alert' })
+    return
+  }
+  fotoElegida.value = archivo
+  recortando.value = true
+}
+
+async function ajustarActual() {
+  const id = cuenta.value?.perfil?.fotoId
+  if (!id) return
+  try {
+    fotoElegida.value = await $fetch<Blob>(`/api/archivos/${id}`, { responseType: 'blob' })
+    recortando.value = true
+  }
+  catch {
+    toast.add({ title: 'No se pudo cargar la foto actual', color: 'error', icon: 'i-lucide-circle-alert' })
+  }
+}
+
+async function subirFoto(foto: File) {
   const datos = new FormData()
-  datos.append('foto', archivo)
+  datos.append('foto', foto)
   subiendo.value = true
   try {
     cuenta.value = await api<MiCuentaDto>('/api/cuenta/foto', { method: 'POST', body: datos })

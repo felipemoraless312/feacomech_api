@@ -37,6 +37,7 @@ export async function obtenerMiCuenta(usuarioId: string) {
       nombre: true,
       apellidoPaterno: true,
       apellidoMaterno: true,
+      profesion: true,
       telefono: true,
       creadoEn: true,
       perfil: { select: SELECT_PERFIL },

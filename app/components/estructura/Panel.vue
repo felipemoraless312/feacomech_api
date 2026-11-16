@@ -55,7 +55,8 @@
           </li>
         </ul>
       </div>
-      <input ref="selectorFoto" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="subirFoto">
+      <input ref="selectorFoto" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="alElegirFoto">
+      <RecortadorFoto v-model:open="recortando" :archivo="fotoElegida" @listo="subirFoto" />
     </div>
 
     <!-- Periodos -->
@@ -213,11 +214,17 @@ function elegirFoto(id: string) {
   fotoPara.value = id
   selectorFoto.value?.click()
 }
-async function subirFoto(e: Event) {
+const recortando = ref(false)
+const fotoElegida = shallowRef<Blob | null>(null)
+function alElegirFoto(e: Event) {
   const input = e.target as HTMLInputElement
   const archivo = input.files?.[0]
   input.value = ''
   if (!archivo) return
+  fotoElegida.value = archivo
+  recortando.value = true
+}
+async function subirFoto(archivo: File) {
   const datosForm = new FormData()
   datosForm.append('foto', archivo)
   try {

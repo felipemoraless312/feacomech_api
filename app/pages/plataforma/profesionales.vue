@@ -21,7 +21,7 @@
               {{ nombreCompleto(p) }}
             </p>
             <p class="text-sm text-muted">
-              {{ [p.perfil?.especialidad?.nombre, p.perfil?.subespecialidad?.nombre].filter(Boolean).join(' · ') || 'Sin especialidad' }}
+              {{ [p.profesion, p.perfil?.especialidad?.nombre, p.perfil?.subespecialidad?.nombre].filter(Boolean).join(' · ') || 'Sin especialidad' }}
               <template v-if="p.perfil?.cedulaProfesional">
                 · Céd. {{ p.perfil.cedulaProfesional }}
               </template>
@@ -61,6 +61,7 @@
             {{ nombreCompleto(seleccion) }}
           </p>
           <GrupoDatos>
+            <FilaDato etiqueta="Profesión" :valor="seleccion.profesion" />
             <FilaDato etiqueta="Cédula profesional" :valor="seleccion.perfil?.cedulaProfesional" />
             <FilaDato etiqueta="Especialidad" :valor="seleccion.perfil?.especialidad?.nombre" />
             <FilaDato etiqueta="Subespecialidad" :valor="seleccion.perfil?.subespecialidad?.nombre" />
