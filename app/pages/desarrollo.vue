@@ -95,53 +95,33 @@
         </div>
       </section>
 
-      <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.3fr_1fr]">
-        <!-- Proyectos destacados -->
-        <section class="space-y-6">
-          <h2 v-revelar class="text-center font-display text-2xl font-bold tracking-tight text-highlighted lg:text-left">
-            Proyectos destacados
-          </h2>
-          <ul class="divide-y divide-default overflow-hidden rounded-2xl bg-default shadow-tarjeta ring-1 ring-default">
-            <li v-for="p in d.proyectos" :key="p.titulo" class="flex gap-4 px-5 py-4">
-              <UIcon name="i-lucide-circle-check-big" class="mt-0.5 size-5 shrink-0 text-acento-500" />
-              <div class="min-w-0">
-                <p class="font-semibold leading-snug text-highlighted">
-                  {{ p.titulo }}
-                </p>
-                <p class="mt-0.5 text-sm leading-relaxed text-muted">
-                  {{ p.texto }}
-                </p>
-                <a v-if="'enlace' in p" :href="p.enlace" target="_blank" rel="noopener" class="mt-1 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-                  Nota en {{ p.fuente }} <UIcon name="i-lucide-arrow-up-right" class="size-3.5" />
-                </a>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Trayectoria -->
-        <section class="space-y-6">
-          <h2 v-revelar class="text-center font-display text-2xl font-bold tracking-tight text-highlighted lg:text-left">
-            Trayectoria
-          </h2>
-          <ol class="space-y-5 border-s-2 border-marca-200 ps-6 dark:border-marca-800">
-            <li v-for="t in d.trayectoria" :key="t.cargo + t.lugar" class="relative">
-              <span class="absolute -start-[1.95rem] top-1.5 size-3.5 rounded-full bg-default ring-4 ring-marca-500/30" aria-hidden="true">
-                <span class="absolute inset-[3px] rounded-full bg-marca-600 dark:bg-marca-300" />
-              </span>
-              <p class="text-xs font-semibold uppercase tracking-wide text-acento-600 dark:text-acento-400">
-                {{ t.periodo }}
-              </p>
+      <!-- Proyectos destacados -->
+      <section class="mx-auto max-w-6xl space-y-6">
+        <h2 v-revelar class="text-center font-display text-3xl font-bold tracking-tight text-highlighted lg:text-left">
+          Proyectos destacados
+        </h2>
+        <ul class="grid gap-4 sm:grid-cols-2">
+          <li
+            v-for="(p, n) in d.proyectos"
+            :key="p.titulo"
+            v-revelar="(n % 2) * 80"
+            class="flex gap-4 rounded-2xl bg-default p-5 shadow-tarjeta ring-1 ring-default"
+          >
+            <UIcon name="i-lucide-circle-check-big" class="mt-0.5 size-5 shrink-0 text-acento-500" />
+            <div class="min-w-0">
               <p class="font-semibold leading-snug text-highlighted">
-                {{ t.cargo }}
+                {{ p.titulo }}
               </p>
-              <p class="text-sm text-muted">
-                {{ t.lugar }}
+              <p class="mt-1 text-sm leading-relaxed text-muted">
+                {{ p.texto }}
               </p>
-            </li>
-          </ol>
-        </section>
-      </div>
+              <a v-if="'enlace' in p" :href="p.enlace" target="_blank" rel="noopener" class="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                Nota en {{ p.fuente }} <UIcon name="i-lucide-arrow-up-right" class="size-3.5" />
+              </a>
+            </div>
+          </li>
+        </ul>
+      </section>
     </UContainer>
   </div>
 </template>
