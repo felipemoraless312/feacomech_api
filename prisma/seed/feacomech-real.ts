@@ -11,6 +11,9 @@
 //  [N] Notinúcleo, 14 ene 2021 — «Congreso firma convenio con Federación de Asociaciones y Colegios Médicos»
 //  [F] Página oficial de Facebook: facebook.com/feacomech (Tuxtla Gutiérrez; feacomechiapas@gmail.com)
 import 'dotenv/config'
+import { createHash, randomUUID } from 'node:crypto'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { dirname, join, resolve } from 'node:path'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../../server/generated/prisma/client'
 import { JORNADAS_2026 as J } from '../../shared/jornadas2026'
@@ -345,6 +348,56 @@ async function jornadas2026(dermatologia: { id: string }) {
   console.log(`  Evento: Jornadas 2026 (${programa.length} actividades, ${ponentes.length} ponentes).`)
 }
 
+/**
+ * Portadas de las noticias que aún no tienen foto (prisma/seed/imagenes/noticias/<slug>.jpg).
+ * Nunca reemplaza una portada subida desde la plataforma. Se guardan en el almacén igual que
+ * una subida normal (disco o base, según NUXT_ALMACEN) y el crédito se agrega al texto.
+ * Fotos de prensa con crédito al medio; las ilustrativas son de Pexels (licencia libre).
+ */
+const PORTADAS_NOTICIAS: { slug: string, credito: string }[] = [
+  { slug: 'simposio-de-dermatologia-en-tuxtla', credito: 'Foto: Sie7e de Chiapas.' },
+  { slug: 'convenio-con-el-congreso-del-estado-de-chiapas', credito: 'Foto: Notinúcleo.' },
+  { slug: 'programa-me-emociona-tu-salud-en-tuxtla', credito: 'Imagen ilustrativa: Pexels (licencia libre).' },
+  { slug: 'la-federacion-pide-alto-a-la-criminalizacion-del-acto-medico', credito: 'Imagen ilustrativa: Pexels (licencia libre).' },
+  { slug: 'la-federacion-pide-reconsiderar-la-reapertura-durante-la-pandemia', credito: 'Imagen ilustrativa: Pexels (licencia libre).' },
+]
+
+async function portadasNoticias() {
+  const enBase = process.env.NUXT_ALMACEN === 'db' || (!process.env.NUXT_ALMACEN && !!process.env.VERCEL)
+  const carpeta = resolve(process.env.NUXT_DIR_ALMACEN || join(process.cwd(), 'almacen'))
+  let puestas = 0
+  for (const { slug, credito } of PORTADAS_NOTICIAS) {
+    const n = await prisma.noticia.findUnique({ where: { slug }, select: { id: true, portadaId: true, estado: true, contenido: true } })
+    if (!n || n.portadaId) continue
+    const datos = await readFile(join(import.meta.dirname, 'imagenes', 'noticias', `${slug}.jpg`))
+    const id = randomUUID()
+    const ruta = `${id.slice(0, 2)}/${id}.jpg`
+    if (enBase) {
+      await prisma.contenidoArchivo.create({ data: { ruta, datos: new Uint8Array(datos) } })
+    }
+    else {
+      await mkdir(dirname(join(carpeta, ruta)), { recursive: true })
+      await writeFile(join(carpeta, ruta), datos, { flag: 'wx' })
+    }
+    await prisma.$transaction(async (tx) => {
+      const archivo = await tx.archivo.create({
+        data: {
+          nombreOriginal: `${slug}.jpg`,
+          mime: 'image/jpeg',
+          tamano: datos.length,
+          ruta,
+          sha256: createHash('sha256').update(datos).digest('hex'),
+          visibilidad: n.estado === 'PUBLICADA' ? 'PUBLICO' : 'AUTENTICADO',
+        },
+      })
+      const contenido = n.contenido?.includes(credito) ? n.contenido : [n.contenido, credito].filter(Boolean).join('\n\n')
+      await tx.noticia.update({ where: { id: n.id }, data: { portadaId: archivo.id, contenido } })
+    })
+    puestas++
+  }
+  console.log(`  Portadas de noticias: ${puestas} agregada(s).`)
+}
+
 async function main() {
   console.log('Cargando información pública de FEACOMECH…')
   const admin = await prisma.usuario.findFirst({ where: { roles: { some: { rol: { clave: 'SUPERADMIN' } } } }, orderBy: { creadoEn: 'asc' }, select: { id: true } })
@@ -355,6 +408,7 @@ async function main() {
   await jornadas2026(dermatologia)
   await vinculacion()
   await noticias(admin?.id ?? null, dermatologia)
+  await portadasNoticias()
   await portada()
   console.log('Listo. Revise y valide en la plataforma lo marcado como aproximado o por confirmar.')
 }
