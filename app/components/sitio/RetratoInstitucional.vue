@@ -1,6 +1,6 @@
 <!-- Retrato institucional como fotografía enmarcada: marco con paspartú blanco y, dentro, un
-     fondo de estudio con los colores de la Federación y el escudo de la FEACOMECH, que se mueve
-     suavemente detrás de la persona.
+     fondo de estudio con los colores de la Federación y el escudo de la FEACOMECH ondeando como
+     bandera detrás de la persona (MarcaEscudoOndeante).
      - Con `recorte` (WebP/PNG sin fondo) la persona aparece delante del escudo.
      - Sin recorte, la fotografía original llena el cuadro y el escudo asoma en una esquina. -->
 <template>
@@ -14,15 +14,9 @@
           <div class="pointer-events-none absolute inset-0 -z-10 bg-radial-[at_50%_30%] from-white/90 via-white/30 to-transparent dark:from-white/10" aria-hidden="true" />
 
           <template v-if="recorte">
-            <!-- Centrado con flex: la animación usa `translate`, que anularía un -translate-x-1/2 -->
-            <div class="pointer-events-none absolute inset-x-0 top-[6%] -z-10 flex justify-center" aria-hidden="true">
-              <img
-                src="/img/marca/escudo-512.png"
-                alt=""
-                class="retrato-escudo w-[66%] select-none drop-shadow-[0_8px_18px_rgb(64_40_88/0.22)]"
-                width="512"
-                height="594"
-              >
+            <!-- Escudo ondeando como bandera detrás de la persona -->
+            <div class="pointer-events-none absolute inset-x-0 top-[6%] -z-10 flex justify-center">
+              <MarcaEscudoOndeante class="w-[66%] drop-shadow-[0_8px_18px_rgb(64_40_88/0.22)]" />
             </div>
             <img :src="recorte" :alt="alt" class="absolute inset-x-0 bottom-0 w-full drop-shadow-[0_10px_16px_rgb(64_40_88/0.35)]" width="560" height="700">
           </template>
@@ -36,7 +30,7 @@
               src="/img/marca/escudo-512.png"
               alt=""
               aria-hidden="true"
-              class="retrato-escudo pointer-events-none absolute bottom-2 right-2 w-14 select-none drop-shadow-md"
+              class="pointer-events-none absolute bottom-2 right-2 w-14 select-none drop-shadow-md"
               width="512"
               height="594"
             >
@@ -58,17 +52,3 @@
 const props = defineProps<{ src?: string, recorte?: string, alt: string }>()
 const iniciales = computed(() => props.alt.replace(/^Fotografía de /, '').split(' ').filter(x => !x.endsWith('.')).slice(0, 2).map(x => x[0]).join(''))
 </script>
-
-<style scoped>
-/* El escudo se mece y respira despacio detrás de la persona. */
-.retrato-escudo {
-  animation: fea-retrato-escudo 8s ease-in-out infinite;
-}
-@keyframes fea-retrato-escudo {
-  0%, 100% { translate: 0 0; rotate: -3deg; scale: 1; }
-  50% { translate: 0 -8px; rotate: 3deg; scale: 1.03; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .retrato-escudo { animation: none; }
-}
-</style>
