@@ -25,3 +25,14 @@ describe('fragmentarEnlaces', () => {
     expect(fragmentarEnlaces('javascript:alert(1) ftp://x')).toHaveLength(1)
   })
 })
+
+describe('logoVinculo', () => {
+  it('reconoce a las instituciones por su nombre, con o sin acentos', async () => {
+    const { logoVinculo } = await import('../../shared/organizacion')
+    expect(logoVinculo('Congreso del Estado de Chiapas')).toBe('/img/vinculacion/congreso-chiapas.webp')
+    expect(logoVinculo('H. CONGRESO DEL ESTADO DE CHIAPAS')).toBe('/img/vinculacion/congreso-chiapas.webp')
+    expect(logoVinculo('Secretaría de Salud del Estado de Chiapas')).toBe('/img/vinculacion/salud-chiapas.webp')
+    expect(logoVinculo('Secretaria de Salud')).toBe('/img/vinculacion/salud-chiapas.webp')
+    expect(logoVinculo('Universidad Autónoma de Chiapas')).toBeUndefined()
+  })
+})

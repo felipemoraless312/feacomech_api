@@ -25,7 +25,7 @@
             <path v-for="k in 9" :key="k" :d="`M-10 ${60 + k * 16} C 60 ${30 + k * 16}, 130 ${100 + k * 16}, 200 ${55 + k * 16} S 280 ${40 + k * 16}, 300 ${60 + k * 16}`" stroke="currentColor" stroke-width="1.3" />
           </svg>
           <div class="relative">
-            <img src="/img/escudo-512.png" alt="" class="h-28 w-auto drop-shadow-lg">
+            <img src="/img/marca/escudo-512.png" alt="" class="h-28 w-auto drop-shadow-lg">
             <p class="mt-5 text-[10px] font-bold uppercase leading-snug tracking-[0.18em] text-white/85">
               Federación de Asociaciones y Colegios Médicos de Chiapas
             </p>

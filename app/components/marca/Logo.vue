@@ -1,9 +1,9 @@
-<!-- Marca FEACOMECH: escudo oficial de la Federación (public/img/escudo-*.png, recortado de
-     public/logo/logo.jpg) y siglas. Sobre fondos oscuros (`claro`) el escudo va en una placa blanca. -->
+<!-- Marca FEACOMECH: escudo oficial de la Federación (public/img/marca/escudo-*.png, recortado de
+     public/img/marca/logo-original.jpg) y siglas. Sobre fondos oscuros (`claro`) el escudo va en una placa blanca. -->
 <template>
   <span class="inline-flex items-center gap-2.5 text-highlighted">
     <span class="shrink-0" :class="claro ? 'rounded-xl bg-white p-1 shadow-sm' : ''">
-      <img src="/img/escudo-160.png" alt="" aria-hidden="true" class="w-auto" :class="tamano" width="138" height="160">
+      <img src="/img/marca/escudo-160.png" alt="" aria-hidden="true" class="w-auto" :class="tamano" width="138" height="160">
     </span>
     <span v-if="!compacto" class="flex flex-col leading-none">
       <span class="font-semibold tracking-[0.04em]" :class="texto">FEACOMECH</span>

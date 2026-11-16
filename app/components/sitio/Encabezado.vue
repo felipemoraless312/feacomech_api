@@ -6,7 +6,7 @@
     <div class="aurora [--aurora-opacidad:0.6]" />
     <div class="puntos pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_80%_20%,black,transparent_65%)]" />
     <MarcaRed class="girar-lento pointer-events-none absolute -right-24 -top-28 -z-10 size-[30rem] text-marca-300/35 dark:text-white/[0.08]" />
-    <img src="/img/escudo-512.png" alt="" aria-hidden="true" class="flotar pointer-events-none absolute -bottom-16 right-[8%] -z-10 hidden w-64 rotate-[-8deg] opacity-[0.09] lg:block">
+    <img src="/img/marca/escudo-512.png" alt="" aria-hidden="true" class="flotar pointer-events-none absolute -bottom-16 right-[8%] -z-10 hidden w-64 rotate-[-8deg] opacity-[0.09] lg:block">
 
     <UContainer class="py-10 sm:py-14">
       <nav class="entrada flex items-center gap-1.5 text-[13px] text-muted" aria-label="Ruta">

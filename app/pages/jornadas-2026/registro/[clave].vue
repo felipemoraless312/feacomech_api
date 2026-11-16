@@ -6,7 +6,7 @@
     <header class="relative isolate overflow-hidden bg-marca-950 text-white">
       <div class="cartel-fondo absolute inset-0 -z-10" />
       <div class="mx-auto flex max-w-lg items-center gap-3 px-4 py-5">
-        <img src="/img/escudo-512.png" alt="" class="h-12 w-auto drop-shadow">
+        <img src="/img/marca/escudo-512.png" alt="" class="h-12 w-auto drop-shadow">
         <div class="min-w-0">
           <p class="font-display text-[11px] font-bold uppercase tracking-[0.2em] text-acento-200">{{ J.edicion }} Jornadas Académicas</p>
           <p class="font-display text-xl font-bold uppercase leading-tight tracking-[0.04em]">Registro de asistencia</p>

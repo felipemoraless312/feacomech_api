@@ -13,7 +13,7 @@
       <GrupoDatos v-for="t in TIPOS_VINCULO.filter(t => vinculos.some(v => v.tipo === t))" :key="t" :titulo="NOMBRE_VINCULO[t]">
         <div v-for="v in vinculos.filter(x => x.tipo === t)" :key="v.id" class="flex items-center gap-4 px-5 py-3.5">
           <button type="button" class="shrink-0" :aria-label="`Logotipo de ${v.nombre}`" @click="elegirLogo(v.id)">
-            <LogoOrganizacion :logo-id="v.logoId" :nombre="v.nombre" />
+            <LogoOrganizacion :logo-id="v.logoId" :src="logoVinculo(v.nombre)" :nombre="v.nombre" />
           </button>
           <div class="min-w-0 flex-1">
             <p class="font-medium text-highlighted">
@@ -77,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import { logoVinculo } from '#shared/organizacion'
 import type { Form } from '@nuxt/ui'
 import type { EstadoFormulario } from '#shared/schemas/comunes'
 import { NOMBRE_VINCULO, TIPOS_VINCULO, vinculoSchema, type VinculoInput } from '#shared/schemas/portal'

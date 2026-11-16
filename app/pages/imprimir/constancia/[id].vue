@@ -6,7 +6,7 @@
       <div class="absolute inset-5 rounded-lg border border-[#3f2759]/25" />
 
       <header class="relative flex items-center gap-5">
-        <img src="/img/escudo-512.png" alt="" class="h-24 w-auto">
+        <img src="/img/marca/escudo-512.png" alt="" class="h-24 w-auto">
         <div>
           <p class="font-display text-xl font-semibold leading-snug text-[#3f2759]">
             Federación de Asociaciones y Colegios Médicos del Estado de Chiapas, A.C.

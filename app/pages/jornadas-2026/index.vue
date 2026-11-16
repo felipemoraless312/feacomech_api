@@ -39,7 +39,7 @@
         <!-- Cierre de inscripciones -->
         <aside class="rounded-lg bg-white p-6 text-marca-950 shadow-flotante sm:p-8">
           <div class="flex items-center gap-4">
-            <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="h-16 w-auto" width="138" height="160">
+            <img src="/img/marca/escudo-160.png" alt="Escudo de la Federación" class="h-16 w-auto" width="138" height="160">
             <p class="font-display text-sm font-semibold uppercase leading-snug tracking-[0.12em] text-marca-800">
               Federación de Asociaciones y Colegios Médicos de Chiapas
             </p>

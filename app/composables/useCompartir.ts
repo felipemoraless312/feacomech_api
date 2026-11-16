@@ -4,7 +4,7 @@
 //   useCompartir({ titulo, descripcion, imagen: '/api/archivos/…', tipo: 'article' })
 import type { MaybeRefOrGetter } from 'vue'
 
-export const IMAGEN_COMPARTIR = '/img/compartir.jpg'
+export const IMAGEN_COMPARTIR = '/img/marca/compartir.jpg'
 
 /** Base absoluta del sitio. Usa useRuntimeConfig: llamarla sólo durante el setup. */
 function baseUrl(): string {

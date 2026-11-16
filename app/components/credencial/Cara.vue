@@ -3,11 +3,11 @@
 <template>
   <div class="cara relative isolate flex size-full flex-col overflow-hidden rounded-2xl text-marca-950 ring-1 ring-marca-200/70" :class="cara === 'frente' ? 'cara-frente' : 'cara-reverso'">
     <MarcaRed class="pointer-events-none absolute -right-16 -top-20 -z-10 size-64 text-marca-300/35" />
-    <img src="/img/escudo-512.png" alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-10 -left-8 -z-10 w-40 rotate-[-10deg] opacity-[0.06]">
+    <img src="/img/marca/escudo-512.png" alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-10 -left-8 -z-10 w-40 rotate-[-10deg] opacity-[0.06]">
 
     <!-- Encabezado común -->
     <div class="flex items-center gap-2.5 px-[5.5%] pt-[4.5%]">
-      <img src="/img/escudo-160.png" alt="" class="h-[2.4em] w-auto" width="138" height="160">
+      <img src="/img/marca/escudo-160.png" alt="" class="h-[2.4em] w-auto" width="138" height="160">
       <div class="min-w-0 leading-none">
         <p class="font-display text-[1.05em] font-bold tracking-[0.08em] text-marca-800">FEACOMECH</p>
         <p class="mt-[0.3em] truncate text-[0.52em] font-semibold uppercase tracking-[0.12em] text-gris-600">Federación de Colegios Médicos de Chiapas</p>

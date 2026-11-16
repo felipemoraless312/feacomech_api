@@ -62,7 +62,7 @@
                 <img v-if="destacada!.portadaId" :src="`/api/archivos/${destacada!.portadaId}`" alt="" class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]">
                 <div v-else class="relative flex size-full min-h-48 items-center justify-center">
                   <MarcaRed class="girar-lento absolute size-72 text-marca-300/40" />
-                  <img src="/img/escudo-160.png" alt="" class="relative h-20 w-auto transition-transform duration-500 group-hover:scale-110">
+                  <img src="/img/marca/escudo-160.png" alt="" class="relative h-20 w-auto transition-transform duration-500 group-hover:scale-110">
                 </div>
               </div>
               <div class="flex flex-col p-6">
@@ -322,7 +322,7 @@
           class="flex items-center gap-3 rounded-xl bg-default px-4 py-3 ring-1 ring-default transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-tarjeta"
           :title="v.nombre"
         >
-          <LogoOrganizacion :logo-id="v.logoId" :nombre="v.nombre" />
+          <LogoOrganizacion :logo-id="v.logoId" :src="logoVinculo(v.nombre)" :nombre="v.nombre" />
           <span class="max-w-48 text-sm font-medium text-highlighted">{{ v.nombre }}</span>
         </component>
       </div>
@@ -332,7 +332,7 @@
 
 <script setup lang="ts">
 import { JORNADAS_2026 } from '#shared/jornadas2026'
-import { BENEFICIOS, BIENVENIDA } from '#shared/organizacion'
+import { BENEFICIOS, BIENVENIDA, logoVinculo } from '#shared/organizacion'
 import type { DatosPortada } from '#shared/parametros'
 import { NOMBRE_NOTICIA } from '#shared/schemas/portal'
 import { formatoFecha } from '#shared/texto'

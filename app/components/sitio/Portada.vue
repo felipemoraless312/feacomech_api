@@ -19,7 +19,7 @@
       <!-- Texto -->
       <div>
         <div class="entrada hidden items-center gap-4 sm:flex">
-          <img src="/img/escudo-160.png" alt="Escudo de la Federación" class="flotar h-12 w-auto drop-shadow-[0_12px_20px_rgb(64_40_88/0.25)] sm:h-20" width="138" height="160">
+          <img src="/img/marca/escudo-160.png" alt="Escudo de la Federación" class="flotar h-12 w-auto drop-shadow-[0_12px_20px_rgb(64_40_88/0.25)] sm:h-20" width="138" height="160">
           <div class="border-l border-marca-200 pl-4 dark:border-white/25">
             <p class="font-display text-sm font-bold uppercase tracking-[0.24em] text-acento-600 dark:text-acento-300">{{ siglas }}</p>
             <p class="text-sm text-muted">{{ ciudad }}</p>
@@ -61,7 +61,7 @@
           <div class="marco absolute inset-0 hidden translate-x-4 translate-y-4 rounded-lg sm:block border-2 border-acento-500 sm:translate-x-6 sm:translate-y-6" aria-hidden="true" />
           <figure class="relative overflow-hidden rounded-lg shadow-[0_30px_70px_-24px_rgb(64_40_88/0.5)] ring-4 ring-white dark:ring-white/15">
             <img
-              src="/images/general.jpg"
+              src="/img/portada/general.jpg"
               alt="Integrantes de la Federación reunidos en las Jornadas Médicas FEACOMECH 2025"
               class="respirar aspect-[1955/1066] w-full object-cover"
               width="1955"

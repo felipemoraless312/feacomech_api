@@ -9,11 +9,11 @@
   "background_color": "#f9f7fc",
   "theme_color": "#f9f7fc",
   "icons": [
-    { "src": "/img/icono-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/img/icono-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/img/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "/img/app/icono-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/img/app/icono-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/img/app/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Constancias", "url": "/constancias", "icons": [{ "src": "/img/icono-192.png", "sizes": "192x192" }] }
+    { "name": "Constancias", "url": "/constancias", "icons": [{ "src": "/img/app/icono-192.png", "sizes": "192x192" }] }
   ]
 }

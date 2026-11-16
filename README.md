@@ -51,7 +51,23 @@ shared/     código común: catálogo de permisos, parámetros, esquemas Zod
 server/     API (handlers delgados) → services (dominio + transacciones) → Prisma
 prisma/     schema, migraciones (con reglas SQL) y seed
 tests/      unit/ e integration/
+public/     archivos estáticos (ver «Imágenes»)
 ```
+
+Imágenes estáticas (`public/img/`, nombres en minúsculas con guiones):
+
+```
+img/marca/        escudo, logotipo original e imagen para compartir en redes
+img/app/          iconos de la app instalable (manifest.webmanifest)
+img/portada/      fotografías del portal y del inicio de sesión
+img/personas/     fotos de la presidencia y expresidentes (original + recorte «-rostro»)
+img/vinculacion/  logotipos de instituciones aliadas (cuadrados, fondo blanco; ver logoVinculo)
+jornadas/         PDF de las Jornadas 2026 (no se mueven: sus enlaces ya circulan)
+```
+
+`favicon.png` y `apple-touch-icon.png` se quedan en la raíz porque los navegadores los buscan ahí.
+Los archivos originales recibidos, antes de adaptarlos, se guardan en `docs/imagenes-originales/`
+(no se publican). Lo que suben los usuarios no va en `public/`: va al almacén (ver «Archivos»).
 
 Reglas clave:
 - **Permisos (RBAC).** El catálogo de permisos está en `shared/permisos.ts`. Qué permisos tiene cada rol se guarda en la base (`Rol`, `RolPermiso`) y se configura desde el panel. El servidor valida cada endpoint con `requirePermiso(event, '…')`, que devuelve el alcance: `TOTAL`, `ORGANIZACION` o `PROPIO`. El cliente solo oculta o muestra opciones.
@@ -80,7 +96,7 @@ Reglas clave:
 
 ### Pendiente de la Federación
 
-- Identidad: se usa el escudo oficial (`public/logo/logo.jpg`, recortado en `public/img/escudo-*.png`) y su morado (#3F2759) como color de marca. Si existe una versión vectorial (SVG/PDF) del escudo, conviene reemplazar los PNG.
+- Identidad: se usa el escudo oficial (`public/img/marca/logo-original.jpg`, recortado en `public/img/marca/escudo-*.png`) y su morado (#3F2759) como color de marca. Si existe una versión vectorial (SVG/PDF) del escudo, conviene reemplazar los PNG.
 - Aviso de privacidad: borrador para revisión jurídica (`app/pages/aviso-de-privacidad.vue`).
 - Nombramientos: la estructura base (Presidencia, Vicepresidencia, Secretaría general, Tesorería, Vocalía, Consejo consultivo) es una plantilla sin personas; la Federación captura y publica a quienes valide.
 - Datos institucionales: dirección, teléfono, correo, historia, misión, visión y objetivos.

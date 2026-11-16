@@ -10,7 +10,7 @@
         </h2>
         <div class="grid gap-4 sm:grid-cols-2">
           <article v-for="v in t.lista" :key="v.nombre" v-revelar class="flex gap-4 rounded-2xl bg-default p-5 shadow-tarjeta ring-1 ring-default">
-            <LogoOrganizacion :logo-id="v.logoId" :nombre="v.nombre" tamano="lg" />
+            <LogoOrganizacion :logo-id="v.logoId" :src="logoVinculo(v.nombre)" :nombre="v.nombre" tamano="lg" />
             <div class="min-w-0 space-y-1">
               <p class="font-medium text-highlighted">
                 {{ v.nombre }}
@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import { logoVinculo } from '#shared/organizacion'
 import { TIPOS_VINCULO } from '#shared/schemas/portal'
 
 useSeoMeta({ title: 'Colaboradores', description: 'Convenios, instituciones colaboradoras y organismos relacionados con la Federación.' })

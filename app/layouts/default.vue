@@ -31,7 +31,7 @@
     <UHeader to="/" :ui="{ root: desplazado ? 'bg-default/80 backdrop-blur-xl backdrop-saturate-150 border-b-0 transition-shadow duration-300 shadow-[0_8px_30px_-12px_rgb(64_40_88/0.2),0_1px_0_var(--ui-border)]' : 'bg-default/80 backdrop-blur-xl backdrop-saturate-150 border-b-0 transition-shadow duration-300 shadow-[0_1px_0_var(--ui-border)]', left: 'lg:flex-none xl:flex-1', center: 'lg:hidden xl:flex', right: 'lg:flex-none xl:flex-1', toggle: 'lg:inline-flex xl:hidden', content: 'lg:flex xl:hidden', overlay: 'lg:block xl:hidden' }">
       <template #left>
         <NuxtLink to="/" aria-label="FEACOMECH, inicio" class="flex items-center gap-3">
-          <img src="/img/escudo-160.png" alt="" class="h-12 w-auto transition-transform duration-500 hover:-rotate-3 hover:scale-105" width="138" height="160">
+          <img src="/img/marca/escudo-160.png" alt="" class="h-12 w-auto transition-transform duration-500 hover:-rotate-3 hover:scale-105" width="138" height="160">
           <span class="flex flex-col leading-none">
             <span class="font-display text-xl font-bold tracking-[0.06em] text-marca-800 dark:text-white">FEACOMECH</span>
             <span class="mt-1 hidden max-w-[15rem] text-[10.5px] font-medium uppercase leading-tight tracking-[0.08em] text-muted sm:block">Federación de Asociaciones y Colegios Médicos de Chiapas</span>
@@ -80,7 +80,7 @@
     <footer class="relative isolate overflow-hidden bg-marca-50/80 dark:bg-marca-950/50">
       <div class="aurora [--aurora-opacidad:0.7]" />
       <div class="puntos pointer-events-none absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black,transparent_60%)]" />
-      <img src="/img/escudo-512.png" alt="" aria-hidden="true" class="pointer-events-none absolute -right-24 bottom-0 -z-10 w-[26rem] opacity-[0.06]">
+      <img src="/img/marca/escudo-512.png" alt="" aria-hidden="true" class="pointer-events-none absolute -right-24 bottom-0 -z-10 w-[26rem] opacity-[0.06]">
 
       <!-- Llamado a la afiliación -->
       <UContainer class="pt-14 sm:pt-16">
@@ -106,7 +106,7 @@
       <UContainer class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <span class="rounded-xl bg-white p-1.5 shadow-tarjeta ring-1 ring-marca-100"><img src="/img/escudo-160.png" alt="" class="h-14 w-auto" width="138" height="160"></span>
+            <span class="rounded-xl bg-white p-1.5 shadow-tarjeta ring-1 ring-marca-100"><img src="/img/marca/escudo-160.png" alt="" class="h-14 w-auto" width="138" height="160"></span>
             <span class="font-display text-2xl font-bold tracking-[0.06em] text-marca-800 dark:text-white">FEACOMECH</span>
           </div>
           <p class="max-w-xs text-sm leading-relaxed text-muted">

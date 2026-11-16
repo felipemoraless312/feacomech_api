@@ -4,8 +4,8 @@
 
 import { MESA_DIRECTIVA_2026 } from './jornadas2026-programa'
 
-/** Fotografía de la presidenta recortada al rostro para avatares (original: /images/fanny_kramsky.jpg). */
-export const FOTO_PRESIDENTA = '/images/fanny_kramsky_rostro.jpg'
+/** Fotografía de la presidenta recortada al rostro para avatares (original: /img/personas/fanny-kramsky.jpg). */
+export const FOTO_PRESIDENTA = '/img/personas/fanny-kramsky-rostro.jpg'
 
 /** Mensaje de bienvenida de la presidencia. BORRADOR: pendiente de revisión por la Dra. Kramsky. */
 export const BIENVENIDA = {
@@ -28,13 +28,13 @@ export interface Integrante { cargo: string, nombre: string, resena?: string, fo
 
 /**
  * Fotografías disponibles por nombre (las demás muestran iniciales). Son recortes al rostro
- * en /public/images; el archivo original se conserva junto a cada uno sin el sufijo «_rostro».
+ * en /public/img/personas; el archivo original se conserva junto a cada uno sin el sufijo «_rostro».
  */
 const FOTOS: Record<string, string> = {
   'Dra. Fanny Kramsky Soto': FOTO_PRESIDENTA,
-  'Dr. José Ricardo Tovilla Victoria': '/images/jose_ricardo_tovilla_victoria_rostro.jpg',
-  'Dr. Hernán León Velasco': '/images/hernan_leon_velasco_rostro.jpg',
-  'Dr. Didier Gómez Trujillo': '/images/didier_gomez_trujillo_rostro.jpg',
+  'Dr. José Ricardo Tovilla Victoria': '/img/personas/jose-ricardo-tovilla-victoria-rostro.jpg',
+  'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco-rostro.jpg',
+  'Dr. Didier Gómez Trujillo': '/img/personas/didier-gomez-trujillo-rostro.jpg',
 }
 
 /** Mesa directiva vigente. Las reseñas curriculares se agregan conforme se reciban. */
@@ -150,4 +150,22 @@ export const ADMISION = {
     ],
     nota: 'Si en su especialidad o región aún no existe un colegio agremiado, escríbanos y le orientaremos.',
   },
+}
+
+/**
+ * Logotipos de instituciones con las que hay vinculación, en /public/img/vinculacion (cuadrados,
+ * fondo blanco). Se usan mientras el vínculo no tenga un logo subido desde la plataforma; los
+ * originales recibidos están en docs/imagenes-originales/vinculacion.
+ */
+const LOGOS_VINCULOS: { claves: string[], logo: string }[] = [
+  { claves: ['congreso', 'chiapas'], logo: '/img/vinculacion/congreso-chiapas.webp' },
+  { claves: ['secretaria', 'salud'], logo: '/img/vinculacion/salud-chiapas.webp' },
+]
+
+const sinAcentos = (t: string) => t.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+
+/** Logo estático de una institución vinculada, por su nombre (tolera acentos y mayúsculas). */
+export function logoVinculo(nombre: string): string | undefined {
+  const n = sinAcentos(nombre)
+  return LOGOS_VINCULOS.find(l => l.claves.every(c => n.includes(c)))?.logo
 }

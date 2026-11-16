@@ -24,7 +24,7 @@
           <circle cx="100" cy="100" r="94" stroke="var(--color-marca-100)" stroke-width="2" />
           <circle class="intro-trazo" cx="100" cy="100" r="94" stroke="url(#intro-degradado)" stroke-width="3" stroke-linecap="round" />
         </svg>
-        <img src="/img/escudo-intro.webp" alt="" class="intro-escudo" width="240" height="269" fetchpriority="high" decoding="sync">
+        <img src="/img/marca/escudo-intro.webp" alt="" class="intro-escudo" width="240" height="269" fetchpriority="high" decoding="sync">
       </div>
       <p class="intro-siglas">
         FEACOMECH
@@ -43,7 +43,7 @@ const emit = defineEmits<{ fin: [] }>()
 const MAX_ESPERA_MS = 1500
 
 useHead({
-  link: [{ key: 'fea-intro-escudo', rel: 'preload', as: 'image', href: '/img/escudo-intro.webp', fetchpriority: 'high' }],
+  link: [{ key: 'fea-intro-escudo', rel: 'preload', as: 'image', href: '/img/marca/escudo-intro.webp', fetchpriority: 'high' }],
   noscript: [{ key: 'fea-intro-noscript', innerHTML: '<style>.intro{display:none!important}</style>' }],
   script: [
     {
