@@ -1,5 +1,6 @@
 // Mapa del sitio para buscadores: páginas fijas del portal y el contenido público
 // (noticias publicadas, eventos publicados y colegios afiliados visibles en el directorio).
+import { PERSONAS } from '~~/shared/organizacion'
 import { urlPublica } from '~~/server/utils/correo'
 
 const FIJAS = [
@@ -20,6 +21,8 @@ export default defineEventHandler(async (event) => {
 
   const urls: { ruta: string, fecha?: Date }[] = [
     ...FIJAS.map(ruta => ({ ruta })),
+    // Integrantes con reseña curricular (página propia).
+    ...PERSONAS.filter(p => p.resena).map(p => ({ ruta: `/organizacion/${p.slug}` })),
     ...noticias.map(n => ({ ruta: `/noticias/${n.slug}`, fecha: n.actualizadoEn })),
     ...eventos.map(e => ({ ruta: `/eventos/${e.slug}`, fecha: e.actualizadoEn })),
     ...organizaciones.map(o => ({ ruta: `/directorio/${o.slug}`, fecha: o.actualizadoEn })),

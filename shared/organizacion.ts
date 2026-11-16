@@ -35,6 +35,15 @@ const FOTOS: Record<string, string> = {
   'Dr. José Ricardo Tovilla Victoria': '/img/personas/jose-ricardo-tovilla-victoria-rostro.jpg',
   'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco-rostro.jpg',
   'Dr. Didier Gómez Trujillo': '/img/personas/didier-gomez-trujillo-rostro.jpg',
+  'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez-rostro.jpg',
+}
+
+/** Retratos verticales para la página de cada persona (si no hay, se usa el recorte al rostro). */
+const RETRATOS: Record<string, string> = {
+  'Dra. Fanny Kramsky Soto': '/img/personas/fanny-kramsky.jpg',
+  'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco.jpg',
+  'Dr. José Ricardo Tovilla Victoria': '/img/personas/jose-ricardo-tovilla-victoria.jpg',
+  'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez.jpg',
 }
 
 /**
@@ -186,4 +195,48 @@ export function logoVinculo(nombre: string, forma: 'cuadrado' | 'horizontal' = '
   const n = sinAcentos(nombre)
   const l = LOGOS_VINCULOS.find(l => l.claves.every(c => n.includes(c)))
   return forma === 'horizontal' ? (l?.horizontal ?? l?.logo) : l?.logo
+}
+
+// -----------------------------------------------------------------------------
+//  Personas con página propia: /organizacion/<slug>
+// -----------------------------------------------------------------------------
+
+export interface Persona extends Integrante {
+  /** Identificador de la dirección: nombre sin título, sin acentos y con guiones. */
+  slug: string
+  organo: 'Mesa directiva' | 'Consejo consultivo'
+  periodo: string
+  /** Foto vertical para la página (o el recorte al rostro). */
+  retrato?: string
+}
+
+/** «Dr. Alexander Arroyo Núñez» → «alexander-arroyo-nunez». */
+export function slugPersona(nombre: string): string {
+  return sinAcentos(nombre)
+    .split(/\s+/)
+    .filter(p => p && !p.endsWith('.'))
+    .join('-')
+    .replace(/[^a-z0-9-]/g, '')
+}
+
+const comoPersona = (i: Integrante, organo: Persona['organo'], periodo: string): Persona => ({
+  ...i,
+  slug: slugPersona(i.nombre),
+  organo,
+  periodo,
+  retrato: RETRATOS[i.nombre] ?? i.foto,
+})
+
+/** Mesa directiva y consejo consultivo. Los consejeros toman su reseña de la galería de expresidentes. */
+export const PERSONAS: Persona[] = [
+  ...MESA_DIRECTIVA.integrantes.map(i => comoPersona(i, 'Mesa directiva', MESA_DIRECTIVA.periodo)),
+  ...CONSEJO_CONSULTIVO.map(i => comoPersona(
+    { ...i, resena: i.resena ?? EXPRESIDENTES.find(e => e.nombre === i.nombre)?.resena },
+    'Consejo consultivo',
+    MESA_DIRECTIVA.periodo,
+  )),
+]
+
+export function buscarPersona(slug: string): Persona | undefined {
+  return PERSONAS.find(p => p.slug === slug)
 }

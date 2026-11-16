@@ -101,7 +101,7 @@
             <span class="text-sm text-muted">{{ MESA_DIRECTIVA.periodo }}</span>
           </div>
           <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            <SitioTarjetaPersona v-for="(p, i) in MESA_DIRECTIVA.integrantes" :key="p.nombre" v-revelar="(i % 3) * 60" v-bind="p" />
+            <SitioTarjetaPersona v-for="(p, i) in mesa" :key="p.nombre" v-revelar="(i % 3) * 60" v-bind="p" />
           </div>
         </section>
 
@@ -126,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import { BIENVENIDA, CONSEJO_CONSULTIVO, EXPRESIDENTES, MESA_DIRECTIVA, OBJETIVO_GENERAL } from '#shared/organizacion'
+import { BIENVENIDA, MESA_DIRECTIVA, OBJETIVO_GENERAL, PERSONAS } from '#shared/organizacion'
 
 useSeoMeta({ title: 'Organización', description: 'Bienvenida de la presidencia, objetivo, misión, visión, historia y trayectoria, mesa directiva y consejo consultivo de la FEACOMECH.' })
 
@@ -139,11 +139,9 @@ const identidad = computed(() => [
   { t: 'Visión', i: 'i-lucide-eye', v: institucion.value?.vision },
 ].filter(x => x.v))
 
-// La reseña de cada consejero se toma de la galería de expresidentes.
-const consejo = computed(() => CONSEJO_CONSULTIVO.map(c => ({
-  ...c,
-  resena: c.resena ?? EXPRESIDENTES.find(e => e.nombre === c.nombre)?.resena,
-})))
+// Cada integrante con su página propia (los consejeros toman su reseña de los expresidentes).
+const mesa = PERSONAS.filter(p => p.organo === 'Mesa directiva')
+const consejo = PERSONAS.filter(p => p.organo === 'Consejo consultivo')
 
 const secciones = computed(() => [
   { id: 'bienvenida', titulo: 'Bienvenida' },

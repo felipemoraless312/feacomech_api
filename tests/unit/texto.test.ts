@@ -48,3 +48,17 @@ describe('MESA_DIRECTIVA', () => {
     expect(arroyo?.resena?.split(/\n\s*\n/)).toHaveLength(4)
   })
 })
+
+describe('personas con página propia', () => {
+  it('genera direcciones limpias y únicas, y encuentra a cada integrante', async () => {
+    const { PERSONAS, buscarPersona, slugPersona } = await import('../../shared/organizacion')
+    expect(slugPersona('Dr. Alexander Arroyo Núñez')).toBe('alexander-arroyo-nunez')
+    expect(slugPersona('QFB. Cecilia Cleotilde Velázquez Andrade')).toBe('cecilia-cleotilde-velazquez-andrade')
+    expect(new Set(PERSONAS.map(p => p.slug)).size).toBe(PERSONAS.length)
+    const arroyo = buscarPersona('alexander-arroyo-nunez')
+    expect(arroyo?.organo).toBe('Mesa directiva')
+    expect(arroyo?.retrato).toBe('/img/personas/alexander-arroyo-nunez.jpg')
+    expect(arroyo?.foto).toBe('/img/personas/alexander-arroyo-nunez-rostro.jpg')
+    expect(buscarPersona('no-existe')).toBeUndefined()
+  })
+})
