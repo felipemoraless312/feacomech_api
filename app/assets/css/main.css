@@ -237,6 +237,11 @@
   animation: fea-franja var(--duracion, 60s) linear infinite;
 }
 .franja:hover { animation-play-state: paused; }
+/* Carrusel de logotipos: bordes difuminados y pausa también con el teclado */
+.carrusel-logos {
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.carrusel-logos:focus-within .franja { animation-play-state: paused; }
 
 /* Flotación suave de elementos decorativos */
 @keyframes fea-flotar {

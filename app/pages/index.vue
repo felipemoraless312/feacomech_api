@@ -253,15 +253,23 @@
           </div>
         </dl>
       </UContainer>
-      <!-- Cinta de colegios -->
-      <div class="overflow-hidden border-t border-white/15 bg-marca-900/25 py-3.5">
-        <div class="franja flex w-max gap-10" style="--duracion: 240s">
+      <!-- Carrusel de logotipos de los colegios (se detiene al pasar el cursor; con movimiento
+           reducido queda fijo y se desplaza a mano) -->
+      <div class="carrusel-logos overflow-x-auto border-t border-white/15 bg-marca-900/25 py-6 motion-safe:overflow-hidden" aria-label="Logotipos de los colegios agremiados">
+        <ul class="franja flex w-max" style="--duracion: 90s">
           <template v-for="copia in 2" :key="copia">
-            <span v-for="c in JORNADAS_2026.colegios" :key="`${copia}-${c}`" class="flex items-center gap-10 whitespace-nowrap font-display text-sm font-semibold uppercase tracking-[0.12em] text-white/90" :aria-hidden="copia === 2">
-              {{ c }}<span class="size-1.5 rotate-45 bg-acento-300" />
-            </span>
+            <li v-for="c in LOGOS_COLEGIOS" :key="`${copia}-${c.slug}`" class="pr-5" :aria-hidden="copia === 2 ? 'true' : undefined">
+              <NuxtLink
+                :to="`/directorio/${c.slug}`"
+                :tabindex="copia === 2 ? -1 : undefined"
+                :title="c.nombre"
+                class="block size-28 overflow-hidden rounded-2xl bg-white p-2 shadow-md transition-transform duration-300 hover:-translate-y-1 hover:scale-105 sm:size-32"
+              >
+                <img :src="c.logo" :alt="copia === 2 ? '' : `Logotipo del ${c.nombre}`" class="size-full object-contain" loading="lazy" width="128" height="128">
+              </NuxtLink>
+            </li>
           </template>
-        </div>
+        </ul>
       </div>
     </section>
 
@@ -323,6 +331,7 @@
 </template>
 
 <script setup lang="ts">
+import { LOGOS_COLEGIOS } from '#shared/colegios'
 import { JORNADAS_2026 } from '#shared/jornadas2026'
 import { BENEFICIOS, BIENVENIDA } from '#shared/organizacion'
 import type { InstitucionVinculada } from '~/components/sitio/TarjetaInstitucion.vue'

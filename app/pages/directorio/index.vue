@@ -26,7 +26,7 @@
           class="group flex flex-col rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-flotante"
         >
           <div class="flex items-center gap-4">
-            <LogoOrganizacion :logo-id="o.logoId" :nombre="o.siglas || o.nombre" tamano="lg" />
+            <LogoOrganizacion :logo-id="o.logoId" :src="logoColegio(o.slug)" :nombre="o.siglas || o.nombre" tamano="lg" />
             <div class="min-w-0">
               <p class="text-xs font-medium uppercase tracking-wide text-dimmed">
                 {{ NOMBRE_TIPO[o.tipo] }}
@@ -49,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import { logoColegio } from '#shared/colegios'
 import { NOMBRE_TIPO } from '#shared/schemas/organizacion'
 import { normalizarNombre } from '#shared/texto'
 

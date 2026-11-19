@@ -210,6 +210,14 @@ async function colegiosAfiliados() {
       o = await prisma.organizacion.update({ where: { id: o.id }, data: { estadoAfiliacion: 'AFILIADA', siglas: o.siglas ?? c.siglas ?? null } })
     }
 
+    // Nombre oficial (logotipo del temario): sólo si sigue el que puso este seed.
+    if (c.nombreAnterior && o.nombre === c.nombreAnterior) {
+      o = await prisma.organizacion.update({ where: { id: o.id }, data: { nombre: c.nombre, siglas: o.siglas ?? c.siglas ?? null } })
+    }
+    else if (!o.siglas && c.siglas) {
+      o = await prisma.organizacion.update({ where: { id: o.id }, data: { siglas: c.siglas } })
+    }
+
     const mesa = await prisma.organo.findFirst({ where: { organizacionId: o.id, tipo: 'MESA_DIRECTIVA' } })
       ?? await prisma.organo.create({ data: { organizacionId: o.id, tipo: 'MESA_DIRECTIVA', nombre: 'Mesa directiva' } })
     const cargo = await prisma.cargo.findFirst({ where: { organoId: mesa.id, nombre: 'Presidencia' } })

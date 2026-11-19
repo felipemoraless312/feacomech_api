@@ -113,6 +113,7 @@ const RESENAS: Record<string, string> = {
     'Es licenciada en Psicología Clínica por la Universidad Autónoma de Guadalajara. Cursó la especialidad en Terapia Familiar en el Instituto de Terapia Familiar Cencalli (Ciudad de México), la de Psicología Clínica Institucional en el Instituto Nacional de Psiquiatría Ramón de la Fuente, con aval de la UNAM, y la de Psicología Forense en Niños y Adolescentes por la Suprema Corte de Justicia de la Nación. Se especializó además en la identificación, valoración e intervención del comportamiento suicida con la Organización Panamericana de la Salud.',
     'Ha sido catedrática de Psicología en el Centro de Estudios Superiores de Tapachula (1990–1992), en el Departamento de Psiquiatría y Salud Mental de la UNAM (1992–1993), en la Universidad de Ciencias y Artes de Chiapas (1996–1999) y en la Universidad del Valle de México (2001–2009), entre otras instituciones.',
     'Ha sido ponente en congresos nacionales e internacionales: el VI Congreso Mexicano y II Iberoamericano de Psicología, con un trabajo sobre el suicidio en jóvenes mexicanos; las Jornadas de Psicología Clínica del Instituto Mexicano de Psiquiatría; el I y el II Congreso Nacional de Sociedades Pro Salud Mental, y el II Congreso Regional Zona Sur de la Asociación Psiquiátrica Mexicana, con temas de terapia familiar estructural y sistémica.',
+    'Preside el Colegio de Profesionales en Psicología del Estado de Chiapas (COPPSECH).',
   ].join('\n\n'),
 }
 
@@ -121,7 +122,7 @@ const PRESIDENCIAS_COLEGIO: Record<string, { cargo: string, periodo?: string }> 
   'Dra. María Hilda Rentería García': { cargo: 'Presidenta del Colegio de Oftalmólogos del Estado de Chiapas', periodo: '2026–2027' },
   'Dra. Iraís del Solar López': { cargo: 'Presidenta del Colegio de Anestesiología del Estado de Chiapas (COANECH)', periodo: '2025–2027' },
   'Dr. Sarain Montero Orozco': { cargo: 'Presidente del Colegio de Ortopedia y Traumatología de Chiapas (COTECH)' },
-  'Psic. María del Carmen Peche Domínguez': { cargo: 'Presidenta del colegio de Psicología' },
+  'Psic. María del Carmen Peche Domínguez': { cargo: 'Presidenta del Colegio de Profesionales en Psicología del Estado de Chiapas (COPPSECH)' },
 }
 
 /** Mesa directiva vigente. Las reseñas curriculares se agregan conforme se reciban. */

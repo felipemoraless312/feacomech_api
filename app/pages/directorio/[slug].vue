@@ -7,7 +7,7 @@
           <UIcon name="i-lucide-arrow-left" class="size-4" /> Directorio
         </NuxtLink>
         <div class="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">
-          <LogoOrganizacion :logo-id="org.logoId" :nombre="org.siglas || org.nombre" tamano="xl" class="entrada" />
+          <LogoOrganizacion :logo-id="org.logoId" :src="logoColegio(org.slug)" :nombre="org.siglas || org.nombre" tamano="xl" class="entrada" />
           <div class="min-w-0">
             <p class="entrada text-sm font-semibold uppercase tracking-[0.16em] text-marca-700" style="--retraso: 60ms">
               {{ NOMBRE_TIPO[org.tipo] }}<template v-if="org.municipio">
@@ -92,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+import { logoColegio } from '#shared/colegios'
 import { NOMBRE_TIPO } from '#shared/schemas/organizacion'
 import type { EstructuraPublicaDto } from '~~/server/services/estructura'
 

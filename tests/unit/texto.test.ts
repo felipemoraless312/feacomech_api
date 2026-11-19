@@ -77,5 +77,7 @@ describe('colegios afiliados', () => {
     for (const p of MESA_DIRECTIVA_2026.presidentes) expect(colegioPorClave(p.colegio), p.colegio).toBeDefined()
     expect(new Set(COLEGIOS_AFILIADOS.map(c => c.slug)).size).toBe(COLEGIOS_AFILIADOS.length)
     for (const c of COLEGIOS_AFILIADOS) expect(c.slug).toMatch(/^[a-z0-9-]{1,90}$/)
+    const { existsSync } = await import('node:fs')
+    for (const c of COLEGIOS_AFILIADOS.filter(c => c.logo)) expect(existsSync(`public/img/colegios/${c.slug}.webp`), c.slug).toBe(true)
   })
 })
