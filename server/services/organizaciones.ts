@@ -337,9 +337,25 @@ export async function directorioPublico() {
   const filas = await prisma.organizacion.findMany({
     where: PUBLICA,
     orderBy: { nombre: 'asc' },
-    select: { slug: true, tipo: true, nombre: true, siglas: true, municipio: true, logoId: true, descripcion: true },
+    select: { id: true, slug: true, tipo: true, nombre: true, siglas: true, municipio: true, logoId: true, descripcion: true },
   })
-  return filas.map(o => ({ ...o, descripcion: o.descripcion?.slice(0, 240) ?? null }))
+  // Presidencia vigente y publicada de cada una (cargo «Presidencia» de su mesa directiva).
+  const hoy = aFecha(new Date().toISOString().slice(0, 10))
+  const presidencias = await prisma.nombramiento.findMany({
+    where: {
+      publicado: true, estado: 'VIGENTE', inicio: { lte: hoy }, OR: [{ fin: null }, { fin: { gte: hoy } }],
+      cargo: { nombre: 'Presidencia', activo: true, organo: { tipo: 'MESA_DIRECTIVA', activo: true, organizacionId: { in: filas.map(o => o.id) } } },
+    },
+    orderBy: { inicio: 'desc' },
+    select: { nombrePersona: true, usuario: { select: { nombre: true, apellidoPaterno: true, apellidoMaterno: true } }, cargo: { select: { organo: { select: { organizacionId: true } } } } },
+  })
+  const presidenciaDe = new Map<string, string>()
+  for (const n of presidencias) {
+    const org = n.cargo.organo.organizacionId
+    const nombre = n.nombrePersona ?? (n.usuario ? [n.usuario.nombre, n.usuario.apellidoPaterno, n.usuario.apellidoMaterno].filter(Boolean).join(' ') : null)
+    if (org && nombre && !presidenciaDe.has(org)) presidenciaDe.set(org, nombre)
+  }
+  return filas.map(({ id, ...o }) => ({ ...o, descripcion: o.descripcion?.slice(0, 240) ?? null, presidencia: presidenciaDe.get(id) ?? null }))
 }
 
 /** Ficha pública: datos de contacto institucionales y profesionales que autorizaron publicarse. */
