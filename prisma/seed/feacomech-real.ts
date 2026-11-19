@@ -17,7 +17,9 @@ import { dirname, join, resolve } from 'node:path'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../../server/generated/prisma/client'
 import { JORNADAS_2026 as J } from '../../shared/jornadas2026'
-import { PROGRAMA_2026 } from '../../shared/jornadas2026-programa'
+import { MESA_DIRECTIVA_2026, PROGRAMA_2026 } from '../../shared/jornadas2026-programa'
+import { colegioPorClave } from '../../shared/colegios'
+import { buscarPersona, slugPersona } from '../../shared/organizacion'
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }) })
 const dia = (iso: string) => new Date(`${iso}T00:00:00Z`)
@@ -173,6 +175,61 @@ async function organizaciones() {
     console.log('  Organización: Colegio de Dermatología de Chiapas (afiliación por confirmar).')
   }
   return o
+}
+
+/**
+ * Colegios y asociaciones afiliados con su presidencia vigente (lista de presidentes de
+ * colegios, noviembre de 2026; shared/colegios.ts). Crea la organización si falta, la marca
+ * AFILIADA una sola vez (no deshace cambios posteriores hechos en la plataforma) y registra
+ * la presidencia en su mesa directiva si aún no hay nadie en el cargo.
+ */
+async function colegiosAfiliados() {
+  const MOTIVO = 'Afiliación registrada a partir de la lista de presidentes de colegios afiliados (noviembre de 2026).'
+  let nuevas = 0
+  for (const p of MESA_DIRECTIVA_2026.presidentes) {
+    const c = colegioPorClave(p.colegio)
+    if (!c) throw new Error(`Colegio sin datos en shared/colegios.ts: ${p.colegio}`)
+    const descripcion = `${c.tipo === 'ASOCIACION' ? 'Asociación afiliada' : 'Colegio afiliado'} a la Federación de Asociaciones y Colegios Médicos del Estado de Chiapas (FEACOMECH).`
+    let o = await prisma.organizacion.findUnique({ where: { slug: c.slug } })
+    if (!o) {
+      o = await prisma.organizacion.create({
+        data: {
+          slug: c.slug, tipo: c.tipo, nombre: c.nombre, siglas: c.siglas ?? null, municipio: c.municipio ?? null, descripcion,
+          estadoAfiliacion: 'AFILIADA',
+          afiliaciones: { create: { estado: 'AFILIADA', desde: dia('2026-11-01'), motivo: MOTIVO } },
+          grupo: { create: { tipo: 'ORGANIZACION', privacidad: 'PRIVADO', nombre: c.nombre, slug: `org-${c.slug}`, descripcion: 'Espacio de comunicación de los integrantes de la organización.' } },
+        },
+      })
+      nuevas++
+    }
+    else if (!await prisma.afiliacionOrganizacion.findFirst({ where: { organizacionId: o.id, motivo: MOTIVO } })) {
+      // Existía sin confirmar (p. ej. Dermatología): pasa a afiliada, una sola vez.
+      const desde = dia('2026-11-01')
+      await prisma.afiliacionOrganizacion.updateMany({ where: { organizacionId: o.id, hasta: null }, data: { hasta: desde } })
+      await prisma.afiliacionOrganizacion.create({ data: { organizacionId: o.id, estado: 'AFILIADA', desde, motivo: MOTIVO } })
+      o = await prisma.organizacion.update({ where: { id: o.id }, data: { estadoAfiliacion: 'AFILIADA', siglas: o.siglas ?? c.siglas ?? null } })
+    }
+
+    const mesa = await prisma.organo.findFirst({ where: { organizacionId: o.id, tipo: 'MESA_DIRECTIVA' } })
+      ?? await prisma.organo.create({ data: { organizacionId: o.id, tipo: 'MESA_DIRECTIVA', nombre: 'Mesa directiva' } })
+    const cargo = await prisma.cargo.findFirst({ where: { organoId: mesa.id, nombre: 'Presidencia' } })
+      ?? await prisma.cargo.create({ data: { organoId: mesa.id, nombre: 'Presidencia', orden: 0 } })
+    if (await prisma.nombramiento.findFirst({ where: { cargoId: cargo.id } })) continue
+
+    const periodo = c.periodo
+      ? await prisma.periodo.findFirst({ where: { organizacionId: o.id, nombre: c.periodo } })
+        ?? await prisma.periodo.create({ data: { organizacionId: o.id, nombre: c.periodo, inicio: dia(c.presidenciaDesde ?? '2026-11-01'), fin: dia(`${c.periodo.slice(-4)}-12-31`) } })
+      : null
+    // Primer párrafo de la reseña curricular, si se recibió el currículum.
+    const resena = buscarPersona(slugPersona(p.nombre))?.resena?.split(/\n\s*\n/)[0]
+    await prisma.nombramiento.create({
+      data: {
+        cargoId: cargo.id, periodoId: periodo?.id ?? null, nombrePersona: p.nombre,
+        inicio: dia(c.presidenciaDesde ?? '2026-11-01'), estado: 'VIGENTE', publicado: true, descripcion: resena ?? null,
+      },
+    })
+  }
+  console.log(`  Colegios afiliados: ${MESA_DIRECTIVA_2026.presidentes.length} con presidencia (${nuevas} nuevo(s)).`)
 }
 
 async function evento(dermatologia: { id: string }) {
@@ -404,6 +461,7 @@ async function main() {
   await institucion()
   await estructura()
   const dermatologia = await organizaciones()
+  await colegiosAfiliados()
   await evento(dermatologia)
   await jornadas2026(dermatologia)
   await vinculacion()

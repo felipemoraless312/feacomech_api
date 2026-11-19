@@ -42,6 +42,7 @@
 
       <div class="mt-12 flex flex-wrap gap-3 border-t border-default pt-8">
         <UButton :to="`/organizacion#${ancla}`" icon="i-lucide-arrow-left" :label="`Volver a ${p.organo.toLowerCase()}`" color="neutral" variant="outline" />
+        <UButton v-if="p.colegio" :to="`/directorio/${p.colegio.slug}`" :label="`Ver ${p.colegio.nombre}`" trailing-icon="i-lucide-arrow-right" color="neutral" variant="ghost" />
         <UButton v-if="p.organo === 'Consejo consultivo'" to="/expresidentes" label="Galería de expresidentes" trailing-icon="i-lucide-arrow-right" color="neutral" variant="ghost" />
       </div>
 

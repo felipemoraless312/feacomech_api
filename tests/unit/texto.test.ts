@@ -64,7 +64,18 @@ describe('personas con página propia', () => {
     expect(renteria?.organo).toBe('Presidentes de colegios')
     expect(renteria?.periodo).toBe('2026–2027')
     expect(renteria?.resena).not.toMatch(/@|961|Cédula/)
+    expect(renteria?.colegio?.slug).toBe('colegio-de-oftalmologos-del-estado-de-chiapas')
     expect(buscarPersona('issel-prisciliano-gutierrez-mandujano')?.organo).toBe('Consejo consultivo')
     expect(buscarPersona('issel-prisciliano-gutierrez-mandujano')?.resena).toBeTruthy()
+  })
+})
+
+describe('colegios afiliados', () => {
+  it('cada presidente de colegio tiene su colegio, con dirección única', async () => {
+    const { MESA_DIRECTIVA_2026 } = await import('../../shared/jornadas2026-programa')
+    const { COLEGIOS_AFILIADOS, colegioPorClave } = await import('../../shared/colegios')
+    for (const p of MESA_DIRECTIVA_2026.presidentes) expect(colegioPorClave(p.colegio), p.colegio).toBeDefined()
+    expect(new Set(COLEGIOS_AFILIADOS.map(c => c.slug)).size).toBe(COLEGIOS_AFILIADOS.length)
+    for (const c of COLEGIOS_AFILIADOS) expect(c.slug).toMatch(/^[a-z0-9-]{1,90}$/)
   })
 })

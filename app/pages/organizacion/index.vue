@@ -129,6 +129,7 @@
             </h2>
             <p class="max-w-2xl text-muted">
               Quienes presiden los colegios y asociaciones afiliados a la Federación.
+              <NuxtLink to="/directorio" class="text-primary hover:underline">Ver el directorio de colegios</NuxtLink>.
             </p>
           </div>
           <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -137,7 +138,7 @@
           <ul class="grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
             <li v-for="p in presidentesSinResena" :key="p.nombre" class="flex justify-between gap-3 border-b border-default pb-2">
               <span class="font-medium text-highlighted">{{ p.nombre }}</span>
-              <span class="text-right text-muted">{{ p.cargo.replace('Presidencia · ', '') }}</span>
+              <NuxtLink v-if="p.colegio" :to="`/directorio/${p.colegio.slug}`" class="text-right text-muted hover:text-primary hover:underline">{{ p.colegio.nombre }}</NuxtLink>
             </li>
           </ul>
         </section>

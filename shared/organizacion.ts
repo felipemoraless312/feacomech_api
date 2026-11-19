@@ -2,6 +2,7 @@
 // Textos editoriales que aún no se capturan en la plataforma. Lo que dependa de datos
 // (misión, visión, colegios, noticias) sigue viniendo de la base.
 
+import { colegioPorClave } from './colegios'
 import { MESA_DIRECTIVA_2026 } from './jornadas2026-programa'
 
 /** Fotografía de la presidenta recortada al rostro para avatares (original: /img/personas/fanny-kramsky.jpg). */
@@ -24,7 +25,14 @@ export const BIENVENIDA = {
 export const OBJETIVO_GENERAL
   = 'Agrupar, representar y fortalecer a los colegios y asociaciones de profesionales de la salud del Estado de Chiapas, promoviendo la actualización académica, la ética profesional y la defensa del acto médico en beneficio de sus agremiados y de la sociedad.'
 
-export interface Integrante { cargo: string, nombre: string, resena?: string, foto?: string }
+export interface Integrante {
+  cargo: string
+  nombre: string
+  resena?: string
+  foto?: string
+  /** Ficha del colegio que preside en el directorio (/directorio/<slug>). */
+  colegio?: { nombre: string, slug: string }
+}
 
 /**
  * Fotografías disponibles por nombre (las demás muestran iniciales). Son recortes al rostro
@@ -134,10 +142,11 @@ export const CONSEJO_CONSULTIVO: Integrante[] = [
 
 /** Presidencias de los colegios afiliados; las que tienen reseña llevan a su página propia. */
 export const PRESIDENTES_COLEGIOS: Integrante[] = MESA_DIRECTIVA_2026.presidentes.map(p => ({
-  cargo: PRESIDENCIAS_COLEGIO[p.nombre]?.cargo ?? `Presidencia · ${p.colegio}`,
+  cargo: PRESIDENCIAS_COLEGIO[p.nombre]?.cargo ?? `Presidencia · ${colegioPorClave(p.colegio)?.nombre ?? p.colegio}`,
   nombre: p.nombre,
   foto: FOTOS[p.nombre],
   resena: RESENAS[p.nombre],
+  colegio: colegioPorClave(p.colegio),
 }))
 
 export interface Expresidente {
