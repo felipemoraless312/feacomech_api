@@ -1,4 +1,4 @@
-<!-- Página de un integrante de la mesa directiva o del consejo consultivo: retrato y reseña
+<!-- Página de un integrante de la mesa directiva, del consejo consultivo o de una presidencia de colegio: retrato y reseña
      curricular completa. Los datos están en shared/organizacion.ts (PERSONAS). -->
 <template>
   <div v-if="p">
@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { NuxtLink } from '#components'
-import { buscarPersona, PERSONAS } from '#shared/organizacion'
+import { ANCLA_ORGANO, buscarPersona, PERSONAS } from '#shared/organizacion'
 
 const route = useRoute()
 const p = buscarPersona(String(route.params.persona))
@@ -82,9 +82,10 @@ if (!p) throw createError({ statusCode: 404, statusMessage: `Page not found: ${r
 
 const parrafos = (p.resena ?? '').split(/\n\s*\n/).filter(Boolean)
 const otros = PERSONAS.filter(o => o.organo === p.organo && o.slug !== p.slug)
-const ancla = p.organo === 'Mesa directiva' ? 'mesa-directiva' : 'consejo-consultivo'
+const ancla = ANCLA_ORGANO[p.organo]
 
-const descripcion = `${p.cargo} de la FEACOMECH (${p.periodo}). ${parrafos[0] ?? ''}`.slice(0, 200)
+const cargoCompleto = p.organo === 'Presidentes de colegios' ? `${p.cargo}, colegio afiliado a la FEACOMECH` : `${p.cargo} de la FEACOMECH`
+const descripcion = `${cargoCompleto} (${p.periodo}). ${parrafos[0] ?? ''}`.slice(0, 200)
 useSeoMeta({ title: p.nombre, description: descripcion })
 useCompartir({ titulo: `${p.nombre} · ${p.cargo}`, descripcion, imagen: p.retrato })
 </script>

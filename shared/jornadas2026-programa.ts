@@ -25,8 +25,8 @@ export interface DiaPrograma {
   actividades: Actividad[]
 }
 
-const ANEST = { bloque: 'Colegio de Anestesiología', coordina: 'Dra. Irais Del Solar López' }
-const OFTAL = { bloque: 'Colegio de Oftalmología', coordina: 'Dra. Hilda Rentería García' }
+const ANEST = { bloque: 'Colegio de Anestesiología', coordina: 'Dra. Iraís del Solar López' }
+const OFTAL = { bloque: 'Colegio de Oftalmología', coordina: 'Dra. María Hilda Rentería García' }
 const PEDIA = { bloque: 'Colegio de Pediatría', coordina: 'Dra. Laura Cordero Zepeda' }
 const GINE = { bloque: 'Colegio de Ginecología', coordina: 'Dr. Rodimiro Aguilar Valenzuela' }
 const SCLC = { bloque: 'Colegio de San Cristóbal de las Casas', coordina: 'Dr. Pablo Manuel Alcázar Ramos' }
@@ -144,7 +144,7 @@ export const MESA_DIRECTIVA_2026 = {
   ],
   presidentes: [
     { nombre: 'Dr. Jorge Rincón Acebo', colegio: 'Anatomopatología' },
-    { nombre: 'Dra. Irais Del Solar López', colegio: 'Anestesiología' },
+    { nombre: 'Dra. Iraís del Solar López', colegio: 'Anestesiología' },
     { nombre: 'Dr. Fernando Rodolfo García Alfonso', colegio: 'Angiología' },
     { nombre: 'Dr. Antonio Citalán Jiménez', colegio: 'Cardiología' },
     { nombre: 'Dr. Marco A. Barreda Gaxiola', colegio: 'Cirugía Plástica' },
@@ -155,7 +155,7 @@ export const MESA_DIRECTIVA_2026 = {
     { nombre: 'Dra. América F. Benítez Rendón', colegio: 'Medicina Familiar' },
     { nombre: 'Dr. Jorge Iván Gómez Vázquez', colegio: 'Medicina General' },
     { nombre: 'Dr. José de Jesús Almanza Muñoz', colegio: 'Neurociencias' },
-    { nombre: 'Dra. Hilda Rentería García', colegio: 'Oftalmología' },
+    { nombre: 'Dra. María Hilda Rentería García', colegio: 'Oftalmología' },
     { nombre: 'Dr. Gerardo Sánchez Hernández', colegio: 'Otorrinolaringología' },
     { nombre: 'Dra. Laura Cordero Zepeda', colegio: 'Pediatría' },
     { nombre: 'Psic. María del Carmen Peche Domínguez', colegio: 'Psicología' },

@@ -353,7 +353,8 @@
             <p class="font-display text-sm font-bold uppercase tracking-[0.16em] text-dimmed">Presidentes de colegios afiliados</p>
             <ul class="mt-3 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
               <li v-for="p in MESA_DIRECTIVA_2026.presidentes" :key="p.nombre" class="flex justify-between gap-3 border-b border-default pb-2">
-                <span class="font-medium text-highlighted">{{ p.nombre }}</span>
+                <NuxtLink v-if="conResena.has(p.nombre)" :to="`/organizacion/${slugPersona(p.nombre)}`" class="font-medium text-highlighted hover:text-primary hover:underline">{{ p.nombre }}</NuxtLink>
+                <span v-else class="font-medium text-highlighted">{{ p.nombre }}</span>
                 <span class="text-right text-muted">{{ p.colegio }}</span>
               </li>
             </ul>
@@ -430,6 +431,9 @@
 <script setup lang="ts">
 import { JORNADAS_2026 as J, pesos } from '#shared/jornadas2026'
 import { MESA_DIRECTIVA_2026, PONENTES_INVITADOS, PROGRAMA_2026, ponenciasDe } from '#shared/jornadas2026-programa'
+import { PRESIDENTES_COLEGIOS, slugPersona } from '#shared/organizacion'
+
+const conResena = new Set(PRESIDENTES_COLEGIOS.filter(p => p.resena).map(p => p.nombre))
 
 const titulo = `${J.titulo} y ${J.subtitulo} ${J.anio}`
 const descripcion = `${J.edicion} Jornadas Académicas FEACOMECH y Simposio de Dermatología: ${J.fechas} en el ${J.sede.nombre}. Cuotas, talleres, cena de gala y convocatoria de carteles científicos.`

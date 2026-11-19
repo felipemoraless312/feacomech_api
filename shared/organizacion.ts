@@ -79,6 +79,41 @@ const RESENAS: Record<string, string> = {
     'En el Laboratorio Estatal de Salud Pública se ha desempeñado en las áreas de parasitología, diagnóstico epidemiológico, entomología médica, citopatología, redes de laboratorio, bioseguridad y biocustodia, y gestión y aseguramiento de la calidad. Cuenta además con experiencia en el análisis fisicoquímico y microbiológico del agua, en laboratorio de análisis clínicos y como responsable de farmacia, a cargo del control de inventarios, la dispensación de medicamentos y la atención farmacéutica.',
     'Forma parte de la Mesa Directiva de la FEACOMECH como Tesorera durante el bienio 2026–2028.',
   ].join('\n\n'),
+
+  // --- Presidencias de colegios afiliados (CV recibidos en noviembre de 2026, sin datos de contacto) ---
+  'Dra. María Hilda Rentería García': [
+    'Médica oftalmóloga con alta especialidad en retina y vítreo y más de 30 años de experiencia clínica y quirúrgica. Ejerce la práctica privada en Tuxtla Gutiérrez y cuenta con una amplia trayectoria docente en pregrado y posgrado. Recibió el Premio Nacional de Oftalmología en 1996.',
+    'Es médica cirujana por la Facultad de Medicina de la Universidad Nacional Autónoma de México (UNAM). Realizó la residencia y el diploma de especialidad en Oftalmología en el Hospital Oftalmológico de Nuestra Señora de la Luz, con aval de la UNAM, y la subespecialidad en Retina y Vítreo en la misma institución. Cuenta además con un diplomado en Medicina Antienvejecimiento por la Benemérita Universidad Autónoma de Puebla.',
+    'Fue médica adscrita al Servicio de Retina y Vítreo de la Fundación Hospital de Nuestra Señora de la Luz (1997–2005), donde coordinó la enseñanza de posgrado en Retina y Vítreo. Ejerció en la Clínica Chiapas (1994–2004) y, desde 2005, en la Clínica de Especialidades «Santa Elena», en Tuxtla Gutiérrez.',
+    'Ha sido profesora de posgrado en Retina y Vítreo en la UNAM, docente de la licenciatura en Optometría del IPN y, desde 2018, docente de pregrado en la Universidad Salazar (IESCH). Ha impartido más de 25 ponencias en congresos y cursos de la Asociación Mexicana de Retina, la Sociedad Mexicana de Oftalmología y el Congreso Mexicano de Oftalmología, y es autora de trabajos libres y videos quirúrgicos sobre vitrectomía y patología vitreorretiniana.',
+    'Preside el Colegio de Oftalmólogos del Estado de Chiapas durante el periodo 2026–2027.',
+  ].join('\n\n'),
+  'Dra. Iraís del Solar López': [
+    'Médica anestesióloga con subespecialidad en Neuroanestesiología, dedicada a la práctica clínica, la formación de médicos especialistas y la actividad pericial.',
+    'Es médica cirujana por la Benemérita Universidad Autónoma de Chiapas, especialista en Anestesiología por la Universidad Nacional Autónoma de México y subespecialista en Neuroanestesiología, con formación en el Instituto Nacional de Neurología y Neurocirugía y aval de la UNAM. Es maestra en Gestión de Sistemas de Salud por la UNACH. Durante su formación se integró al Programa Impulso para la Investigación en Salud Carlos Slim.',
+    'Su trayectoria combina la práctica clínica en los sectores público y privado con la docencia en la residencia de Anestesiología del Hospital de Especialidades Pediátricas. Cuenta con estudios y un diplomado en Peritaje Médico, y elabora dictámenes médico-legales en apoyo al Poder Judicial.',
+    'Es primera autora del capítulo «Salud intercultural y atención hospitalaria: propuesta para mejorar la calidad de los servicios», en la obra colectiva «Bienestar integral y transiciones en salud comunitaria: Nutrición, salud mental y estrategias bioculturales en Chiapas».',
+    'Preside el Colegio de Anestesiología del Estado de Chiapas (COANECH) durante el periodo 2025–2027 y participa en la Comisión de Capacitación y Certificación de la FEACOMECH.',
+  ].join('\n\n'),
+  'Dr. Sarain Montero Orozco': [
+    'Médico especialista en traumatología y ortopedia, con práctica en microcirugía articular, y más de 40 años de ejercicio profesional en Tuxtla Gutiérrez.',
+    'Es egresado del posgrado del Centro Médico Nacional, con aval de la Universidad Nacional Autónoma de México (UNAM). Durante cuarenta años ha sido profesor de Traumatología y Ortopedia en la licenciatura de la Universidad Autónoma de Chiapas (UNACH).',
+    'Preside el Colegio de Ortopedia y Traumatología de Chiapas (COTECH).',
+  ].join('\n\n'),
+  'Psic. María del Carmen Peche Domínguez': [
+    'Psicóloga clínica, encargada del Servicio de Salud Mental del Hospital Dr. Jesús Gilberto Gómez Maza, con formación en terapia familiar, psicología forense y atención del comportamiento suicida.',
+    'Es licenciada en Psicología Clínica por la Universidad Autónoma de Guadalajara. Cursó la especialidad en Terapia Familiar en el Instituto de Terapia Familiar Cencalli (Ciudad de México), la de Psicología Clínica Institucional en el Instituto Nacional de Psiquiatría Ramón de la Fuente, con aval de la UNAM, y la de Psicología Forense en Niños y Adolescentes por la Suprema Corte de Justicia de la Nación. Se especializó además en la identificación, valoración e intervención del comportamiento suicida con la Organización Panamericana de la Salud.',
+    'Ha sido catedrática de Psicología en el Centro de Estudios Superiores de Tapachula (1990–1992), en el Departamento de Psiquiatría y Salud Mental de la UNAM (1992–1993), en la Universidad de Ciencias y Artes de Chiapas (1996–1999) y en la Universidad del Valle de México (2001–2009), entre otras instituciones.',
+    'Ha sido ponente en congresos nacionales e internacionales: el VI Congreso Mexicano y II Iberoamericano de Psicología, con un trabajo sobre el suicidio en jóvenes mexicanos; las Jornadas de Psicología Clínica del Instituto Mexicano de Psiquiatría; el I y el II Congreso Nacional de Sociedades Pro Salud Mental, y el II Congreso Regional Zona Sur de la Asociación Psiquiátrica Mexicana, con temas de terapia familiar estructural y sistémica.',
+  ].join('\n\n'),
+}
+
+/** Cargo y periodo de las presidencias de colegio que constan en su currículum. */
+const PRESIDENCIAS_COLEGIO: Record<string, { cargo: string, periodo?: string }> = {
+  'Dra. María Hilda Rentería García': { cargo: 'Presidenta del Colegio de Oftalmólogos del Estado de Chiapas', periodo: '2026–2027' },
+  'Dra. Iraís del Solar López': { cargo: 'Presidenta del Colegio de Anestesiología del Estado de Chiapas (COANECH)', periodo: '2025–2027' },
+  'Dr. Sarain Montero Orozco': { cargo: 'Presidente del Colegio de Ortopedia y Traumatología de Chiapas (COTECH)' },
+  'Psic. María del Carmen Peche Domínguez': { cargo: 'Presidenta del colegio de Psicología' },
 }
 
 /** Mesa directiva vigente. Las reseñas curriculares se agregan conforme se reciban. */
@@ -88,10 +123,22 @@ export const MESA_DIRECTIVA: { periodo: string, integrantes: Integrante[] } = {
 }
 
 /** Consejo consultivo: integrado por los expresidentes de la Federación. */
-export const CONSEJO_CONSULTIVO: Integrante[] = MESA_DIRECTIVA_2026.consejo.map((c) => {
+export const CONSEJO_CONSULTIVO: Integrante[] = [
+  ...MESA_DIRECTIVA_2026.consejo,
+  // Su currículum (noviembre de 2026) indica que integra actualmente el consejo consultivo.
+  { nombre: 'Dr. Issel Prisciliano Gutiérrez Mandujano', finado: false },
+].map((c) => {
   const nombre = c.nombre.replace('Radamez', 'Radamés').replace('Dr. Ricardo Tovilla', 'Dr. José Ricardo Tovilla')
   return { cargo: c.finado ? 'Consejero (†)' : 'Consejero', nombre, foto: FOTOS[nombre] }
 })
+
+/** Presidencias de los colegios afiliados; las que tienen reseña llevan a su página propia. */
+export const PRESIDENTES_COLEGIOS: Integrante[] = MESA_DIRECTIVA_2026.presidentes.map(p => ({
+  cargo: PRESIDENCIAS_COLEGIO[p.nombre]?.cargo ?? `Presidencia · ${p.colegio}`,
+  nombre: p.nombre,
+  foto: FOTOS[p.nombre],
+  resena: RESENAS[p.nombre],
+}))
 
 export interface Expresidente {
   nombre: string
@@ -111,6 +158,20 @@ const LISTA_EXPRESIDENTES: Expresidente[] = [
     periodo: 'Periodo por documentar',
     desde: null,
     resena: 'Expresidente de la Federación. La gestión 2022–2024 llevó su nombre en reconocimiento a su trayectoria.',
+  },
+  // Currículum breve recibido en noviembre de 2026.
+  {
+    nombre: 'Dr. Jaime José Gutiérrez Gómez',
+    periodo: 'Periodo por documentar',
+    desde: null,
+    resena: 'Expresidente de la Federación. Segundo vicepresidente de la Confederación Iberolatinoamericana de Entidades Médicas (CONFEMEL); expresidente del Colegio Médico de México (FENACOME), de la Federación Mexicana de Colegios de Ortopedia y Traumatología y del Consejo Mexicano de Ortopedia y Traumatología.',
+  },
+  // Currículum recibido en noviembre de 2026.
+  {
+    nombre: 'Dr. Issel Prisciliano Gutiérrez Mandujano',
+    periodo: 'Periodo por documentar',
+    desde: null,
+    resena: 'Médico pediatra originario de Tuxtla Gutiérrez. Médico cirujano por la Universidad Veracruzana, con posgrado en Pediatría Médica en el Centro Médico Nacional «Adolfo Ruiz Cortines» del IMSS, en Veracruz. Fue pediatra adscrito durante 35 años en la Secretaría de Salud y 28 en el ISSSTE, y es jubilado del IMSS. Expresidente del Colegio de Pediatría de Tuxtla Gutiérrez, del Colegio de Pediatría del Estado de Chiapas y de la Federación de Pediatría del Sureste, y vocal consejero del Consejo Mexicano de Certificación en Pediatría por dos periodos. Fue vicepresidente y presidente de la FEACOMECH, de cuyo consejo consultivo forma parte, siempre comprometido con la enseñanza, la capacitación y la colegiación de los médicos de Chiapas.',
   },
   {
     nombre: 'Dr. José Ricardo Tovilla Victoria',
@@ -225,7 +286,7 @@ export function logoVinculo(nombre: string, forma: 'cuadrado' | 'horizontal' = '
 export interface Persona extends Integrante {
   /** Identificador de la dirección: nombre sin título, sin acentos y con guiones. */
   slug: string
-  organo: 'Mesa directiva' | 'Consejo consultivo'
+  organo: 'Mesa directiva' | 'Consejo consultivo' | 'Presidentes de colegios'
   periodo: string
   /** Foto vertical para la página (o el recorte al rostro). */
   retrato?: string
@@ -259,7 +320,15 @@ export const PERSONAS: Persona[] = [
     'Consejo consultivo',
     MESA_DIRECTIVA.periodo,
   )),
+  ...PRESIDENTES_COLEGIOS.map(i => comoPersona(i, 'Presidentes de colegios', PRESIDENCIAS_COLEGIO[i.nombre]?.periodo ?? 'Periodo vigente')),
 ]
+
+/** Ancla de cada órgano en /organizacion. */
+export const ANCLA_ORGANO: Record<Persona['organo'], string> = {
+  'Mesa directiva': 'mesa-directiva',
+  'Consejo consultivo': 'consejo-consultivo',
+  'Presidentes de colegios': 'presidentes-colegios',
+}
 
 export function buscarPersona(slug: string): Persona | undefined {
   return PERSONAS.find(p => p.slug === slug)

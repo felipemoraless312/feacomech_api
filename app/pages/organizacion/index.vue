@@ -120,6 +120,27 @@
           </div>
           <UButton to="/expresidentes" label="Galería de expresidentes" trailing-icon="i-lucide-arrow-right" color="neutral" variant="soft" />
         </section>
+
+        <!-- Presidencias de los colegios afiliados -->
+        <section id="presidentes-colegios" class="scroll-mt-24 space-y-6">
+          <div v-revelar class="space-y-2">
+            <h2 class="font-display text-3xl font-semibold tracking-tight text-highlighted">
+              Presidentes de colegios
+            </h2>
+            <p class="max-w-2xl text-muted">
+              Quienes presiden los colegios y asociaciones afiliados a la Federación.
+            </p>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <SitioTarjetaPersona v-for="(p, i) in presidentesConResena" :key="p.nombre" v-revelar="(i % 3) * 60" v-bind="p" />
+          </div>
+          <ul class="grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+            <li v-for="p in presidentesSinResena" :key="p.nombre" class="flex justify-between gap-3 border-b border-default pb-2">
+              <span class="font-medium text-highlighted">{{ p.nombre }}</span>
+              <span class="text-right text-muted">{{ p.cargo.replace('Presidencia · ', '') }}</span>
+            </li>
+          </ul>
+        </section>
       </div>
     </UContainer>
   </div>
@@ -128,7 +149,7 @@
 <script setup lang="ts">
 import { BIENVENIDA, MESA_DIRECTIVA, OBJETIVO_GENERAL, PERSONAS } from '#shared/organizacion'
 
-useSeoMeta({ title: 'Organización', description: 'Bienvenida de la presidencia, objetivo, misión, visión, historia y trayectoria, mesa directiva y consejo consultivo de la FEACOMECH.' })
+useSeoMeta({ title: 'Organización', description: 'Bienvenida de la presidencia, objetivo, misión, visión, historia y trayectoria, mesa directiva, consejo consultivo y presidentes de colegios de la FEACOMECH.' })
 
 const { data: institucion } = await useInstitucion()
 const { data: hitos } = await useFetch('/api/publico/trayectoria')
@@ -142,6 +163,8 @@ const identidad = computed(() => [
 // Cada integrante con su página propia (los consejeros toman su reseña de los expresidentes).
 const mesa = PERSONAS.filter(p => p.organo === 'Mesa directiva')
 const consejo = PERSONAS.filter(p => p.organo === 'Consejo consultivo')
+const presidentesConResena = PERSONAS.filter(p => p.organo === 'Presidentes de colegios' && p.resena)
+const presidentesSinResena = PERSONAS.filter(p => p.organo === 'Presidentes de colegios' && !p.resena)
 
 const secciones = computed(() => [
   { id: 'bienvenida', titulo: 'Bienvenida' },
@@ -150,5 +173,6 @@ const secciones = computed(() => [
   ...(hitos.value?.length ? [{ id: 'trayectoria', titulo: 'Trayectoria' }] : []),
   { id: 'mesa-directiva', titulo: 'Mesa directiva' },
   { id: 'consejo-consultivo', titulo: 'Consejo consultivo' },
+  { id: 'presidentes-colegios', titulo: 'Presidentes de colegios' },
 ])
 </script>

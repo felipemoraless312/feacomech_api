@@ -210,6 +210,7 @@ const enlaces: NavigationMenuItem[] = [
       { label: 'Objetivo, misión y visión', description: 'Para qué existe la Federación.', icon: 'i-lucide-target', to: '/organizacion#objetivo' },
       { label: 'Mesa directiva', description: 'Integrantes y reseña curricular.', icon: 'i-lucide-users-round', to: '/organizacion#mesa-directiva' },
       { label: 'Consejo consultivo', description: 'Expresidentes que acompañan a la mesa.', icon: 'i-lucide-scale', to: '/organizacion#consejo-consultivo' },
+      { label: 'Presidentes de colegios', description: 'Presidencias de los colegios afiliados.', icon: 'i-lucide-building-2', to: '/organizacion#presidentes-colegios' },
       { label: 'Expresidentes', description: 'Presidencias en orden cronológico.', icon: 'i-lucide-history', to: '/expresidentes' },
     ],
   },
