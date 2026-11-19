@@ -61,17 +61,17 @@
           <div class="marco absolute inset-0 hidden translate-x-4 translate-y-4 rounded-lg sm:block border-2 border-acento-500 sm:translate-x-6 sm:translate-y-6" aria-hidden="true" />
           <figure class="relative overflow-hidden rounded-lg shadow-[0_30px_70px_-24px_rgb(64_40_88/0.5)] ring-4 ring-white dark:ring-white/15">
             <img
-              src="/img/portada/general.jpg"
-              alt="Integrantes de la Federación reunidos en las Jornadas Médicas FEACOMECH 2025"
-              class="respirar aspect-[1955/1066] w-full object-cover"
-              width="1955"
-              height="1066"
+              src="/img/portada/presidentes-colegios-2026.jpg"
+              alt="Presidentas y presidentes de los colegios agremiados a la FEACOMECH, 2026"
+              class="respirar aspect-[1280/630] w-full object-cover"
+              width="1280"
+              height="630"
               fetchpriority="high"
             >
             <!-- Reflejo que recorre la foto al inclinarla -->
             <div class="reflejo pointer-events-none absolute inset-0" aria-hidden="true" />
             <figcaption class="sr-only">
-              Jornadas Médicas FEACOMECH 2025
+              Presidentes de los colegios agremiados, 2026
             </figcaption>
           </figure>
         </div>
