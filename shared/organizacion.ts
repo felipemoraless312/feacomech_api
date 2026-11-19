@@ -45,6 +45,7 @@ const FOTOS: Record<string, string> = {
   'Dr. Didier Gómez Trujillo': '/img/personas/didier-gomez-trujillo-rostro.jpg',
   'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez-rostro.jpg',
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade-rostro.jpg',
+  'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias-rostro.jpg',
 }
 
 /**
@@ -66,6 +67,7 @@ const RETRATOS: Record<string, string> = {
   'Dr. José Ricardo Tovilla Victoria': '/img/personas/jose-ricardo-tovilla-victoria.jpg',
   'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez.jpg',
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade.jpg',
+  'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias.jpg',
 }
 
 /**
@@ -96,12 +98,19 @@ const RESENAS: Record<string, string> = {
     'Ha sido profesora de posgrado en Retina y Vítreo en la UNAM, docente de la licenciatura en Optometría del IPN y, desde 2018, docente de pregrado en la Universidad Salazar (IESCH). Ha impartido más de 25 ponencias en congresos y cursos de la Asociación Mexicana de Retina, la Sociedad Mexicana de Oftalmología y el Congreso Mexicano de Oftalmología, y es autora de trabajos libres y videos quirúrgicos sobre vitrectomía y patología vitreorretiniana.',
     'Preside el Colegio de Oftalmólogos del Estado de Chiapas durante el periodo 2026–2027.',
   ].join('\n\n'),
+  // Reseña enviada por la Dra. del Solar (noviembre de 2026), tal cual.
   'Dra. Iraís del Solar López': [
-    'Médica anestesióloga con subespecialidad en Neuroanestesiología, dedicada a la práctica clínica, la formación de médicos especialistas y la actividad pericial.',
-    'Es médica cirujana por la Benemérita Universidad Autónoma de Chiapas, especialista en Anestesiología por la Universidad Nacional Autónoma de México y subespecialista en Neuroanestesiología, con formación en el Instituto Nacional de Neurología y Neurocirugía y aval de la UNAM. Es maestra en Gestión de Sistemas de Salud por la UNACH. Durante su formación se integró al Programa Impulso para la Investigación en Salud Carlos Slim.',
-    'Su trayectoria combina la práctica clínica en los sectores público y privado con la docencia en la residencia de Anestesiología del Hospital de Especialidades Pediátricas. Cuenta con estudios y un diplomado en Peritaje Médico, y elabora dictámenes médico-legales en apoyo al Poder Judicial.',
-    'Es primera autora del capítulo «Salud intercultural y atención hospitalaria: propuesta para mejorar la calidad de los servicios», en la obra colectiva «Bienestar integral y transiciones en salud comunitaria: Nutrición, salud mental y estrategias bioculturales en Chiapas».',
-    'Preside el Colegio de Anestesiología del Estado de Chiapas (COANECH) durante el periodo 2025–2027 y participa en la Comisión de Capacitación y Certificación de la FEACOMECH.',
+    'La Dra. Iraís del Solar López es Médica Cirujana por la Benemérita Universidad Autónoma de Chiapas, especialista en Anestesiología por la Universidad Nacional Autónoma de México y subespecialista en Neuroanestesiología, con formación en el Instituto Nacional de Neurología y Neurocirugía y aval de la UNAM. Es Maestra en Gestión de Sistemas de Salud por la UNACH. Durante su formación se integró al Programa Impulso para la Investigación en Salud Carlos Slim.',
+    'Su trayectoria combina la práctica clínica en los sectores público y privado con la docencia en residencias médicas en Anestesiología en el Hospital de Especialidades Pediátricas, donde contribuye a la formación de médicos especialistas. Cuenta, además, con estudios y un diplomado en Peritaje Médico. Su actividad profesional incluye la elaboración de dictámenes médico-legales en apoyo al Poder Judicial.',
+    'En el ámbito académico, es primera autora del capítulo «Salud intercultural y atención hospitalaria: propuesta para mejorar la calidad de los servicios», incluido en la obra colectiva «Bienestar integral y transiciones en salud comunitaria: Nutrición, salud mental y estrategias bioculturales en Chiapas».',
+    'Actualmente participa en la Comisión de Capacitación y Certificación de la FEACOMECH y preside el Colegio de Anestesiología del Estado de Chiapas durante el periodo 2025–2027. Su labor gremial complementa una trayectoria dedicada a la práctica clínica, la formación médica y la actividad pericial.',
+  ].join('\n\n'),
+  // CV de la Mtra. León Macías (noviembre de 2026), sin datos de contacto ni personales.
+  'Mtra. María Elena León Macías': [
+    'Maestra en Trabajo Social con más de una década de experiencia en el ámbito hospitalario, dedicada a la atención y orientación de pacientes y familiares, la vinculación interinstitucional y la formación de nuevas generaciones de trabajadores sociales.',
+    'Es licenciada (2011–2014) y maestra en Trabajo Social (2015–2016) por el Instituto de Estudios Superiores «Sor Juana Inés de la Cruz», y técnica en Trabajo Social por el Instituto Tecnológico de Estudios Chiapas. Ha cursado los diplomados Básico y Avanzado de Peritos de los Procesos Médicos y de los Profesionales de la Salud, en el Centro de Investigaciones Jurídicas, Médicas y Sociales, y el diplomado en Docencia Clínica en el CECyTE.',
+    'Desde 2012 se desempeña en el Hospital IMSS-Bienestar «Dr. Jesús Gilberto Gómez Maza», en Tuxtla Gutiérrez, donde realiza entrevistas a pacientes, reportes al Ministerio Público, gestiones, acompañamiento y orientación a pacientes y familiares, y referencias y enlace con otras instituciones. Como responsable de los pasantes de Trabajo Social coordina sus proyectos, la exposición de temas, la rotación por los servicios y la enseñanza continua. De junio a octubre de 2026 estuvo a cargo de la Subjefatura de Trabajo Social del hospital.',
+    'Preside el Colegio de Trabajadores Sociales del Estado de Chiapas (COTRASECH).',
   ].join('\n\n'),
   'Dr. Sarain Montero Orozco': [
     'Médico especialista en traumatología y ortopedia, con práctica en microcirugía articular, y más de 40 años de ejercicio profesional en Tuxtla Gutiérrez.',
@@ -122,6 +131,7 @@ const PRESIDENCIAS_COLEGIO: Record<string, { cargo: string, periodo?: string }> 
   'Dra. María Hilda Rentería García': { cargo: 'Presidenta del Colegio de Oftalmólogos del Estado de Chiapas', periodo: '2026–2027' },
   'Dra. Iraís del Solar López': { cargo: 'Presidenta del Colegio de Anestesiología del Estado de Chiapas (COANECH)', periodo: '2025–2027' },
   'Dr. Sarain Montero Orozco': { cargo: 'Presidente del Colegio de Ortopedia y Traumatología de Chiapas (COTECH)' },
+  'Mtra. María Elena León Macías': { cargo: 'Presidenta del Colegio de Trabajadores Sociales del Estado de Chiapas (COTRASECH)' },
   'Psic. María del Carmen Peche Domínguez': { cargo: 'Presidenta del Colegio de Profesionales en Psicología del Estado de Chiapas (COPPSECH)' },
 }
 

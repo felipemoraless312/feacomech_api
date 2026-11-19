@@ -177,11 +177,17 @@ async function organizaciones() {
   return o
 }
 
+/** Nombres de presidencias corregidos tras recibir el currículum: anterior → actual. */
+const NOMBRES_CORREGIDOS: Record<string, string> = {
+  'Mtra. Ts. María Helena León Macías': 'Mtra. María Elena León Macías',
+}
+
 /**
  * Colegios y asociaciones afiliados con su presidencia vigente (lista de presidentes de
  * colegios, noviembre de 2026; shared/colegios.ts). Crea la organización si falta, la marca
  * AFILIADA una sola vez (no deshace cambios posteriores hechos en la plataforma) y registra
- * la presidencia en su mesa directiva si aún no hay nadie en el cargo.
+ * la presidencia en su mesa directiva si aún no hay nadie en el cargo; si ya la registró
+ * este seed, sincroniza el nombre (ver NOMBRES_CORREGIDOS) y el extracto de la reseña.
  */
 async function colegiosAfiliados() {
   const MOTIVO = 'Afiliación registrada a partir de la lista de presidentes de colegios afiliados (noviembre de 2026).'
@@ -222,18 +228,27 @@ async function colegiosAfiliados() {
       ?? await prisma.organo.create({ data: { organizacionId: o.id, tipo: 'MESA_DIRECTIVA', nombre: 'Mesa directiva' } })
     const cargo = await prisma.cargo.findFirst({ where: { organoId: mesa.id, nombre: 'Presidencia' } })
       ?? await prisma.cargo.create({ data: { organoId: mesa.id, nombre: 'Presidencia', orden: 0 } })
-    if (await prisma.nombramiento.findFirst({ where: { cargoId: cargo.id } })) continue
+    // Primer párrafo de la reseña curricular, si se recibió el currículum.
+    const extracto = buscarPersona(slugPersona(p.nombre))?.resena?.split(/\n\s*\n/)[0] ?? null
+    const previo = await prisma.nombramiento.findFirst({ where: { cargoId: cargo.id } })
+    if (previo) {
+      // Presidencia registrada por este seed (mismo nombre o uno corregido): se sincronizan
+      // nombre y extracto. Si la plataforma ya registró a otra persona, no se toca.
+      if ((previo.nombrePersona === p.nombre || NOMBRES_CORREGIDOS[previo.nombrePersona ?? ''] === p.nombre)
+        && (previo.nombrePersona !== p.nombre || previo.descripcion !== extracto)) {
+        await prisma.nombramiento.update({ where: { id: previo.id }, data: { nombrePersona: p.nombre, descripcion: extracto } })
+      }
+      continue
+    }
 
     const periodo = c.periodo
       ? await prisma.periodo.findFirst({ where: { organizacionId: o.id, nombre: c.periodo } })
         ?? await prisma.periodo.create({ data: { organizacionId: o.id, nombre: c.periodo, inicio: dia(c.presidenciaDesde ?? '2026-11-01'), fin: dia(`${c.periodo.slice(-4)}-12-31`) } })
       : null
-    // Primer párrafo de la reseña curricular, si se recibió el currículum.
-    const resena = buscarPersona(slugPersona(p.nombre))?.resena?.split(/\n\s*\n/)[0]
     await prisma.nombramiento.create({
       data: {
         cargoId: cargo.id, periodoId: periodo?.id ?? null, nombrePersona: p.nombre,
-        inicio: dia(c.presidenciaDesde ?? '2026-11-01'), estado: 'VIGENTE', publicado: true, descripcion: resena ?? null,
+        inicio: dia(c.presidenciaDesde ?? '2026-11-01'), estado: 'VIGENTE', publicado: true, descripcion: extracto,
       },
     })
   }

@@ -36,7 +36,7 @@ const COMITAN = { bloque: 'Colegio Médico de Comitán', coordina: 'Dr. Juan Car
 const QUIM = { bloque: 'Colegio de Químicos', coordina: 'QFB. Adriana Osiris Méndez Cigarroa' }
 const REUMA = { bloque: 'Colegio de Reumatología', coordina: 'Dra. Liliana Hernández Cruz' }
 const HEMO = { bloque: 'Mesa redonda de Hemodinámica', coordina: 'Dr. Eddie Alfaro Coutiño' }
-const TS = { bloque: 'Colegio de Trabajo Social', coordina: 'Mtra. Ts. María Helena León Macías' }
+const TS = { bloque: 'Colegio de Trabajo Social', coordina: 'Mtra. María Elena León Macías' }
 const TRAUMA = { bloque: 'Colegio de Traumatología', coordina: 'Dr. Sarain Montero Orozco' }
 const NEURO = { bloque: 'Colegio de Neurociencias', coordina: 'Dr. José de Jesús Almanza Muñoz' }
 const PSICO = { bloque: 'Colegio de Psicología', coordina: 'Psic. María del Carmen Peche Domínguez' }
@@ -82,7 +82,7 @@ export const PROGRAMA_2026: DiaPrograma[] = [
     etiqueta: 'Día 2',
     tema: 'Jornadas Académicas',
     actividades: [
-      { inicio: '08:00', fin: '08:20', tipo: 'ponencia', titulo: 'Protocolo de actuación ante caso de violencia y Código 100 desde el trabajo social', ponente: 'Mtra. Ts. María Helena León Macías', perfil: 'Maestra en Trabajo Social', ...TS },
+      { inicio: '08:00', fin: '08:20', tipo: 'ponencia', titulo: 'Protocolo de actuación ante caso de violencia y Código 100 desde el trabajo social', ponente: 'Mtra. María Elena León Macías', perfil: 'Maestra en Trabajo Social', ...TS },
       { inicio: '08:20', fin: '08:40', tipo: 'ponencia', titulo: 'Artroscopía de hombro', ponente: 'Dr. Adrián Flores Villalobos', perfil: 'Traumatólogo especialista en cirugía articular', ...TRAUMA },
       { inicio: '08:40', fin: '09:00', tipo: 'ponencia', titulo: 'Actualidades en politraumatismos', ponente: 'Dr. Didier Gómez Trujillo', perfil: 'Traumatólogo especialista en cirugía articular', ...TRAUMA },
       { inicio: '09:00', fin: '09:20', tipo: 'ponencia', titulo: 'Nueva agenda de investigación, prevención e impacto comunitario en neurociencias: del conocimiento científico a la transformación social', ponente: 'Dr. José de Jesús Almanza Muñoz', perfil: 'Psiquiatra', ...NEURO },
@@ -162,7 +162,7 @@ export const MESA_DIRECTIVA_2026 = {
     { nombre: 'QFB. Adriana Osiris Méndez Cigarroa', colegio: 'Químicos' },
     { nombre: 'Dra. Liliana Hernández Cruz', colegio: 'Reumatología' },
     { nombre: 'Dr. Pablo Manuel Alcázar Ramos', colegio: 'San Cristóbal de las Casas' },
-    { nombre: 'Mtra. Ts. María Helena León Macías', colegio: 'Trabajo Social' },
+    { nombre: 'Mtra. María Elena León Macías', colegio: 'Trabajo Social' },
     { nombre: 'Dr. Sarain Montero Orozco', colegio: 'Traumatología' },
     { nombre: 'Dr. Eleasin López Flores', colegio: 'Médicos Ecografistas de Chiapas' },
     { nombre: 'Dra. Claudia Rojas Guzmán', colegio: 'Urgenciólogos' },
