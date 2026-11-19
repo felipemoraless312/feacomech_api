@@ -56,19 +56,20 @@
             :to="`/directorio/${o.slug}`"
             class="group flex h-full flex-col overflow-hidden rounded-2xl bg-default shadow-tarjeta ring-1 ring-default transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-flotante hover:ring-marca-200 dark:hover:ring-marca-800"
           >
-            <!-- Logotipo protagonista -->
-            <div class="relative flex aspect-[4/3] items-center justify-center bg-white p-4 sm:p-6">
-              <span class="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-marca-600 to-acento-500 transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
+            <!-- Logotipo protagonista: recuadro de proporción fija; el logo va en posición
+                 absoluta para que su tamaño natural nunca estire ni desborde el recuadro -->
+            <div class="relative flex aspect-square items-center justify-center overflow-hidden bg-white sm:aspect-[4/3]">
               <img
                 v-if="logoDe(o)"
                 :src="logoDe(o)"
                 :alt="`Logotipo del ${o.nombre}`"
-                class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                class="absolute inset-0 size-full object-contain p-3 transition-transform duration-500 group-hover:scale-105 sm:p-4"
                 loading="lazy"
               >
               <span v-else class="flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-marca-50 to-acento-50 ring-1 ring-marca-100 sm:size-24" aria-hidden="true">
                 <UIcon name="i-lucide-stethoscope" class="size-9 text-marca-600 sm:size-10" />
               </span>
+              <span class="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-marca-600 to-acento-500 transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
             </div>
             <div class="flex flex-1 flex-col border-t border-default p-3 sm:p-5">
               <p class="flex flex-wrap items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-dimmed">
