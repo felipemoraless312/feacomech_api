@@ -14,9 +14,9 @@
           <div class="pointer-events-none absolute inset-0 -z-10 bg-radial-[at_50%_30%] from-white/90 via-white/30 to-transparent dark:from-white/10" aria-hidden="true" />
 
           <template v-if="recorte">
-            <!-- Escudo ondeando como bandera detrás de la persona -->
-            <div class="pointer-events-none absolute inset-x-0 top-[6%] -z-10 flex justify-center">
-              <MarcaEscudoOndeante class="w-[66%] drop-shadow-[0_8px_18px_rgb(64_40_88/0.22)]" />
+            <!-- Escudo ondeando como bandera en la esquina superior izquierda, fuera de la silueta -->
+            <div class="pointer-events-none absolute left-[4%] top-[4%] -z-10 w-[26%]">
+              <MarcaEscudoOndeante class="w-full drop-shadow-[0_6px_12px_rgb(64_40_88/0.22)]" />
             </div>
             <img :src="recorte" :alt="alt" class="absolute inset-x-0 bottom-0 w-full drop-shadow-[0_10px_16px_rgb(64_40_88/0.35)]" width="560" height="700">
           </template>

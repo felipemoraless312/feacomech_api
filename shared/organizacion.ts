@@ -46,6 +46,8 @@ const FOTOS: Record<string, string> = {
   'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez-rostro.jpg',
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade-rostro.jpg',
   'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias-rostro.jpg',
+  'Dra. Isidra Candelario López': '/img/personas/isidra-candelario-lopez-rostro.jpg',
+  'Dr. Humberto Hernández Rojas': '/img/personas/humberto-hernandez-rojas-rostro.jpg',
 }
 
 /**
@@ -58,6 +60,9 @@ const RECORTES: Record<string, string> = {
   'Dr. Alexander Arroyo Núñez': '/img/personas/recortes/alexander-arroyo-nunez.webp',
   'Dr. Hernán León Velasco': '/img/personas/recortes/hernan-leon-velasco.webp',
   'Dr. José Ricardo Tovilla Victoria': '/img/personas/recortes/jose-ricardo-tovilla-victoria.webp',
+  'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/recortes/cecilia-clotilde-velazquez-andrade.webp',
+  'Dra. Isidra Candelario López': '/img/personas/recortes/isidra-candelario-lopez.webp',
+  'Dr. Humberto Hernández Rojas': '/img/personas/recortes/humberto-hernandez-rojas.webp',
 }
 
 /** Retratos verticales para la página de cada persona (si no hay, se usa el recorte al rostro). */
@@ -68,6 +73,8 @@ const RETRATOS: Record<string, string> = {
   'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez.jpg',
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade.jpg',
   'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias.jpg',
+  'Dra. Isidra Candelario López': '/img/personas/isidra-candelario-lopez.jpg',
+  'Dr. Humberto Hernández Rojas': '/img/personas/humberto-hernandez-rojas.jpg',
 }
 
 /**
