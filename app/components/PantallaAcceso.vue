@@ -1,43 +1,39 @@
-<!-- Marco para inicio de sesión y cambio de contraseña: en pantallas grandes, panel morado
-     institucional con la foto de la Federación a la izquierda; en el celular, fondo morado con la
-     tarjeta al centro. -->
+<!-- Marco institucional para inicio de sesión, recuperación y cambio de contraseña: fondo claro,
+     escudo oficial al centro sobre el nombre de la Federación y la tarjeta del formulario debajo.
+     Igual en celular y escritorio; sólo cambian los tamaños. -->
 <template>
-  <div class="grid min-h-svh lg:grid-cols-[1.1fr_1fr]">
-    <aside class="relative isolate hidden overflow-hidden bg-gradient-to-br from-marca-600 to-marca-800 lg:block">
-      <img src="/img/portada/jornadas-2025-1280.webp" alt="" aria-hidden="true" class="acercamiento absolute inset-0 -z-20 size-full object-cover opacity-45">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-marca-800/95 via-marca-600/70 to-marca-400/30" />
-      <MarcaRed class="girar-lento pointer-events-none absolute -bottom-48 -left-40 -z-10 size-[40rem] text-white/10" />
-      <div class="flex h-full flex-col justify-between p-12 text-white">
-        <NuxtLink to="/" aria-label="Ir al portal público" class="w-fit">
-          <MarcaLogo grande claro class="!text-white" />
-        </NuxtLink>
-        <div class="entrada max-w-md">
-          <p class="text-sm font-semibold uppercase tracking-[0.16em] text-marca-200">
-            Plataforma institucional
-          </p>
-          <p class="mt-3 font-display text-4xl font-semibold leading-tight tracking-[-0.015em]">
-            Federación de Asociaciones y Colegios Médicos del Estado de Chiapas
-          </p>
-          <p class="mt-4 text-white/75">
-            Por la dignificación y unión profesional.
-          </p>
-        </div>
-      </div>
-    </aside>
+  <div class="relative isolate flex min-h-svh flex-col bg-marca-50/60 dark:bg-marca-950">
+    <!-- Fondo: halo suave detrás del escudo y franja institucional arriba -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-1 bg-gradient-to-r from-marca-700 via-marca-500 to-acento-400" />
+    <div aria-hidden="true" class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[34rem] w-[54rem] max-w-[200vw] -translate-x-1/2 -translate-y-1/3 rounded-full bg-radial from-marca-200/70 via-marca-100/30 to-transparent blur-2xl dark:from-marca-800/50 dark:via-marca-900/20" />
+    <MarcaRed aria-hidden="true" class="pointer-events-none absolute -bottom-40 -right-40 -z-10 size-[30rem] text-marca-300/20 dark:text-marca-700/20" />
 
-    <div class="relative isolate flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-marca-600 via-marca-500 to-acento-400 px-4 py-12 lg:bg-none lg:bg-muted">
-      <MarcaRed class="pointer-events-none absolute -right-32 -top-32 -z-10 size-96 text-white/10 lg:hidden" />
-      <div class="entrada w-full max-w-[400px]">
-        <NuxtLink to="/" class="mb-8 flex justify-center lg:hidden" aria-label="Ir al portal público">
-          <MarcaLogo claro class="!text-white" />
+    <main class="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:py-14">
+      <div class="entrada w-full max-w-[420px]">
+        <!-- Escudo y nombre -->
+        <NuxtLink to="/" class="group mx-auto mb-8 flex w-fit flex-col items-center text-center" aria-label="Ir al portal público">
+          <img src="/img/marca/escudo-512.png" alt="Escudo de la FEACOMECH" width="512" height="512" class="size-24 object-contain drop-shadow-[0_10px_18px_rgb(64_40_88/0.28)] transition-transform duration-500 group-hover:scale-[1.04] sm:size-28">
+          <span class="mt-5 font-display text-2xl font-semibold tracking-[0.06em] text-marca-800 dark:text-marca-100">
+            FEACOMECH
+          </span>
+          <span class="mt-1 max-w-xs text-sm leading-snug text-muted">
+            Federación de Asociaciones y Colegios Médicos del Estado de Chiapas
+          </span>
         </NuxtLink>
-        <div class="rounded-xl bg-default p-8 shadow-flotante sm:p-10">
+
+        <div class="rounded-2xl bg-default p-7 shadow-flotante ring-1 ring-default sm:p-9">
           <slot />
         </div>
-        <p class="mt-8 text-center text-xs text-white/70 lg:text-dimmed">
-          FEACOMECH · Chiapas
-        </p>
       </div>
-    </div>
+    </main>
+
+    <footer class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 px-4 pb-6 text-xs text-dimmed">
+      <NuxtLink to="/" class="inline-flex items-center gap-1 font-medium text-toned hover:text-primary">
+        <UIcon name="i-lucide-arrow-left" class="size-3.5" />
+        Volver al portal
+      </NuxtLink>
+      <span aria-hidden="true">·</span>
+      <span>Por la dignificación y unión profesional</span>
+    </footer>
   </div>
 </template>

@@ -2,12 +2,12 @@
   <PantallaAcceso>
     <UAuthForm
       title="Iniciar sesión"
-      description="Plataforma FEACOMECH"
-      :ui="{ title: 'font-display text-2xl font-semibold tracking-tight', description: 'text-[15px]', header: 'mb-8' }"
+      description="Ingrese con su correo y contraseña."
+      :ui="{ title: 'font-display text-2xl font-semibold tracking-tight', description: 'text-[15px]', header: 'mb-7' }"
       :fields="campos"
       :schema="loginSchema"
       :loading="enviando"
-      :submit="{ label: 'Continuar', block: true, size: 'xl' }"
+      :submit="{ label: 'Iniciar sesión', icon: 'i-lucide-log-in', block: true, size: 'xl' }"
       @submit="entrar"
     >
       <template #validation>
