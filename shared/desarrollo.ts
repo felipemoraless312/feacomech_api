@@ -7,7 +7,7 @@ export const DESARROLLADOR = {
   cargo: 'CEO de Numma · Ingeniero Biomédico',
   foto: '/img/personas/luis-felipe-morales-gutierrez-rostro.jpg',
   retrato: '/img/personas/luis-felipe-morales-gutierrez.jpg',
-  recorte: '/img/personas/recortes/luis-felipe-morales-gutierrez.webp',
+  recorte: '/img/personas/recortes/luis-felipe-morales-gutierrez.webp?v=2',
   /** Resumen profesional (párrafos), en el mismo estilo que las reseñas de la mesa directiva. */
   resumen: [
     'Ingeniero biomédico y CEO de Numma, empresa de tecnología clínica y telecomunicaciones. Su trabajo se distingue por unir la ingeniería biomédica, el desarrollo de software y la infraestructura tecnológica en soluciones que acercan la tecnología a la atención de la salud.',

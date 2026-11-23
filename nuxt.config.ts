@@ -50,6 +50,9 @@ export default defineNuxtConfig({
   // La plataforma privada y las impresiones son SPA: no se genera HTML con datos personales
   // en el servidor y se evitan diferencias de hidratación (IDs de etiquetas de formulario).
   routeRules: {
+    // Imágenes públicas: el navegador las revalida cada 5 min (con ETag, responde 304 si no
+    // cambiaron), para que una foto reemplazada con el mismo nombre se actualice pronto.
+    '/img/**': { headers: { 'cache-control': 'public, max-age=300, must-revalidate' } },
     '/plataforma/**': { ssr: false },
     '/imprimir/**': { ssr: false },
     // Registro en sede (enlace oculto por QR): sólo en el navegador, guarda el pase en el teléfono.

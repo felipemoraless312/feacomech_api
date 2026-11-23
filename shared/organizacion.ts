@@ -41,9 +41,9 @@ export interface Integrante {
 const FOTOS: Record<string, string> = {
   'Dra. Fanny Kramsky Soto': FOTO_PRESIDENTA,
   'Dr. José Ricardo Tovilla Victoria': '/img/personas/jose-ricardo-tovilla-victoria-rostro.jpg',
-  'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco-rostro.jpg',
+  'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco-rostro.jpg?v=2',
   'Dr. Didier Gómez Trujillo': '/img/personas/didier-gomez-trujillo-rostro.jpg',
-  'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez-rostro.jpg',
+  'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez-rostro.jpg?v=2',
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade-rostro.jpg',
   'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias-rostro.jpg',
   'Dra. Isidra Candelario López': '/img/personas/isidra-candelario-lopez-rostro.jpg',
@@ -60,8 +60,8 @@ const FOTOS: Record<string, string> = {
  */
 const RECORTES: Record<string, string> = {
   'Dra. Fanny Kramsky Soto': '/img/personas/recortes/fanny-kramsky.webp',
-  'Dr. Alexander Arroyo Núñez': '/img/personas/recortes/alexander-arroyo-nunez.webp',
-  'Dr. Hernán León Velasco': '/img/personas/recortes/hernan-leon-velasco.webp',
+  'Dr. Alexander Arroyo Núñez': '/img/personas/recortes/alexander-arroyo-nunez.webp?v=2',
+  'Dr. Hernán León Velasco': '/img/personas/recortes/hernan-leon-velasco.webp?v=2',
   'Dr. José Ricardo Tovilla Victoria': '/img/personas/recortes/jose-ricardo-tovilla-victoria.webp',
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/recortes/cecilia-clotilde-velazquez-andrade.webp',
   'Dra. Isidra Candelario López': '/img/personas/recortes/isidra-candelario-lopez.webp',
@@ -72,9 +72,9 @@ const RECORTES: Record<string, string> = {
 /** Retratos verticales para la página de cada persona (si no hay, se usa el recorte al rostro). */
 const RETRATOS: Record<string, string> = {
   'Dra. Fanny Kramsky Soto': '/img/personas/fanny-kramsky.jpg',
-  'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco.jpg',
+  'Dr. Hernán León Velasco': '/img/personas/hernan-leon-velasco.jpg?v=2',
   'Dr. José Ricardo Tovilla Victoria': '/img/personas/jose-ricardo-tovilla-victoria.jpg',
-  'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez.jpg',
+  'Dr. Alexander Arroyo Núñez': '/img/personas/alexander-arroyo-nunez.jpg?v=2',
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/cecilia-clotilde-velazquez-andrade.jpg',
   'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias.jpg',
   'Dra. Isidra Candelario López': '/img/personas/isidra-candelario-lopez.jpg',
