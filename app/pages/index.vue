@@ -1,6 +1,7 @@
-<!-- Inicio del portal: portada, mensaje de la presidencia, instituciones aliadas, trámites
-     frecuentes, noticias y próximos eventos, colegios agremiados y beneficios. La trayectoria
-     vive en /organizacion#trayectoria y el historial de actividades en /noticias?tipo=ACTIVIDAD. -->
+<!-- Inicio del portal, por prioridad: portada (identidad, grupo y cifras), trámites frecuentes,
+     noticias y próximos eventos, mensaje de la presidenta, colegios agremiados, beneficios e
+     instituciones aliadas. En el celular todo se compacta (rejillas de 2 columnas, textos
+     secundarios ocultos) para no alargar el recorrido. La trayectoria vive en /federacion. -->
 <template>
   <div>
     <SitioPortada
@@ -11,104 +12,41 @@
       :cifras="cifras.slice(0, 3)"
     />
 
-    <!-- Bienvenida de la presidenta -->
-    <section class="relative isolate overflow-hidden bg-marca-50 py-16 sm:py-20 dark:bg-marca-950/50">
-      <MarcaRed class="pointer-events-none absolute -right-32 -top-32 -z-10 size-[32rem] text-marca-300/40 dark:text-marca-800/40" />
-      <UContainer class="grid items-center gap-10 lg:grid-cols-[auto_1fr]">
-        <div v-revelar.izquierda class="mx-auto flex flex-col items-center text-center lg:mx-0">
-          <div class="relative">
-            <div class="girar-lento absolute -inset-3 rounded-full border-2 border-dashed border-acento-400/70" aria-hidden="true" />
-            <img :src="BIENVENIDA.foto" :alt="BIENVENIDA.autora" width="176" height="176" loading="lazy" class="relative size-44 rounded-full bg-marca-100 object-cover ring-8 ring-white dark:ring-marca-950">
-          </div>
-          <p class="mt-6 font-display text-xl font-bold text-highlighted">
-            {{ BIENVENIDA.autora }}
-          </p>
-          <p class="text-sm text-muted">
-            Presidenta · Bienio 2026–2028
-          </p>
-        </div>
-        <div v-revelar="100">
-          <p class="rotulo">
-            Mensaje de bienvenida
-          </p>
-          <blockquote class="mt-4 font-display text-2xl font-medium leading-snug text-marca-900 text-balance sm:text-3xl dark:text-white">
-            «{{ BIENVENIDA.parrafos[1] }}»
-          </blockquote>
-          <div class="mt-7 flex flex-wrap gap-3">
-            <UButton to="/organizacion#bienvenida" label="Leer el mensaje completo" trailing-icon="i-lucide-arrow-right" />
-            <UButton to="/organizacion#mesa-directiva" label="Conozca a la mesa directiva" color="neutral" variant="outline" />
-          </div>
-        </div>
-      </UContainer>
-    </section>
-
-    <!-- Vinculación institucional: dependencias de gobierno con las que hay convenio o colaboración -->
-    <section v-if="inicio?.vinculos.length" class="relative isolate overflow-hidden py-16 sm:py-20">
-      <MarcaRed class="girar-lento pointer-events-none absolute -left-40 top-1/2 -z-10 size-[30rem] -translate-y-1/2 text-marca-200/40 dark:text-white/5" />
-      <UContainer class="space-y-10">
-        <div class="mx-auto max-w-2xl space-y-3 text-center">
-          <p v-revelar class="text-sm font-semibold uppercase tracking-[0.16em] text-acento-600 dark:text-acento-400">
-            Vinculación institucional
-          </p>
-          <h2 v-revelar="60" class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">
-            Instituciones aliadas
-          </h2>
-          <p v-revelar="120" class="text-[17px] leading-relaxed text-muted">
-            Trabajamos con las instituciones públicas de Chiapas en capacitación, promoción de la salud
-            y el fortalecimiento del ejercicio profesional.
-          </p>
-        </div>
-        <div class="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2" :class="{ 'lg:grid-cols-3': inicio.vinculos.length > 2 }">
-          <SitioTarjetaInstitucion
-            v-for="(v, n) in inicio.vinculos"
-            :key="v.nombre"
-            v-revelar.escala="n * 120"
-            :vinculo="v"
-            :indice="n"
-            compacto
-          />
-        </div>
-        <div class="flex justify-center">
-          <UButton to="/vinculacion" label="Conocer la vinculación institucional" trailing-icon="i-lucide-arrow-right" color="neutral" variant="outline" size="lg" class="rounded-full" />
-        </div>
-      </UContainer>
-    </section>
-
-    <!-- ¿Qué desea hacer? — trámites frecuentes -->
-    <section class="relative isolate overflow-hidden bg-muted py-16 sm:py-20">
-      <UContainer class="space-y-10">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+    <!-- ¿Qué desea hacer? — trámites frecuentes, lo primero tras la portada -->
+    <section class="relative isolate py-10 sm:py-16">
+      <UContainer class="space-y-6 sm:space-y-8">
+        <div class="flex items-end justify-between gap-4">
           <div>
             <p v-revelar class="rotulo">
               Trámites frecuentes
             </p>
-            <h2 v-revelar="60" class="mt-2 font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">
+            <h2 v-revelar="60" class="mt-1.5 font-display text-2xl font-bold tracking-tight text-highlighted sm:mt-2 sm:text-3xl">
               ¿Qué desea hacer?
             </h2>
           </div>
-          <UButton v-revelar="120" to="/contacto" label="¿Otra consulta? Escríbanos" trailing-icon="i-lucide-message-circle" color="neutral" variant="ghost" />
+          <UButton v-revelar="120" to="/contacto" label="Escríbanos" trailing-icon="i-lucide-message-circle" color="neutral" variant="ghost" class="hidden sm:inline-flex" />
         </div>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           <NuxtLink
             v-for="(t, n) in tramites"
             :key="t.to"
-            v-revelar="n * 110"
+            v-revelar="n * 90"
             :to="t.to"
-            class="tramite group relative isolate flex flex-col sm:min-h-52 overflow-hidden rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default"
+            class="tramite group relative isolate flex flex-col overflow-hidden rounded-2xl bg-default p-4 shadow-tarjeta ring-1 ring-default sm:p-6"
             :style="{ '--retraso-pulso': `${n * 0.6}s` }"
           >
             <!-- Relleno de color que sube al pasar el cursor -->
             <span class="tramite-relleno absolute inset-0 -z-10 bg-gradient-to-br from-marca-700 via-marca-600 to-acento-500" aria-hidden="true" />
-            <span class="pointer-events-none absolute right-5 top-4 font-display text-5xl font-bold leading-none tabular-nums text-marca-100 transition-colors duration-500 group-hover:text-white/20 sm:right-6 sm:top-5 sm:text-6xl dark:text-marca-900" aria-hidden="true">{{ String(n + 1).padStart(2, '0') }}</span>
-            <span class="tramite-icono relative flex size-12 items-center justify-center rounded-xl bg-marca-100 text-marca-700 transition-colors duration-500 group-hover:bg-white/15 group-hover:text-white dark:bg-marca-900 dark:text-marca-200">
-              <UIcon :name="t.icono" class="icono-salto size-6" />
+            <span class="pointer-events-none absolute right-4 top-3 hidden font-display text-5xl font-bold leading-none tabular-nums text-marca-100 transition-colors duration-500 group-hover:text-white/20 sm:block dark:text-marca-900" aria-hidden="true">{{ String(n + 1).padStart(2, '0') }}</span>
+            <span class="tramite-icono relative flex size-10 items-center justify-center rounded-xl bg-marca-100 text-marca-700 transition-colors duration-500 group-hover:bg-white/15 group-hover:text-white sm:size-12 dark:bg-marca-900 dark:text-marca-200">
+              <UIcon :name="t.icono" class="icono-salto size-5 sm:size-6" />
             </span>
-            <span class="relative flex flex-1 flex-col pt-5 sm:pt-8">
-              <span class="block font-display text-lg font-semibold leading-tight text-highlighted transition-colors duration-500 group-hover:text-white">
+            <span class="relative flex flex-1 flex-col pt-3 sm:pt-6">
+              <span class="block font-display text-[15px] font-semibold leading-tight text-highlighted transition-colors duration-500 group-hover:text-white sm:text-lg">
                 {{ t.titulo }}
               </span>
-              <span class="mt-1.5 block text-sm leading-snug text-muted transition-colors duration-500 group-hover:text-white/80">{{ t.texto }}</span>
-              <span class="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-primary transition-colors duration-500 group-hover:text-white">
+              <span class="mt-1 hidden text-sm leading-snug text-muted transition-colors duration-500 group-hover:text-white/80 sm:block">{{ t.texto }}</span>
+              <span class="mt-auto hidden items-center gap-1.5 pt-4 text-sm font-semibold text-primary transition-colors duration-500 group-hover:text-white sm:inline-flex">
                 {{ t.accion }}
                 <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-1.5" />
               </span>
@@ -119,16 +57,16 @@
     </section>
 
     <!-- Noticias y eventos -->
-    <section class="py-16 sm:py-20">
-      <UContainer class="grid gap-12 lg:grid-cols-[1.55fr_1fr]">
+    <section class="bg-muted py-10 sm:py-16">
+      <UContainer class="grid gap-10 lg:grid-cols-[1.55fr_1fr] lg:gap-12">
         <!-- Noticias -->
-        <div class="min-w-0 space-y-6">
+        <div class="min-w-0 space-y-5">
           <div class="flex items-end justify-between gap-4">
             <div>
               <p class="rotulo">
                 Noticias y eventos
               </p>
-              <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-highlighted">
+              <h2 class="mt-1.5 font-display text-2xl font-bold tracking-tight text-highlighted sm:mt-2 sm:text-3xl">
                 Lo más reciente
               </h2>
             </div>
@@ -138,21 +76,21 @@
           <template v-if="inicio?.noticias.length">
             <!-- Destacada -->
             <NuxtLink :to="`/noticias/${destacada!.slug}`" class="elevar group grid overflow-hidden rounded-2xl bg-default shadow-tarjeta ring-1 ring-default sm:grid-cols-[1.1fr_1fr]">
-              <div class="aspect-[16/10] overflow-hidden bg-gradient-to-br from-marca-100 via-marca-50 to-acento-50 sm:aspect-auto dark:from-marca-900 dark:to-marca-950">
+              <div class="aspect-[16/9] overflow-hidden bg-gradient-to-br from-marca-100 via-marca-50 to-acento-50 sm:aspect-auto dark:from-marca-900 dark:to-marca-950">
                 <img v-if="destacada!.portadaId" :src="`/api/archivos/${destacada!.portadaId}`" alt="" class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]">
                 <div v-else class="relative flex size-full min-h-48 items-center justify-center">
                   <MarcaRed class="girar-lento absolute size-72 text-marca-300/40" />
                   <img src="/img/marca/escudo-160.png" alt="" class="relative h-20 w-auto transition-transform duration-500 group-hover:scale-110">
                 </div>
               </div>
-              <div class="flex flex-col p-6">
+              <div class="flex flex-col p-4 sm:p-6">
                 <p class="text-xs font-semibold uppercase tracking-wide text-acento-600">
                   {{ NOMBRE_NOTICIA[destacada!.tipo] }} · {{ formatoFecha(destacada!.publicadaEn) }}
                 </p>
-                <p class="mt-2 font-display text-2xl font-bold leading-snug text-highlighted group-hover:text-primary">
+                <p class="mt-1.5 font-display text-lg font-bold leading-snug text-highlighted group-hover:text-primary sm:mt-2 sm:text-2xl">
                   {{ destacada!.titulo }}
                 </p>
-                <p v-if="destacada!.resumen" class="mt-3 line-clamp-4 text-[15px] leading-relaxed text-muted">
+                <p v-if="destacada!.resumen" class="mt-2 line-clamp-2 text-sm leading-relaxed text-muted sm:mt-3 sm:line-clamp-4 sm:text-[15px]">
                   {{ destacada!.resumen }}
                 </p>
                 <span class="mt-auto flex items-center gap-1 pt-4 text-sm font-semibold text-primary">Leer nota <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform group-hover:translate-x-1" /></span>
@@ -161,16 +99,16 @@
             <!-- Resto, en lista -->
             <ul class="divide-y divide-default border-y border-default">
               <li v-for="n in inicio.noticias.slice(1)" :key="n.slug">
-                <NuxtLink :to="`/noticias/${n.slug}`" class="group flex items-center gap-4 py-4">
+                <NuxtLink :to="`/noticias/${n.slug}`" class="group flex items-center gap-3 py-3 sm:gap-4 sm:py-4">
                   <!-- Miniatura: la portada de la noticia o, si no tiene, el escudo -->
-                  <span class="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-marca-100 via-marca-50 to-acento-50 ring-1 ring-default sm:w-28 dark:from-marca-900 dark:to-marca-950">
+                  <span class="relative aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-marca-100 via-marca-50 to-acento-50 ring-1 ring-default sm:w-28 dark:from-marca-900 dark:to-marca-950">
                     <img v-if="n.portadaId" :src="`/api/archivos/${n.portadaId}`" alt="" loading="lazy" class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
                     <img v-else src="/img/marca/escudo-160.png" alt="" loading="lazy" class="absolute inset-0 m-auto h-3/5 w-auto opacity-80">
                   </span>
                   <span class="min-w-0">
                     <span class="block text-xs font-semibold uppercase tracking-wide text-dimmed">{{ formatoFecha(n.publicadaEn) }}</span>
                     <span class="mt-0.5 line-clamp-2 block font-semibold leading-snug text-highlighted group-hover:text-primary">{{ n.titulo }}</span>
-                    <span v-if="n.resumen" class="mt-1 line-clamp-1 block text-sm text-muted">{{ n.resumen }}</span>
+                    <span v-if="n.resumen" class="mt-1 hidden text-sm text-muted sm:line-clamp-1">{{ n.resumen }}</span>
                   </span>
                 </NuxtLink>
               </li>
@@ -182,9 +120,9 @@
         </div>
 
         <!-- Agenda -->
-        <aside class="space-y-6">
+        <aside class="space-y-4 sm:space-y-6">
           <div class="flex items-end justify-between gap-4">
-            <h2 class="font-display text-2xl font-bold tracking-tight text-highlighted">
+            <h2 class="font-display text-xl font-bold tracking-tight text-highlighted sm:text-2xl">
               Próximos eventos
             </h2>
             <UButton to="/eventos" label="Calendario" trailing-icon="i-lucide-arrow-right" color="neutral" variant="ghost" size="sm" />
@@ -222,48 +160,73 @@
       </UContainer>
     </section>
 
+    <!-- Mensaje de la presidenta -->
+    <section class="relative isolate overflow-hidden py-10 sm:py-16">
+      <MarcaRed class="pointer-events-none absolute -right-32 -top-32 -z-10 size-[28rem] text-marca-200/40 dark:text-marca-800/30" />
+      <UContainer>
+        <div class="mx-auto grid max-w-5xl items-center gap-6 sm:grid-cols-[auto_1fr] sm:gap-10">
+          <div v-revelar.izquierda class="flex items-center gap-4 sm:flex-col sm:text-center">
+            <div class="relative shrink-0">
+              <div class="girar-lento absolute -inset-2 rounded-full border-2 border-dashed border-acento-400/70 sm:-inset-3" aria-hidden="true" />
+              <img :src="BIENVENIDA.foto" :alt="BIENVENIDA.autora" width="160" height="160" loading="lazy" class="relative size-20 rounded-full bg-marca-100 object-cover ring-4 ring-white sm:size-36 dark:ring-marca-950">
+            </div>
+            <div>
+              <p class="font-display text-lg font-bold text-highlighted sm:mt-4">
+                {{ BIENVENIDA.autora }}
+              </p>
+              <p class="text-sm text-muted">
+                Presidenta · Bienio 2026–2028
+              </p>
+            </div>
+          </div>
+          <div v-revelar="100">
+            <p class="rotulo">
+              Mensaje de bienvenida
+            </p>
+            <blockquote class="mt-3 font-display text-lg font-medium leading-snug text-marca-900 text-pretty sm:mt-4 sm:text-2xl dark:text-white">
+              «{{ BIENVENIDA.parrafos[1] }}»
+            </blockquote>
+            <div class="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
+              <UButton to="/federacion#bienvenida" label="Leer el mensaje completo" trailing-icon="i-lucide-arrow-right" />
+              <UButton to="/organizacion" label="Mesa directiva" color="neutral" variant="outline" />
+            </div>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
     <!-- Colegios agremiados -->
     <section class="relative isolate overflow-hidden bg-gradient-to-br from-marca-700 via-marca-600 to-marca-500 text-white">
       <div class="aurora [--aurora-1:var(--color-marca-400)] [--aurora-2:var(--color-acento-400)] [--aurora-opacidad:0.45]" />
       <MarcaRed class="girar-lento pointer-events-none absolute -right-40 -top-40 -z-10 size-[36rem] text-white/[0.09]" />
-      <UContainer class="grid gap-10 py-16 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:items-center">
-        <div v-revelar>
-          <p class="font-display text-sm font-semibold uppercase tracking-[0.2em] text-acento-300">
+      <UContainer class="py-10 sm:py-16">
+        <div v-revelar class="mx-auto max-w-2xl text-center">
+          <p class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-acento-300 sm:text-sm">
             Colegios agremiados
           </p>
-          <h2 class="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">
+          <h2 class="mt-2 font-display text-2xl font-bold leading-tight text-balance sm:mt-3 sm:text-4xl">
             Una red de colegios y asociaciones de la salud en todo Chiapas
           </h2>
-          <p class="mt-4 max-w-lg text-white/85">
+          <p class="mx-auto mt-3 max-w-lg text-sm text-white/85 sm:mt-4 sm:text-base">
             Consulte cada colegio, su mesa directiva y sus datos de contacto, sitio web y redes sociales.
           </p>
-          <form class="mt-7 flex max-w-md gap-2" @submit.prevent="navigateTo({ path: '/directorio', query: busqueda ? { q: busqueda } : {} })">
+          <form class="mx-auto mt-5 flex max-w-md gap-2 sm:mt-7" @submit.prevent="navigateTo({ path: '/directorio', query: busqueda ? { q: busqueda } : {} })">
             <UInput v-model="busqueda" icon="i-lucide-search" placeholder="Buscar colegio o especialidad" class="flex-1" :ui="{ base: 'bg-white text-gris-900 placeholder:text-gris-500' }" />
             <UButton type="submit" label="Buscar" class="bg-acento-500 text-white shadow-lg hover:bg-acento-600" />
           </form>
         </div>
-        <dl class="grid grid-cols-3 gap-3">
-          <div v-for="(c, i) in cifrasColegios" :key="c.etiqueta" v-revelar.escala="i * 90" class="rounded-2xl bg-white/10 p-5 text-center ring-1 ring-white/20 backdrop-blur-md transition-colors hover:bg-white/15 sm:p-7">
-            <dd class="font-display text-4xl font-bold text-white sm:text-5xl">
-              <SitioContador :valor="c.valor" />
-            </dd>
-            <dt class="mt-2 text-xs leading-snug text-white/80 sm:text-sm">
-              {{ c.etiqueta }}
-            </dt>
-          </div>
-        </dl>
       </UContainer>
       <!-- Carrusel de logotipos de los colegios (se detiene al pasar el cursor; con movimiento
            reducido queda fijo y se desplaza a mano) -->
-      <div class="carrusel-logos overflow-x-auto border-t border-white/15 bg-marca-900/25 py-6 motion-safe:overflow-hidden" aria-label="Logotipos de los colegios agremiados">
+      <div class="carrusel-logos overflow-x-auto border-t border-white/15 bg-marca-900/25 py-4 motion-safe:overflow-hidden sm:py-6" aria-label="Logotipos de los colegios agremiados">
         <ul class="franja flex w-max" style="--duracion: 90s">
           <template v-for="copia in 2" :key="copia">
-            <li v-for="c in LOGOS_COLEGIOS" :key="`${copia}-${c.slug}`" class="pr-5" :aria-hidden="copia === 2 ? 'true' : undefined">
+            <li v-for="c in LOGOS_COLEGIOS" :key="`${copia}-${c.slug}`" class="pr-3 sm:pr-5" :aria-hidden="copia === 2 ? 'true' : undefined">
               <NuxtLink
                 :to="`/directorio/${c.slug}`"
                 :tabindex="copia === 2 ? -1 : undefined"
                 :title="c.nombre"
-                class="block size-28 overflow-hidden rounded-2xl bg-white p-2 shadow-md transition-transform duration-300 hover:-translate-y-1 hover:scale-105 sm:size-32"
+                class="block size-20 overflow-hidden rounded-2xl bg-white p-1.5 shadow-md transition-transform duration-300 hover:-translate-y-1 hover:scale-105 sm:size-28 sm:p-2"
               >
                 <img :src="c.logo" :alt="copia === 2 ? '' : `Logotipo del ${c.nombre}`" class="size-full object-contain" loading="lazy" width="128" height="128">
               </NuxtLink>
@@ -274,33 +237,66 @@
     </section>
 
     <!-- Beneficios -->
-    <UContainer class="py-16 sm:py-20">
-      <div class="flex flex-wrap items-end justify-between gap-4">
+    <UContainer class="py-10 sm:py-16">
+      <div class="flex flex-wrap items-end justify-between gap-3">
         <div v-revelar>
           <p class="rotulo">
             Beneficios
           </p>
-          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-highlighted">
+          <h2 class="mt-1.5 font-display text-2xl font-bold tracking-tight text-highlighted sm:mt-2 sm:text-3xl">
             Lo que la Federación hace por usted
           </h2>
         </div>
-        <UButton to="/admision" label="Cómo afiliarse" trailing-icon="i-lucide-arrow-right" class="rounded-full bg-acento-500 px-4 text-white shadow-[0_8px_20px_-8px_rgb(217_106_34/0.7)] hover:bg-acento-600" />
+        <UButton to="/admision" label="Cómo afiliarse" trailing-icon="i-lucide-arrow-right" class="hidden rounded-full bg-acento-500 px-4 text-white shadow-[0_8px_20px_-8px_rgb(217_106_34/0.7)] hover:bg-acento-600 sm:inline-flex" />
       </div>
-      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <div v-for="(b, i) in BENEFICIOS" :key="b.titulo" v-revelar="i * 80" class="elevar group relative overflow-hidden rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default">
+      <div class="mt-6 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 lg:grid-cols-4">
+        <div v-for="(b, i) in BENEFICIOS" :key="b.titulo" v-revelar="i * 80" class="elevar group relative overflow-hidden rounded-2xl bg-default p-4 shadow-tarjeta ring-1 ring-default sm:p-6">
           <div class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-marca-500 to-acento-400 transition-transform duration-500 group-hover:scale-x-100" />
-          <span class="flex size-12 items-center justify-center rounded-xl bg-acento-50 text-acento-600 transition-colors duration-300 group-hover:bg-acento-500 group-hover:text-white dark:bg-acento-950">
-            <UIcon :name="b.icono" class="icono-salto size-6" />
+          <span class="flex size-10 items-center justify-center rounded-xl bg-acento-50 text-acento-600 transition-colors duration-300 group-hover:bg-acento-500 group-hover:text-white sm:size-12 dark:bg-acento-950">
+            <UIcon :name="b.icono" class="icono-salto size-5 sm:size-6" />
           </span>
-          <h3 class="mt-4 font-display text-lg font-bold text-highlighted">
+          <h3 class="mt-3 font-display text-[15px] font-bold leading-tight text-highlighted sm:mt-4 sm:text-lg">
             {{ b.titulo }}
           </h3>
-          <p class="mt-1.5 text-sm leading-relaxed text-muted">
+          <p class="mt-1 line-clamp-3 text-[13px] leading-snug text-muted sm:mt-1.5 sm:line-clamp-none sm:text-sm sm:leading-relaxed">
             {{ b.texto }}
           </p>
         </div>
       </div>
+      <UButton to="/admision" label="Cómo afiliarse" trailing-icon="i-lucide-arrow-right" block class="mt-5 rounded-full bg-acento-500 text-white hover:bg-acento-600 sm:hidden" />
     </UContainer>
+
+    <!-- Vinculación institucional: dependencias de gobierno con las que hay convenio o colaboración -->
+    <section v-if="inicio?.vinculos.length" class="relative isolate overflow-hidden bg-muted py-10 sm:py-16">
+      <MarcaRed class="girar-lento pointer-events-none absolute -left-40 top-1/2 -z-10 size-[30rem] -translate-y-1/2 text-marca-200/40 dark:text-white/5" />
+      <UContainer class="space-y-6 sm:space-y-10">
+        <div class="mx-auto max-w-2xl space-y-2 text-center sm:space-y-3">
+          <p v-revelar class="text-xs font-semibold uppercase tracking-[0.16em] text-acento-600 sm:text-sm dark:text-acento-400">
+            Vinculación institucional
+          </p>
+          <h2 v-revelar="60" class="font-display text-2xl font-bold tracking-tight text-highlighted sm:text-3xl">
+            Instituciones aliadas
+          </h2>
+          <p v-revelar="120" class="hidden text-[17px] leading-relaxed text-muted sm:block">
+            Trabajamos con las instituciones públicas de Chiapas en capacitación, promoción de la salud
+            y el fortalecimiento del ejercicio profesional.
+          </p>
+        </div>
+        <div class="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-5" :class="{ 'lg:grid-cols-3': inicio.vinculos.length > 2 }">
+          <SitioTarjetaInstitucion
+            v-for="(v, n) in inicio.vinculos"
+            :key="v.nombre"
+            v-revelar.escala="n * 120"
+            :vinculo="v"
+            :indice="n"
+            compacto
+          />
+        </div>
+        <div class="flex justify-center">
+          <UButton to="/vinculacion" label="Conocer la vinculación institucional" trailing-icon="i-lucide-arrow-right" color="neutral" variant="outline" size="lg" class="rounded-full" />
+        </div>
+      </UContainer>
+    </section>
 
     <!-- Censo médico (sólo cifras agregadas, y sólo con datos suficientes) -->
     <section v-if="mostrarCenso" class="bg-muted py-16 sm:py-20">
@@ -387,15 +383,6 @@ const cifras = computed(() => {
     { valor: String(c.afiliados), etiqueta: 'Profesionales afiliados', nota: '' },
   ]
 })
-// En la banda de colegios siempre hay tres cifras; sin datos se usa la del cartel de las Jornadas.
-const cifrasColegios = computed(() => cifras.value.length
-  ? cifras.value.slice(0, 3)
-  : [
-      { valor: String(JORNADAS_2026.colegios.length), etiqueta: 'Colegios participantes en las Jornadas' },
-      { valor: '28', etiqueta: 'Colegios agrupados en 2021' },
-      { valor: '7', etiqueta: 'Ediciones de las Jornadas' },
-    ])
-
 // Agenda unificada: las Jornadas (mientras estén vigentes), fechas capturadas y eventos publicados.
 const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
 interface ItemAgenda { clave: string, dia: string, mes: string, titulo: string, lugar?: string, to?: string, externo?: boolean, destacado?: boolean }
