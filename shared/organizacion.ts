@@ -48,6 +48,8 @@ const FOTOS: Record<string, string> = {
   'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias-rostro.jpg',
   'Dra. Isidra Candelario López': '/img/personas/isidra-candelario-lopez-rostro.jpg',
   'Dr. Humberto Hernández Rojas': '/img/personas/humberto-hernandez-rojas-rostro.jpg',
+  'QFB. Adriana Osiris Méndez Cigarroa': '/img/personas/adriana-osiris-mendez-cigarroa-rostro.jpg',
+  'Dr. Issel Prisciliano Gutiérrez Mandujano': '/img/personas/issel-prisciliano-gutierrez-mandujano-rostro.jpg',
 }
 
 /**
@@ -75,6 +77,7 @@ const RETRATOS: Record<string, string> = {
   'Mtra. María Elena León Macías': '/img/personas/maria-elena-leon-macias.jpg',
   'Dra. Isidra Candelario López': '/img/personas/isidra-candelario-lopez.jpg',
   'Dr. Humberto Hernández Rojas': '/img/personas/humberto-hernandez-rojas.jpg',
+  'Dr. Issel Prisciliano Gutiérrez Mandujano': '/img/personas/issel-prisciliano-gutierrez-mandujano.jpg',
 }
 
 /**
@@ -119,6 +122,14 @@ const RESENAS: Record<string, string> = {
     'Desde 2012 se desempeña en el Hospital IMSS-Bienestar «Dr. Jesús Gilberto Gómez Maza», en Tuxtla Gutiérrez, donde realiza entrevistas a pacientes, reportes al Ministerio Público, gestiones, acompañamiento y orientación a pacientes y familiares, y referencias y enlace con otras instituciones. Como responsable de los pasantes de Trabajo Social coordina sus proyectos, la exposición de temas, la rotación por los servicios y la enseñanza continua. De junio a octubre de 2026 estuvo a cargo de la Subjefatura de Trabajo Social del hospital.',
     'Preside el Colegio de Trabajadores Sociales del Estado de Chiapas (COTRASECH).',
   ].join('\n\n'),
+  // «CV_SEMBLANZA CURRICULAR QUIM.AOMC.docx», noviembre de 2026 (sin datos de contacto).
+  'QFB. Adriana Osiris Méndez Cigarroa': [
+    'Química farmacéutica bióloga con más de 20 años de experiencia profesional en el laboratorio clínico, en los sectores público y privado, y una trayectoria que destaca por el liderazgo en la gestión de la calidad.',
+    'Es egresada de la Universidad Veracruzana, donde cursó la licenciatura en Químico Farmacéutico Biólogo, la especialización en Control de Calidad y la maestría en Gestión de la Calidad. Es doctora en Alta Dirección y Negocios por la Universidad del País INNOVA y cuenta con certificación profesional en Química Clínica otorgada por la Federación Nacional de Químicos Clínicos, CONAQUIC, A.C.',
+    'Desde hace 19 años forma parte del Hospital de Alta Especialidad Pediátrica de Chiapas, donde se desempeña como jefa de Sección de Análisis Clínicos en las áreas de Hemato-Oncología y pruebas de genética especializada. Es responsable de la dirección del Sistema de Gestión de la Calidad bajo la norma ISO 9001:2015, integra el equipo líder en los procesos de acreditación hospitalaria y colabora en auditorías internas, mejora continua y seguridad institucional. Presidió el Comité Hospitalario de Bioética de 2021 a 2024 y participa en brigadas de Soporte Básico de Vida. En el sector privado es jefa de Laboratorio Clínico y responsable sanitaria.',
+    'Ha cursado 53 cursos y 10 talleres en las distintas áreas del laboratorio clínico, la calidad y la bioética —entre ellos control estadístico de la calidad, hematología celular y molecular, inmunología, endocrinología y seguridad del paciente— y ha asistido a 30 congresos de la CONAQUIC. Cuenta con la certificación IATA en transporte de sustancias biológicas de categoría B y participó en la elaboración de reactivos del Examen Único de Certificación de los Químicos Clínicos (EUC-QUICLIC), conforme a los lineamientos del CENEVAL (2017).',
+    'Preside el Consejo Directivo 2025–2027 del Colegio de Químicos de Chiapas, A.C., y es comisionada de Apoyo y Defensa del Laboratorio Clínico de la CONAQUIC (2026–2027). Ha ocupado diversos cargos directivos en ambas organizaciones.',
+  ].join('\n\n'),
   'Dr. Sarain Montero Orozco': [
     'Médico especialista en traumatología y ortopedia, con práctica en microcirugía articular, y más de 40 años de ejercicio profesional en Tuxtla Gutiérrez.',
     'Es egresado del posgrado del Centro Médico Nacional, con aval de la Universidad Nacional Autónoma de México (UNAM). Durante cuarenta años ha sido profesor de Traumatología y Ortopedia en la licenciatura de la Universidad Autónoma de Chiapas (UNACH).',
@@ -138,6 +149,7 @@ const PRESIDENCIAS_COLEGIO: Record<string, { cargo: string, periodo?: string }> 
   'Dra. María Hilda Rentería García': { cargo: 'Presidenta del Colegio de Oftalmólogos del Estado de Chiapas', periodo: '2026–2027' },
   'Dra. Iraís del Solar López': { cargo: 'Presidenta del Colegio de Anestesiología del Estado de Chiapas (COANECH)', periodo: '2025–2027' },
   'Dr. Sarain Montero Orozco': { cargo: 'Presidente del Colegio de Ortopedia y Traumatología de Chiapas (COTECH)' },
+  'QFB. Adriana Osiris Méndez Cigarroa': { cargo: 'Presidenta del Colegio de Químicos de Chiapas, A.C.', periodo: '2025–2027' },
   'Mtra. María Elena León Macías': { cargo: 'Presidenta del Colegio de Trabajadores Sociales del Estado de Chiapas (COTRASECH)' },
   'Psic. María del Carmen Peche Domínguez': { cargo: 'Presidenta del Colegio de Profesionales en Psicología del Estado de Chiapas (COPPSECH)' },
 }
