@@ -24,6 +24,8 @@ export const JORNADAS_2026 = {
   contacto: {
     telefono: '961 267 3656',
     whatsapp: 'https://wa.me/529612673656',
+    /** Soporte del registro en sede (página del QR). */
+    telefonoRegistro: '961 610 6469',
     facebook: 'https://www.facebook.com/feacomech',
     correoCarteles: 'fkramsky@gmail.com',
   },
