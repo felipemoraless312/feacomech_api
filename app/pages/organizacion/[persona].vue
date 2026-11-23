@@ -41,13 +41,12 @@
       </article>
 
       <div class="mt-12 flex flex-wrap gap-3 border-t border-default pt-8">
-        <UButton :to="`/organizacion#${ancla}`" icon="i-lucide-arrow-left" :label="`Volver a ${p.organo.toLowerCase()}`" color="neutral" variant="outline" />
-        <UButton v-if="p.colegio" :to="`/directorio/${p.colegio.slug}`" :label="`Ver ${p.colegio.nombre}`" trailing-icon="i-lucide-arrow-right" color="neutral" variant="ghost" />
+        <UButton :to="regreso.to" icon="i-lucide-arrow-left" :label="regreso.label" color="neutral" variant="outline" />
         <UButton v-if="p.organo === 'Consejo consultivo'" to="/expresidentes" label="Galería de expresidentes" trailing-icon="i-lucide-arrow-right" color="neutral" variant="ghost" />
       </div>
 
       <!-- Otros integrantes del mismo órgano -->
-      <section v-if="otros.length" class="mt-10 space-y-4">
+      <section v-if="otros.length && p.organo !== 'Presidentes de colegios'" class="mt-10 space-y-4">
         <h2 class="text-[13px] font-semibold uppercase tracking-wide text-dimmed">
           Otros integrantes de {{ p.organo.toLowerCase() }}
         </h2>
@@ -75,7 +74,7 @@
 
 <script setup lang="ts">
 import { NuxtLink } from '#components'
-import { ANCLA_ORGANO, buscarPersona, PERSONAS } from '#shared/organizacion'
+import { buscarPersona, PERSONAS, regresoPersona } from '#shared/organizacion'
 
 const route = useRoute()
 const p = buscarPersona(String(route.params.persona))
@@ -83,7 +82,7 @@ if (!p) throw createError({ statusCode: 404, statusMessage: `Page not found: ${r
 
 const parrafos = (p.resena ?? '').split(/\n\s*\n/).filter(Boolean)
 const otros = PERSONAS.filter(o => o.organo === p.organo && o.slug !== p.slug)
-const ancla = ANCLA_ORGANO[p.organo]
+const regreso = regresoPersona(p)
 
 const cargoCompleto = p.organo === 'Presidentes de colegios' ? `${p.cargo}, colegio afiliado a la FEACOMECH` : `${p.cargo} de la FEACOMECH`
 const descripcion = `${cargoCompleto} (${p.periodo}). ${parrafos[0] ?? ''}`.slice(0, 200)

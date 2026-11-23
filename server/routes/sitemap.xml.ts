@@ -4,7 +4,7 @@ import { PERSONAS } from '~~/shared/organizacion'
 import { urlPublica } from '~~/server/utils/correo'
 
 const FIJAS = [
-  '/', '/organizacion', '/expresidentes', '/admision', '/beneficios', '/directorio',
+  '/', '/organizacion', '/federacion', '/expresidentes', '/admision', '/beneficios', '/directorio',
   '/directorio/mesa-directiva', '/directorio/consejo-consultivo', '/directorio/profesionales',
   '/vinculacion', '/noticias', '/eventos', '/documentos', '/constancias', '/contacto',
   '/jornadas-2026', '/aviso-de-privacidad', '/desarrollo',

@@ -206,11 +206,9 @@ const enlaces: NavigationMenuItem[] = [
     label: 'Organización',
     to: '/organizacion',
     children: [
-      { label: 'Bienvenida', description: 'Mensaje de la presidenta de la Federación.', icon: 'i-lucide-message-square-quote', to: '/organizacion#bienvenida' },
-      { label: 'Objetivo, misión y visión', description: 'Para qué existe la Federación.', icon: 'i-lucide-target', to: '/organizacion#objetivo' },
-      { label: 'Mesa directiva', description: 'Integrantes y reseña curricular.', icon: 'i-lucide-users-round', to: '/organizacion#mesa-directiva' },
-      { label: 'Consejo consultivo', description: 'Expresidentes que acompañan a la mesa.', icon: 'i-lucide-scale', to: '/organizacion#consejo-consultivo' },
-      { label: 'Presidentes de colegios', description: 'Presidencias de los colegios afiliados.', icon: 'i-lucide-building-2', to: '/organizacion#presidentes-colegios' },
+      { label: 'Mesa directiva', description: 'Integrantes y reseña curricular.', icon: 'i-lucide-users-round', to: '/organizacion' },
+      { label: 'La Federación', description: 'Bienvenida, objetivo, misión, visión e historia.', icon: 'i-lucide-landmark', to: '/federacion' },
+      { label: 'Consejo consultivo', description: 'Expresidentes que acompañan a la mesa.', icon: 'i-lucide-scale', to: '/expresidentes#consejo-consultivo' },
       { label: 'Expresidentes', description: 'Presidencias en orden cronológico.', icon: 'i-lucide-history', to: '/expresidentes' },
     ],
   },
@@ -243,9 +241,9 @@ const enlacesBarra = enlaces.filter(e => e.to !== '/' && e.to !== '/contacto')
 
 const gruposPie = [
   { titulo: 'Organización', enlaces: [
-    { label: 'Bienvenida', to: '/organizacion#bienvenida' },
-    { label: 'Mesa directiva', to: '/organizacion#mesa-directiva' },
-    { label: 'Consejo consultivo', to: '/organizacion#consejo-consultivo' },
+    { label: 'Mesa directiva', to: '/organizacion' },
+    { label: 'La Federación', to: '/federacion' },
+    { label: 'Consejo consultivo', to: '/expresidentes#consejo-consultivo' },
     { label: 'Expresidentes', to: '/expresidentes' },
   ] },
   { titulo: 'Afiliación', enlaces: [

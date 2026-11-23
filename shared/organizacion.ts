@@ -362,11 +362,21 @@ export const PERSONAS: Persona[] = [
   ...PRESIDENTES_COLEGIOS.map(i => comoPersona(i, 'Presidentes de colegios', PRESIDENCIAS_COLEGIO[i.nombre]?.periodo ?? 'Periodo vigente')),
 ]
 
-/** Ancla de cada órgano en /organizacion. */
-export const ANCLA_ORGANO: Record<Persona['organo'], string> = {
-  'Mesa directiva': 'mesa-directiva',
-  'Consejo consultivo': 'consejo-consultivo',
-  'Presidentes de colegios': 'presidentes-colegios',
+/**
+ * A dónde regresa la página de una persona: la mesa directiva vive en /organizacion, el consejo
+ * consultivo junto a los expresidentes y cada presidencia en la ficha de su colegio.
+ */
+export function regresoPersona(p: Persona): { to: string, label: string } {
+  if (p.organo === 'Mesa directiva') return { to: '/organizacion', label: 'Volver a la mesa directiva' }
+  if (p.organo === 'Consejo consultivo') return { to: '/expresidentes#consejo-consultivo', label: 'Volver al consejo consultivo' }
+  return p.colegio
+    ? { to: `/directorio/${p.colegio.slug}`, label: `Volver a ${p.colegio.nombre}` }
+    : { to: '/directorio', label: 'Volver al directorio' }
+}
+
+/** Presidencia del colegio con esa ficha en el directorio (/directorio/<slug>), si consta. */
+export function presidenciaDeColegio(slug: string): Persona | undefined {
+  return PERSONAS.find(p => p.organo === 'Presidentes de colegios' && p.colegio?.slug === slug)
 }
 
 export function buscarPersona(slug: string): Persona | undefined {

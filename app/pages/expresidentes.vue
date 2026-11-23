@@ -3,10 +3,33 @@
     <SitioEncabezado
       antetitulo="Organización"
       titulo="Expresidentes"
-      descripcion="Quienes han presidido la Federación, en orden cronológico, con su reseña profesional y los logros de su gestión."
+      descripcion="El consejo consultivo y quienes han presidido la Federación, en orden cronológico, con su reseña profesional y los logros de su gestión."
     />
 
+    <!-- Consejo consultivo: expresidentes que acompañan a la mesa directiva vigente -->
+    <section id="consejo-consultivo" class="scroll-mt-24 bg-muted py-16">
+      <UContainer class="space-y-8">
+        <div v-revelar class="mx-auto max-w-2xl space-y-3 text-center">
+          <p class="rotulo justify-center">
+            Bienio 2026–2028
+          </p>
+          <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted">
+            Consejo consultivo
+          </h2>
+          <p class="text-muted">
+            Integrado por expresidentes de la Federación, que aportan su experiencia a la mesa directiva.
+          </p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <SitioTarjetaPersona v-for="(p, i) in consejo" :key="p.nombre" v-revelar="(i % 3) * 60" v-bind="p" />
+        </div>
+      </UContainer>
+    </section>
+
     <UContainer class="py-16">
+      <h2 v-revelar class="mx-auto mb-10 max-w-3xl font-display text-3xl font-bold tracking-tight text-highlighted">
+        Presidencias de la Federación
+      </h2>
       <ol class="relative mx-auto max-w-3xl">
         <span aria-hidden="true" class="absolute bottom-2 left-[1.15rem] top-2 w-px bg-gradient-to-b from-marca-300 via-marca-500 to-marca-800 dark:from-marca-700 dark:to-marca-300" />
 
@@ -55,7 +78,7 @@
                 {{ PRESIDENCIA_ACTUAL.nombre }}
               </p>
             </div>
-            <UButton to="/organizacion#bienvenida" label="Mensaje de bienvenida" trailing-icon="i-lucide-arrow-right" color="neutral" variant="link" class="mt-2 px-0" />
+            <UButton to="/federacion#bienvenida" label="Mensaje de bienvenida" trailing-icon="i-lucide-arrow-right" color="neutral" variant="link" class="mt-2 px-0" />
           </div>
         </li>
       </ol>
@@ -69,7 +92,9 @@
 </template>
 
 <script setup lang="ts">
-import { EXPRESIDENTES, PRESIDENCIA_ACTUAL } from '#shared/organizacion'
+import { EXPRESIDENTES, PERSONAS, PRESIDENCIA_ACTUAL } from '#shared/organizacion'
 
-useSeoMeta({ title: 'Expresidentes', description: 'Expresidentes de la Federación de Asociaciones y Colegios Médicos del Estado de Chiapas.' })
+const consejo = PERSONAS.filter(p => p.organo === 'Consejo consultivo')
+
+useSeoMeta({ title: 'Expresidentes', description: 'Consejo consultivo y expresidentes de la Federación de Asociaciones y Colegios Médicos del Estado de Chiapas.' })
 </script>

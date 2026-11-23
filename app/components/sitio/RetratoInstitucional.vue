@@ -2,9 +2,10 @@
      fondo de estudio con los colores de la Federación y el escudo de la FEACOMECH ondeando como
      bandera detrás de la persona (MarcaEscudoOndeante).
      - Con `recorte` (WebP/PNG sin fondo) la persona aparece delante del escudo.
+     - `grande` lo ensancha para la presidencia en /organizacion.
      - Sin recorte, la fotografía original llena el cuadro y el escudo asoma en una esquina. -->
 <template>
-  <figure class="retrato group mx-auto w-full max-w-72">
+  <figure class="retrato group mx-auto w-full" :class="grande ? 'max-w-72 sm:max-w-80 lg:max-w-96' : 'max-w-72'">
     <!-- Marco: moldura con degradado de la marca + paspartú blanco -->
     <div class="rounded-[1.1rem] bg-gradient-to-br from-marca-700 via-marca-500 to-acento-500 p-[3px] shadow-flotante transition-transform duration-500 group-hover:-rotate-1">
       <div class="rounded-[0.95rem] bg-white p-2.5 dark:bg-marca-950">
@@ -49,6 +50,6 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ src?: string, recorte?: string, alt: string }>()
-const iniciales = computed(() => props.alt.replace(/^Fotografía de /, '').split(' ').filter(x => !x.endsWith('.')).slice(0, 2).map(x => x[0]).join(''))
+const props = defineProps<{ src?: string, recorte?: string, alt: string, /** Retrato destacado (presidencia): más ancho. */ grande?: boolean }>()
+const iniciales = computed(() => props.alt.replace(/^Fotografía de /, '').split(' ').filter(x => !x.endsWith('.') && /^\p{Lu}/u.test(x)).slice(0, 2).map(x => x[0]).join(''))
 </script>

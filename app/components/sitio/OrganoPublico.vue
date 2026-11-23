@@ -24,13 +24,13 @@ import type { NodoCargo } from '#shared/estructura'
 import type { EstructuraPublicaDto } from '~~/server/services/estructura'
 
 type Cargo = EstructuraPublicaDto['organos'][number]['organigrama'][number]['cargo']
-const props = defineProps<{ organigrama: NodoCargo<Cargo>[] }>()
+const props = defineProps<{ organigrama: NodoCargo<Cargo>[], /** Nombres que ya se muestran aparte (p. ej. la presidencia destacada). */ omitir?: string[] }>()
 
 // Recorre el árbol en orden jerárquico (de arriba abajo).
 const personas = computed(() => {
   const lista: (Cargo['personas'][number] & { cargo: string })[] = []
   const recorrer = (nodos: NodoCargo<Cargo>[]) => {
-    for (const n of nodos) lista.push(...n.cargo.personas.map(p => ({ ...p, cargo: n.cargo.nombre })))
+    for (const n of nodos) lista.push(...n.cargo.personas.filter(p => !props.omitir?.includes(p.nombre)).map(p => ({ ...p, cargo: n.cargo.nombre })))
     for (const n of nodos) recorrer(n.hijos)
   }
   recorrer(props.organigrama)

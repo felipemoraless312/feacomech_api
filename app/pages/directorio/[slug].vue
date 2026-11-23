@@ -24,6 +24,40 @@
 
     <UContainer class="grid gap-10 py-12 lg:grid-cols-[1fr_20rem]">
       <div class="space-y-10">
+        <!-- Presidencia del colegio, con su reseña curricular si se recibió (shared/organizacion.ts) -->
+        <section v-if="presidencia" v-revelar class="space-y-5">
+          <h2 class="font-display text-2xl font-semibold tracking-tight text-highlighted">
+            Presidencia
+          </h2>
+          <component
+            :is="presidencia.resena ? NuxtLink : 'article'"
+            :to="presidencia.resena ? `/organizacion/${presidencia.slug}` : undefined"
+            class="group relative isolate flex flex-col items-center gap-6 overflow-hidden rounded-2xl bg-gradient-to-br from-marca-50 via-default to-acento-50/60 p-6 text-center shadow-tarjeta ring-1 ring-default sm:flex-row sm:items-start sm:p-8 sm:text-left dark:from-marca-950 dark:via-default dark:to-marca-950"
+            :class="{ 'elevar hover:ring-marca-200 dark:hover:ring-marca-800': presidencia.resena }"
+          >
+            <MarcaRed class="pointer-events-none absolute -right-20 -top-20 -z-10 size-64 text-marca-200/50 dark:text-white/5" />
+            <FotoPerfil :src="presidencia.foto" :nombre="sinTitulo(presidencia.nombre)" tamano="3xl" class="size-28 shrink-0 text-3xl ring-4 ring-white shadow-tarjeta transition-transform duration-500 group-hover:scale-105 dark:ring-marca-900" />
+            <div class="min-w-0">
+              <p class="text-xs font-semibold uppercase tracking-[0.14em] text-acento-600 dark:text-acento-400">
+                {{ presidencia.cargo.startsWith('Presidencia ·') ? 'Presidencia' : presidencia.cargo }}
+                <template v-if="presidencia.periodo !== 'Periodo vigente'">
+                  · {{ presidencia.periodo }}
+                </template>
+              </p>
+              <p class="mt-1.5 font-display text-2xl font-semibold leading-tight text-highlighted">
+                {{ presidencia.nombre }}
+              </p>
+              <p v-if="extracto" class="mt-3 line-clamp-3 text-[15px] leading-relaxed text-muted">
+                {{ extracto }}
+              </p>
+              <p v-if="presidencia.resena" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                Leer reseña curricular completa
+                <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform group-hover:translate-x-1" />
+              </p>
+            </div>
+          </component>
+        </section>
+
         <section v-if="org.descripcion" v-revelar>
           <h2 class="font-display text-2xl font-semibold tracking-tight text-highlighted">
             Acerca de
@@ -33,14 +67,14 @@
           </p>
         </section>
 
-        <section v-if="org.mesaDirectiva.organos.length" v-revelar class="space-y-5">
+        <section v-if="hayOtrosEnMesa" v-revelar class="space-y-5">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 class="font-display text-2xl font-semibold tracking-tight text-highlighted">
               Mesa directiva
             </h2>
             <span v-if="org.mesaDirectiva.periodo" class="text-sm text-muted">Periodo {{ org.mesaDirectiva.periodo.nombre }}</span>
           </div>
-          <SitioOrganoPublico v-for="o in org.mesaDirectiva.organos" :key="o.nombre" :organigrama="o.organigrama" />
+          <SitioOrganoPublico v-for="o in org.mesaDirectiva.organos" :key="o.nombre" :organigrama="o.organigrama" :omitir="omitir" />
         </section>
 
         <section v-revelar>
@@ -92,7 +126,10 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import { logoColegio } from '#shared/colegios'
+import type { NodoCargo } from '#shared/estructura'
+import { presidenciaDeColegio } from '#shared/organizacion'
 import { NOMBRE_TIPO } from '#shared/schemas/organizacion'
 import type { EstructuraPublicaDto } from '~~/server/services/estructura'
 
@@ -105,6 +142,17 @@ interface Ficha {
 }
 const { data: org, error } = await useFetch<Ficha>(`/api/publico/organizaciones/${route.params.slug}`)
 if (error.value) throw createError({ statusCode: 404, statusMessage: 'Organización no encontrada', fatal: true })
+
+// La presidencia se muestra destacada arriba; en la mesa directiva no se repite.
+const presidencia = presidenciaDeColegio(String(route.params.slug))
+const extracto = presidencia?.resena?.split(/\n\s*\n/)[0] ?? null
+const sinTitulo = (nombre: string) => nombre.split(' ').filter(x => !x.endsWith('.')).join(' ')
+const omitir = presidencia ? [presidencia.nombre] : []
+const hayOtrosEnMesa = computed(() => {
+  const contar = (nodos: NodoCargo<{ personas: { nombre: string }[] }>[]): number =>
+    nodos.reduce((n, x) => n + x.cargo.personas.filter(p => !omitir.includes(p.nombre)).length + contar(x.hijos), 0)
+  return (org.value?.mesaDirectiva.organos ?? []).some(o => contar(o.organigrama) > 0)
+})
 
 useSeoMeta({ title: () => org.value?.nombre ?? 'Organización', description: () => org.value?.descripcion?.slice(0, 160) ?? undefined })
 useCompartir({
