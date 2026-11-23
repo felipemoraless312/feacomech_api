@@ -50,6 +50,7 @@ const FOTOS: Record<string, string> = {
   'Dr. Humberto Hernández Rojas': '/img/personas/humberto-hernandez-rojas-rostro.jpg',
   'QFB. Adriana Osiris Méndez Cigarroa': '/img/personas/adriana-osiris-mendez-cigarroa-rostro.jpg',
   'Dr. Issel Prisciliano Gutiérrez Mandujano': '/img/personas/issel-prisciliano-gutierrez-mandujano-rostro.jpg',
+  'Dr. Eddie Enrique Alfaro Coutiño': '/img/personas/eddie-enrique-alfaro-coutino-rostro.jpg',
 }
 
 /**
@@ -65,6 +66,7 @@ const RECORTES: Record<string, string> = {
   'QFB. Cecilia Clotilde Velázquez Andrade': '/img/personas/recortes/cecilia-clotilde-velazquez-andrade.webp',
   'Dra. Isidra Candelario López': '/img/personas/recortes/isidra-candelario-lopez.webp',
   'Dr. Humberto Hernández Rojas': '/img/personas/recortes/humberto-hernandez-rojas.webp',
+  'Dr. Eddie Enrique Alfaro Coutiño': '/img/personas/recortes/eddie-enrique-alfaro-coutino.webp',
 }
 
 /** Retratos verticales para la página de cada persona (si no hay, se usa el recorte al rostro). */
@@ -78,6 +80,7 @@ const RETRATOS: Record<string, string> = {
   'Dra. Isidra Candelario López': '/img/personas/isidra-candelario-lopez.jpg',
   'Dr. Humberto Hernández Rojas': '/img/personas/humberto-hernandez-rojas.jpg',
   'Dr. Issel Prisciliano Gutiérrez Mandujano': '/img/personas/issel-prisciliano-gutierrez-mandujano.jpg',
+  'Dr. Eddie Enrique Alfaro Coutiño': '/img/personas/eddie-enrique-alfaro-coutino.jpg',
 }
 
 /**
@@ -165,6 +168,10 @@ export const CONSEJO_CONSULTIVO: Integrante[] = [
   ...MESA_DIRECTIVA_2026.consejo,
   // Su currículum (noviembre de 2026) indica que integra actualmente el consejo consultivo.
   { nombre: 'Dr. Issel Prisciliano Gutiérrez Mandujano', finado: false },
+  // Expresidente (2011–2013) que participa en el consejo consultivo (dato de la Federación, noviembre de 2026).
+  { nombre: 'Dr. Eddie Enrique Alfaro Coutiño', finado: false },
+  // Expresidente activo en las actividades de la Federación (dato de la Federación, noviembre de 2026).
+  { nombre: 'Dr. Hernán León Velasco', finado: false },
 ].map((c) => {
   const nombre = c.nombre.replace('Radamez', 'Radamés').replace('Dr. Ricardo Tovilla', 'Dr. José Ricardo Tovilla')
   return { cargo: c.finado ? 'Consejero (†)' : 'Consejero', nombre, foto: FOTOS[nombre] }
@@ -196,7 +203,7 @@ const LISTA_EXPRESIDENTES: Expresidente[] = [
     nombre: 'Dr. Hernán León Velasco',
     periodo: 'Periodo por documentar',
     desde: null,
-    resena: 'Expresidente de la Federación. La gestión 2022–2024 llevó su nombre en reconocimiento a su trayectoria.',
+    resena: 'Médico urólogo, escritor, poeta y compositor originario de Villaflores. Médico cirujano por la Universidad Autónoma de Guadalajara, con titulación por la UNAM, y especialista en Urología por el Centro Médico Nacional La Raza; ejerce la urología oncológica y la cirugía urológica en Tuxtla Gutiérrez y es miembro de las asociaciones Americana y Europea de Urología. Presidió el Colegio Médico del Estado de Chiapas, antecesor de la FEACOMECH, y la gestión 2022–2024 de la Federación llevó su nombre en homenaje; integra su consejo consultivo. A los 14 años fue socio fundador de la delegación de la Cruz Roja Mexicana en Villaflores. Su obra literaria y musical ha recibido, entre otros, el Premio de Poesía Enoch Cancino Casahonda (2010), la Medalla José Emilio Grajales (2013) y el reconocimiento «Personajes de mi Ciudad» de Tuxtla Gutiérrez.',
   },
   // Currículum breve recibido en noviembre de 2026.
   {
@@ -204,6 +211,13 @@ const LISTA_EXPRESIDENTES: Expresidente[] = [
     periodo: 'Periodo por documentar',
     desde: null,
     resena: 'Expresidente de la Federación. Segundo vicepresidente de la Confederación Iberolatinoamericana de Entidades Médicas (CONFEMEL); expresidente del Colegio Médico de México (FENACOME), de la Federación Mexicana de Colegios de Ortopedia y Traumatología y del Consejo Mexicano de Ortopedia y Traumatología.',
+  },
+  // Currículum recibido en noviembre de 2026; periodo según la Federación.
+  {
+    nombre: 'Dr. Eddie Enrique Alfaro Coutiño',
+    periodo: '2011 – 2013',
+    desde: 2011,
+    resena: 'Médico especialista en Medicina Interna, originario de Tuxtla Gutiérrez. Egresado de la Universidad Autónoma de Guadalajara, realizó su posgrado en el Centro Médico Nacional «La Raza» del IMSS y es fellow en Diabetes Mellitus por la Clínica Joslin de Boston, Massachusetts. Ha sido catedrático de la Universidad Autónoma de Chiapas, el Instituto de Estudios Superiores de Chiapas, la Universidad de Ciencias y Artes de Chiapas y la Universidad Intercultural de Chiapas. Es coautor de libros de medicina interna, colaborador de revistas médicas indexadas y autor de tres ediciones del libro «Cuida tu azúcar y viví feliz». Miembro de la Sociedad de Medicina Interna de México. Presidió la Federación durante el bienio 2011–2013, forma parte de su consejo consultivo y la gestión 2024–2026 llevó su nombre.',
   },
   // Currículum recibido en noviembre de 2026.
   {
@@ -228,13 +242,13 @@ const LISTA_EXPRESIDENTES: Expresidente[] = [
     nombre: 'Dr. Radamés Ramírez Cano',
     periodo: '2022 – 2024',
     desde: 2022,
-    resena: 'Encabezó la gestión «Dr. Hernán León Velasco».',
+    resena: 'Médico neurocirujano en Tuxtla Gutiérrez. Médico cirujano por la Universidad La Salle, especialista en Neurocirugía por la UNAM y maestro en Ciencias de la Salud por la UNACH. Es neurocirujano del Hospital General «Dr. Belisario Domínguez» del ISSSTE, donde participó en la primera unidad de columna del instituto en Chiapas, y ejerce también en el ámbito privado; es referente en cirugía de columna, neurocirugía mínimamente invasiva, tumores cerebrales y procedimientos endovasculares. Fue vicepresidente de la Federación antes de presidirla y encabezó la gestión 2022–2024 «Dr. Hernán León Velasco».',
   },
   {
     nombre: 'Dr. Didier Gómez Trujillo',
     periodo: '2024 – 2026',
     desde: 2024,
-    resena: 'Médico especialista en ortopedia y traumatología, originario de Ocozocoautla. Expresidente del Colegio de Traumatología y Ortopedia de Chiapas (COTECH) y exvocal de la Federación Mexicana de Colegios de Ortopedia y Traumatología (FEMECOT), que lo reconoció en 2022 y 2023. Autor de «Letras tiernas» (2002), «Caminando entre versos» (2004) e «Historia del Hospital Regional» (2006).',
+    resena: 'Médico especialista en ortopedia y traumatología, originario de Ocozocoautla. Expresidente del Colegio de Traumatología y Ortopedia de Chiapas (COTECH) y exvocal de la Federación Mexicana de Colegios de Ortopedia y Traumatología (FEMECOT), que lo reconoció en 2022 y 2023. Autor de «Letras tiernas» (2002), «Caminando entre versos» (2004) e «Historia del Hospital Regional» (2006). Encabezó la gestión «Dr. Eddie Alfaro Coutiño».',
     logros: [
       'Simposio de Dermatología con el Colegio de Dermatología de Chiapas (2024).',
       'Participación en el programa «Me emociona tu salud» de consultas con descuento.',

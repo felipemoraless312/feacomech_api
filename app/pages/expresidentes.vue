@@ -33,7 +33,7 @@
       <ol class="relative mx-auto max-w-3xl">
         <span aria-hidden="true" class="absolute bottom-2 left-[1.15rem] top-2 w-px bg-gradient-to-b from-marca-300 via-marca-500 to-marca-800 dark:from-marca-700 dark:to-marca-300" />
 
-        <li v-for="(e, i) in EXPRESIDENTES" :key="e.nombre" v-revelar="(i % 3) * 80" class="relative pb-12 pl-14">
+        <li v-for="(e, i) in presidencias" :key="e.nombre" v-revelar="(i % 3) * 80" class="relative pb-12 pl-14">
           <span aria-hidden="true" class="absolute left-2 top-2 flex size-[1.15rem] items-center justify-center rounded-full bg-default ring-4 ring-marca-500/25">
             <span class="size-2 rounded-full bg-marca-600 dark:bg-marca-300" />
           </span>
@@ -95,6 +95,9 @@
 import { EXPRESIDENTES, PERSONAS, PRESIDENCIA_ACTUAL } from '#shared/organizacion'
 
 const consejo = PERSONAS.filter(p => p.organo === 'Consejo consultivo')
+// En la línea del tiempo sólo van las presidencias con periodo documentado; quienes aún no lo
+// tienen siguen apareciendo en el consejo consultivo con su reseña.
+const presidencias = EXPRESIDENTES.filter(e => e.desde !== null)
 
 useSeoMeta({ title: 'Expresidentes', description: 'Consejo consultivo y expresidentes de la Federación de Asociaciones y Colegios Médicos del Estado de Chiapas.' })
 </script>
