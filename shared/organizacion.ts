@@ -51,6 +51,7 @@ const FOTOS: Record<string, string> = {
   'QFB. Adriana Osiris Méndez Cigarroa': '/img/personas/adriana-osiris-mendez-cigarroa-rostro.jpg',
   'Dr. Issel Prisciliano Gutiérrez Mandujano': '/img/personas/issel-prisciliano-gutierrez-mandujano-rostro.jpg',
   'Dr. Eddie Enrique Alfaro Coutiño': '/img/personas/eddie-enrique-alfaro-coutino-rostro.jpg',
+  'Dra. María del Carmen Albores Guillén': '/img/personas/maria-del-carmen-albores-guillen-rostro.jpg',
 }
 
 /**
@@ -67,6 +68,7 @@ const RECORTES: Record<string, string> = {
   'Dra. Isidra Candelario López': '/img/personas/recortes/isidra-candelario-lopez.webp',
   'Dr. Humberto Hernández Rojas': '/img/personas/recortes/humberto-hernandez-rojas.webp',
   'Dr. Eddie Enrique Alfaro Coutiño': '/img/personas/recortes/eddie-enrique-alfaro-coutino.webp',
+  'Dra. María del Carmen Albores Guillén': '/img/personas/recortes/maria-del-carmen-albores-guillen.webp',
 }
 
 /** Retratos verticales para la página de cada persona (si no hay, se usa el recorte al rostro). */
@@ -81,6 +83,7 @@ const RETRATOS: Record<string, string> = {
   'Dr. Humberto Hernández Rojas': '/img/personas/humberto-hernandez-rojas.jpg',
   'Dr. Issel Prisciliano Gutiérrez Mandujano': '/img/personas/issel-prisciliano-gutierrez-mandujano.jpg',
   'Dr. Eddie Enrique Alfaro Coutiño': '/img/personas/eddie-enrique-alfaro-coutino.jpg',
+  'Dra. María del Carmen Albores Guillén': '/img/personas/maria-del-carmen-albores-guillen.jpg',
 }
 
 /**
@@ -101,6 +104,13 @@ const RESENAS: Record<string, string> = {
     'Es egresada de la Facultad de Química de la Universidad Nacional Autónoma de México (UNAM) como química farmacéutica bióloga (bioquímica microbióloga). Ha complementado su formación con diplomados en hematología, VIH, microbiología clínica, bioética, parasitología y enfermedades tropicales, entre otros.',
     'En el Laboratorio Estatal de Salud Pública se ha desempeñado en las áreas de parasitología, diagnóstico epidemiológico, entomología médica, citopatología, redes de laboratorio, bioseguridad y biocustodia, y gestión y aseguramiento de la calidad. Cuenta además con experiencia en el análisis fisicoquímico y microbiológico del agua, en laboratorio de análisis clínicos y como responsable de farmacia, a cargo del control de inventarios, la dispensación de medicamentos y la atención farmacéutica.',
     'Forma parte de la Mesa Directiva de la FEACOMECH como Tesorera durante el bienio 2026–2028.',
+  ].join('\n\n'),
+  // Minicurrículum de la Dra. Albores Guillén, noviembre de 2026.
+  'Dra. María del Carmen Albores Guillén': [
+    'Médica especialista en Anestesiología y maestra en Administración de Servicios de Salud. Su trayectoria combina la práctica médica especializada, la docencia y la participación activa en la organización y representación gremial, con un compromiso permanente con el desarrollo de la Anestesiología y el fortalecimiento de la comunidad médica en Chiapas.',
+    'Es médica cirujana por la Universidad Autónoma de Chiapas (UNACH), donde concluyó su formación en 2000. Cursó la especialidad en Anestesiología, que inició en el Hospital Universitario de Puebla y concluyó con los dos últimos años de residencia en el Hospital Regional «Dr. Rafael Pascacio Gamboa», con aval de la Benemérita Universidad Autónoma de Puebla (BUAP) y de la UNACH; obtuvo el título de especialista en 2009. En 2025 concluyó la maestría en Administración de Servicios de Salud.',
+    'Se desempeñó tres años como médica general en el programa IMSS-Oportunidades, en la región de Las Margaritas, y dos años en una clínica de dermatología en Monterrey, Nuevo León. Como anestesióloga laboró durante 13 años en el Hospital Regional «Dr. Rafael Pascacio Gamboa» y en el Hospital Chiapas Nos Une «Dr. Jesús Gilberto Gómez Maza», donde fue profesora adjunta de los médicos residentes de Anestesiología.',
+    'En el Colegio de Anestesiología del Estado de Chiapas (COANECH) ha sido tesorera, vicepresidenta y presidenta (2022–2025); actualmente es su secretaria. Forma parte de la Mesa Directiva de la FEACOMECH como Secretaria Técnica durante el bienio 2026–2028.',
   ].join('\n\n'),
 
   // --- Presidencias de colegios afiliados (CV recibidos en noviembre de 2026, sin datos de contacto) ---
@@ -224,7 +234,7 @@ const LISTA_EXPRESIDENTES: Expresidente[] = [
     nombre: 'Dr. Issel Prisciliano Gutiérrez Mandujano',
     periodo: 'Periodo por documentar',
     desde: null,
-    resena: 'Médico pediatra originario de Tuxtla Gutiérrez. Médico cirujano por la Universidad Veracruzana, con posgrado en Pediatría Médica en el Centro Médico Nacional «Adolfo Ruiz Cortines» del IMSS, en Veracruz. Fue pediatra adscrito durante 35 años en la Secretaría de Salud y 28 en el ISSSTE, y es jubilado del IMSS. Expresidente del Colegio de Pediatría de Tuxtla Gutiérrez, del Colegio de Pediatría del Estado de Chiapas y de la Federación de Pediatría del Sureste, y vocal consejero del Consejo Mexicano de Certificación en Pediatría por dos periodos. Fue vicepresidente y presidente de la FEACOMECH, de cuyo consejo consultivo forma parte, siempre comprometido con la enseñanza, la capacitación y la colegiación de los médicos de Chiapas.',
+    resena: 'Médico pediatra originario de Tuxtla Gutiérrez. Médico cirujano por la Universidad Veracruzana, con posgrado en Pediatría Médica en el Centro Médico Nacional «Adolfo Ruiz Cortines» del IMSS, en Veracruz. Fue pediatra adscrito durante 35 años en la Secretaría de Salud y 28 en el ISSSTE, y es jubilado del IMSS. Expresidente del Colegio de Pediatría de Tuxtla Gutiérrez, del Colegio de Pediatría del Estado de Chiapas y de la Federación de Pediatría del Sureste, y vocal consejero del Consejo Mexicano de Certificación en Pediatría por dos periodos. Fue vicepresidente y presidente de la FEACOMECH, de cuyo consejo consultivo forma parte. Siempre comprometido con la enseñanza, la capacitación y la colegiación de los médicos de Chiapas, pugna por las mejoras gremiales del personal médico y de salud del estado.',
   },
   {
     nombre: 'Dr. José Ricardo Tovilla Victoria',
