@@ -12,7 +12,7 @@
       <p v-if="p.procedencia" class="text-sm text-muted">
         {{ p.procedencia }}
       </p>
-      <p v-if="p.descripcion" class="mt-3 text-sm leading-relaxed text-muted">
+      <p v-if="p.descripcion" class="justificado mt-3 text-sm leading-relaxed text-muted [text-align-last:center]">
         {{ p.descripcion }}
       </p>
     </article>

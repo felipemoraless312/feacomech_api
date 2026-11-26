@@ -105,7 +105,7 @@
                 {{ e.titulo }}
                 <UIcon name="i-lucide-arrow-right" class="size-4 text-dimmed transition-transform group-hover:translate-x-1 group-hover:text-primary" />
               </span>
-              <span class="mt-1 block text-sm leading-relaxed text-muted">{{ e.texto }}</span>
+              <span class="justificado mt-1 block text-sm leading-relaxed text-muted">{{ e.texto }}</span>
             </span>
           </NuxtLink>
         </div>

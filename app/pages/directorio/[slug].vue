@@ -47,7 +47,7 @@
               <p class="mt-1.5 font-display text-2xl font-semibold leading-tight text-highlighted">
                 {{ presidencia.nombre }}
               </p>
-              <p v-if="extracto" class="mt-3 line-clamp-3 text-[15px] leading-relaxed text-muted">
+              <p v-if="extracto" class="justificado mt-3 line-clamp-3 text-[15px] leading-relaxed text-muted">
                 {{ extracto }}
               </p>
               <p v-if="presidencia.resena" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
@@ -62,7 +62,7 @@
           <h2 class="font-display text-2xl font-semibold tracking-tight text-highlighted">
             Acerca de
           </h2>
-          <p class="mt-3 whitespace-pre-line text-[17px] leading-relaxed text-muted">
+          <p class="justificado mt-3 whitespace-pre-line text-[17px] leading-relaxed text-muted">
             {{ org.descripcion }}
           </p>
         </section>

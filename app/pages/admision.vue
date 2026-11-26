@@ -25,7 +25,7 @@
             <p class="mt-4 font-display text-lg font-semibold text-highlighted">
               {{ p.titulo }}
             </p>
-            <p class="mt-1.5 text-[15px] leading-relaxed text-muted">
+            <p class="justificado mt-1.5 text-[15px] leading-relaxed text-muted">
               {{ p.texto }}
             </p>
           </li>

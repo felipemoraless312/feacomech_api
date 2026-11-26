@@ -34,7 +34,7 @@
             <p
               v-for="(p, i) in d.resumen"
               :key="i"
-              class="mt-5 leading-relaxed text-pretty"
+              class="justificado mt-5 leading-relaxed"
               :class="i === 0 ? 'text-lg text-highlighted sm:text-xl sm:leading-relaxed' : 'text-[17px] text-toned'"
             >
               {{ p }}
@@ -89,7 +89,7 @@
                 {{ e.titulo }}
               </p>
             </div>
-            <p class="mt-3 text-[15px] leading-relaxed text-muted">
+            <p class="justificado mt-3 text-[15px] leading-relaxed text-muted">
               {{ e.texto }}
             </p>
           </div>
@@ -113,7 +113,7 @@
               <p class="font-semibold leading-snug text-highlighted">
                 {{ p.titulo }}
               </p>
-              <p class="mt-1 text-sm leading-relaxed text-muted">
+              <p class="justificado mt-1 text-sm leading-relaxed text-muted">
                 {{ p.texto }}
               </p>
               <a v-if="'enlace' in p" :href="p.enlace" target="_blank" rel="noopener" class="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">

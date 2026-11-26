@@ -406,7 +406,7 @@
           <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Preguntas frecuentes</h2>
           <p class="text-muted">¿Otra duda? Escríbanos por WhatsApp al {{ J.contacto.telefono }}.</p>
         </div>
-        <UAccordion :items="preguntas" type="multiple" :ui="{ item: 'border-b border-default', trigger: 'py-4 text-base font-semibold text-highlighted', body: 'pb-5 text-[15px] leading-relaxed text-muted' }" />
+        <UAccordion :items="preguntas" type="multiple" :ui="{ item: 'border-b border-default', trigger: 'py-4 text-base font-semibold text-highlighted', body: 'justificado pb-5 text-[15px] leading-relaxed text-muted' }" />
       </UContainer>
     </section>
 

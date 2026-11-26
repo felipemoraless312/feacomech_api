@@ -51,7 +51,7 @@
             <p class="font-medium text-highlighted">
               {{ p.nombre }}
             </p>
-            <p v-if="p.semblanza" class="mt-1 text-sm leading-relaxed text-muted">
+            <p v-if="p.semblanza" class="justificado mt-1 text-sm leading-relaxed text-muted">
               {{ p.semblanza }}
             </p>
           </div>

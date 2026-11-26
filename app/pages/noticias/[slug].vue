@@ -29,7 +29,7 @@
       <a v-if="n.portadaId" :href="`/api/archivos/${n.portadaId}`" target="_blank" rel="noopener" class="entrada block" title="Ver imagen en tamaño completo">
         <img :src="`/api/archivos/${n.portadaId}`" :alt="n.titulo" class="mx-auto h-auto max-h-[85vh] w-auto max-w-full rounded-xl shadow-tarjeta">
       </a>
-      <p v-if="n.resumen" class="text-xl leading-relaxed text-highlighted">
+      <p v-if="n.resumen" class="justificado text-xl leading-relaxed text-highlighted">
         {{ n.resumen }}
       </p>
       <SitioTexto :texto="n.contenido" />

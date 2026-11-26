@@ -17,7 +17,7 @@
         <h2 class="font-display text-2xl font-semibold tracking-tight text-highlighted">
           {{ s.titulo }}
         </h2>
-        <p v-for="(p, i) in s.parrafos" :key="i" class="text-[16px] leading-relaxed text-muted">
+        <p v-for="(p, i) in s.parrafos" :key="i" class="justificado text-[16px] leading-relaxed text-muted">
           {{ p }}
         </p>
         <ul v-if="s.lista" class="list-disc space-y-1.5 pl-6 text-[16px] text-muted">

@@ -456,3 +456,13 @@
   .revelar-oculto[data-revelar] { transform: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* Párrafos largos del portal: justificados como la papelería oficial. La separación silábica
+   (lang="es-MX") evita los huecos grandes entre palabras, sobre todo en el celular. */
+@utility justificado {
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+}

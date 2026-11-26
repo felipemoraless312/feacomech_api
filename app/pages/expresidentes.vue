@@ -47,7 +47,7 @@
                 {{ e.nombre }}<span v-if="e.finado" class="text-muted" title="Finado"> †</span>
               </h2>
             </div>
-            <p v-if="e.resena" class="mt-4 text-[15px] leading-relaxed text-muted">
+            <p v-if="e.resena" class="justificado mt-4 text-[15px] leading-relaxed text-muted">
               {{ e.resena }}
             </p>
             <div v-if="e.logros?.length" class="mt-5">

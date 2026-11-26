@@ -38,7 +38,7 @@
                 </p>
               </div>
             </div>
-            <div class="mt-8 space-y-4 text-[17px] leading-relaxed text-white/90">
+            <div class="justificado mt-8 space-y-4 text-[17px] leading-relaxed text-white/90">
               <p v-for="(p, i) in BIENVENIDA.parrafos" :key="i">
                 {{ p }}
               </p>
@@ -56,7 +56,7 @@
               <p class="flex items-center gap-2 font-display text-xl font-semibold text-highlighted">
                 <UIcon :name="b.i" class="size-5 text-marca-600 dark:text-marca-300" />{{ b.t }}
               </p>
-              <p class="mt-2 whitespace-pre-line text-[15px] leading-relaxed text-muted">
+              <p class="justificado mt-2 whitespace-pre-line text-[15px] leading-relaxed text-muted">
                 {{ b.v }}
               </p>
             </div>

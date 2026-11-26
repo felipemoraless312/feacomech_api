@@ -29,7 +29,7 @@
           <p
             v-for="(parrafo, i) in parrafos"
             :key="i"
-            class="mt-5 leading-relaxed text-pretty"
+            class="justificado mt-5 leading-relaxed"
             :class="i === 0 ? 'font-display text-xl font-medium text-highlighted sm:text-2xl sm:leading-snug' : 'text-[17px] text-toned'"
           >
             {{ parrafo }}

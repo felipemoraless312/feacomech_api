@@ -76,7 +76,7 @@
           <h3 class="mt-1 font-display text-lg font-semibold text-highlighted sm:text-xl">
             {{ h.titulo }}
           </h3>
-          <p v-if="h.texto" class="mt-2 text-[15px] leading-relaxed text-muted">
+          <p v-if="h.texto" class="justificado mt-2 text-[15px] leading-relaxed text-muted">
             {{ h.texto }}
           </p>
         </div>

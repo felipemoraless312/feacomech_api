@@ -19,7 +19,7 @@
           <h2 class="mt-5 font-display text-xl font-semibold text-highlighted">
             {{ b.titulo }}
           </h2>
-          <p class="mt-2 text-[15px] leading-relaxed text-muted">
+          <p class="justificado mt-2 text-[15px] leading-relaxed text-muted">
             {{ b.texto }}
           </p>
         </article>

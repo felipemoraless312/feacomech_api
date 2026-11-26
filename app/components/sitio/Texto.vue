@@ -3,7 +3,7 @@
      convierten en enlaces y las palabras/URL largas se parten para no desbordar en el celular. -->
 <template>
   <div class="space-y-4 text-[17px] leading-relaxed text-muted">
-    <p v-for="(p, i) in parrafos" :key="i" class="whitespace-pre-line [overflow-wrap:anywhere]">
+    <p v-for="(p, i) in parrafos" :key="i" class="justificado whitespace-pre-line [overflow-wrap:anywhere]">
       <template v-for="(f, j) in p" :key="j">
         <a v-if="f.tipo === 'enlace'" :href="f.url" target="_blank" rel="noopener noreferrer nofollow" class="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary">{{ f.valor }}</a>
         <template v-else>{{ f.valor }}</template>

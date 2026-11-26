@@ -38,7 +38,7 @@
       <p class="font-display text-lg font-semibold leading-snug text-highlighted">
         {{ vinculo.nombre }}
       </p>
-      <p v-if="!compacto && vinculo.descripcion" class="text-sm leading-relaxed text-muted">
+      <p v-if="!compacto && vinculo.descripcion" class="justificado text-sm leading-relaxed text-muted">
         {{ vinculo.descripcion }}
       </p>
       <span v-if="vinculo.sitioWeb" class="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-medium text-primary">
