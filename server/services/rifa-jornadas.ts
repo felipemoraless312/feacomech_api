@@ -91,15 +91,36 @@ export async function ganadoresRifa(fecha: string): Promise<GanadorRifaDto[]> {
   return filas.map(aDto)
 }
 
-/** Elige y guarda los ganadores de un giro. */
-export async function girarRifa(fecha: string, cantidad: number, premio: string | null): Promise<GanadorRifaDto[]> {
+/** Elegido que salió en la ruleta antes del ganador: no gana y sigue participando. */
+export interface ElegidoSinPremio {
+  nombre: string
+  procedencia: string | null
+}
+
+export interface ResultadoGiro {
+  /** En el orden en que salen antes del ganador (puede ir vacío). */
+  descartados: ElegidoSinPremio[]
+  ganadores: GanadorRifaDto[]
+}
+
+/**
+ * Elige y guarda los ganadores de un giro. Con `posicion` > 1 gana el elegido número
+ * `posicion` (p. ej. el 3.º): los anteriores salen de la ruleta sin premio, no se guardan y
+ * siguen participando en los giros siguientes. Todos se sortean aquí, de una sola vez.
+ */
+export async function girarRifa(fecha: string, cantidad: number, premio: string | null, posicion = 1): Promise<ResultadoGiro> {
   return prisma.$transaction(async (tx) => {
     // Un solo sorteo a la vez (dos pestañas abiertas no pueden repetir ganador ni número).
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`rifa:${SLUG}`}))`
     const { elegibles } = await candidatos(fecha, tx)
     if (!elegibles.length) throw createError({ statusCode: 400, message: 'No quedan participantes por sortear hoy' })
 
-    const elegidos = mezclar(elegibles).slice(0, Math.min(cantidad, elegibles.length))
+    // Si no alcanzan los asistentes, primero se recortan los que salen sin premio.
+    const nGanadores = Math.min(cantidad, elegibles.length)
+    const nDescartados = Math.min(posicion - 1, elegibles.length - nGanadores)
+    const orden = mezclar(elegibles)
+    const descartados = orden.slice(0, nDescartados).map(e => ({ nombre: e.nombre, procedencia: e.procedencia }))
+    const elegidos = orden.slice(nDescartados, nDescartados + nGanadores)
     const ultimo = await tx.ganadorRifa.aggregate({ where: { eventoSlug: SLUG, fecha: aDate(fecha) }, _max: { numero: true } })
     const siguiente = (ultimo._max.numero ?? 0) + 1
 
@@ -111,7 +132,7 @@ export async function girarRifa(fecha: string, cantidad: number, premio: string 
       })
       creados.push(aDto(g))
     }
-    return creados
+    return { descartados, ganadores: creados }
   })
 }
 

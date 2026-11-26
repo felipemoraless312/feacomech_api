@@ -71,6 +71,22 @@
             <UIcon name="i-lucide-gift" class="size-[1.1em]" /> {{ premio.trim() }}
           </p>
 
+          <p
+            v-if="lugarGanador > 1"
+            class="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 font-display font-semibold uppercase tracking-[0.14em] text-white ring-1 ring-white/20"
+            :class="pantallaCompleta ? 'text-[2.2vh]' : 'text-xs'"
+          >
+            Gana el {{ ordinal(lugarGanador) }} elegido
+            <span v-if="secuencia" class="flex items-center gap-1" aria-hidden="true">
+              <span
+                v-for="i in lugarGanador"
+                :key="i"
+                class="size-2 rounded-full"
+                :class="i - 1 < secuencia.paso + (sinPremio ? 1 : 0) ? 'bg-white/40' : i === lugarGanador ? 'bg-acento-400' : 'bg-white/15 ring-1 ring-white/40'"
+              />
+            </span>
+          </p>
+
           <svg
             :viewBox="`0 0 ${SIZE} ${SIZE}`"
             class="w-full drop-shadow-[0_24px_40px_rgba(15,5,30,0.6)]"
@@ -153,14 +169,14 @@
           <div class="mt-5 w-full" :class="pantallaCompleta ? 'max-w-[62vh]' : 'max-w-md'">
             <button
               type="button"
-              :disabled="girando || elegibles < 1"
+              :disabled="(girando && !sinPremio) || elegibles < 1"
               class="rifa-boton group relative w-full overflow-hidden rounded-xl font-display font-bold uppercase tracking-[0.12em] text-white transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               :class="pantallaCompleta ? 'py-[1.8vh] text-[3vh]' : 'py-4 text-lg'"
               @click="girar"
             >
               <span class="relative z-10 inline-flex items-center justify-center gap-2">
-                <UIcon :name="girando ? 'i-lucide-loader-circle' : 'i-lucide-ferris-wheel'" class="size-[1.15em]" :class="{ 'animate-spin': girando }" />
-                {{ girando ? 'Girando…' : elegibles < 1 ? 'Sin participantes' : porGiro > 1 ? `Girar · ${porGiro} ganadores` : 'Girar la ruleta' }}
+                <UIcon :name="girando && !sinPremio ? 'i-lucide-loader-circle' : 'i-lucide-ferris-wheel'" class="size-[1.15em]" :class="{ 'animate-spin': girando && !sinPremio }" />
+                {{ textoBoton }}
               </span>
             </button>
             <div class="mt-2.5 flex items-center justify-between gap-3 text-marca-200/80" :class="pantallaCompleta ? 'text-[1.8vh]' : 'text-xs'">
@@ -203,6 +219,26 @@
                 <span class="size-1.5 rounded-full bg-acento-400" />
                 {{ formatoNombre(nombre) }}
               </span>
+            </div>
+          </div>
+
+          <!-- Elegido sin premio: se anuncia y la ruleta vuelve a girar hacia el siguiente -->
+          <div v-if="sinPremio" role="dialog" aria-modal="true" aria-label="Elegido sin premio" class="absolute inset-0 z-20 flex items-center justify-center bg-marca-950/75 p-4 backdrop-blur-sm">
+            <div class="rifa-ganador w-full max-w-md rounded-3xl bg-gradient-to-b from-marca-800 to-marca-950 p-6 text-center shadow-2xl shadow-black/40 ring-1 ring-white/20 sm:p-8">
+              <p class="font-display font-semibold uppercase tracking-[0.22em] text-marca-200" :class="pantallaCompleta ? 'text-[2.4vh]' : 'text-sm'">
+                {{ ordinal(sinPremio.orden) }} elegido
+              </p>
+              <h2 class="mt-2 break-words font-display font-bold leading-tight text-white" :class="pantallaCompleta ? 'text-[5.5vh]' : 'text-3xl'">
+                {{ formatoNombre(sinPremio.nombre) }}
+              </h2>
+              <p v-if="sinPremio.procedencia" class="mt-1 text-marca-200/80" :class="{ 'text-[2.2vh]': pantallaCompleta }">{{ sinPremio.procedencia }}</p>
+              <p class="mx-auto mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 font-semibold text-white" :class="{ 'text-[2.4vh]': pantallaCompleta }">
+                <UIcon name="i-lucide-x" class="size-[1.1em] text-acento-300" />
+                No gana · el ganador es el {{ ordinal(lugarGanador) }}
+              </p>
+              <button ref="siguiente" type="button" class="rifa-boton mt-6 w-full rounded-xl py-3 font-display font-bold uppercase tracking-[0.12em] text-white" :class="{ 'text-[2.6vh]': pantallaCompleta }" @click="siguienteGiro">
+                {{ sinPremio.orden + 1 === lugarGanador ? '¡Girar por el ganador!' : `Siguiente giro (${ordinal(sinPremio.orden + 1)})` }}
+              </button>
             </div>
           </div>
 
@@ -281,6 +317,20 @@
                     :variant="porGiro === c ? 'solid' : 'soft'"
                     :disabled="girando"
                     @click="porGiro = c"
+                  />
+                </div>
+              </UFormField>
+              <UFormField label="Gana el elegido" :help="posicion > 1 ? `La ruleta gira ${posicion} veces: los primeros ${posicion - 1} salen sin premio y siguen participando; el ${ordinal(posicion)} gana.` : 'El primero que salga gana.'">
+                <div class="grid grid-cols-4 gap-2">
+                  <UButton
+                    v-for="c in [1, 2, 3, 5]"
+                    :key="c"
+                    :label="ordinal(c)"
+                    block
+                    :color="posicion === c ? 'primary' : 'neutral'"
+                    :variant="posicion === c ? 'solid' : 'soft'"
+                    :disabled="girando"
+                    @click="posicion = c"
                   />
                 </div>
               </UFormField>
@@ -371,7 +421,7 @@
 import { ROL_SUPERADMIN } from '#shared/permisos'
 import { JORNADAS_2026 as J } from '#shared/jornadas2026'
 import { DIAS_JORNADAS, hoyMexico } from '#shared/registro-jornadas'
-import type { GanadorRifaDto } from '~~/server/services/rifa-jornadas'
+import type { ElegidoSinPremio, GanadorRifaDto, ResultadoGiro } from '~~/server/services/rifa-jornadas'
 
 definePageMeta({ layout: 'plataforma', rol: ROL_SUPERADMIN })
 useSeoMeta({ title: 'Rifa · Jornadas 2026' })
@@ -428,6 +478,7 @@ const nombreCorto = (s: string) => {
   return truncar(w.length >= 4 ? `${w[0]} ${w[2]}` : w.slice(0, 2).join(' '), 16)
 }
 const nf = (n: number) => n.toLocaleString('es-MX')
+const ordinal = (n: number) => `${n}.º`
 
 const ESTADO = {
   PENDIENTE: { label: 'Pendiente', color: 'warning' },
@@ -460,6 +511,10 @@ function crearSonidos() {
       if (ctx.currentTime - ultimoTick < 0.045) return
       ultimoTick = ctx.currentTime
       nota(1500, 0, 0.03, 'square', 0.05)
+    },
+    fallo: () => {
+      nota(392, 0, 0.18, 'triangle', 0.14)
+      nota(311.13, 0.16, 0.32, 'triangle', 0.14)
     },
     fanfarria: () => {
       ;[523.25, 659.25, 783.99].forEach((f, i) => nota(f, i * 0.13, 0.22))
@@ -544,6 +599,11 @@ const girando = ref(false)
 const ganadorGiro = ref<GanadorRifaDto[] | null>(null)
 const ausentes = ref<string[]>([])
 const porGiro = ref(1)
+const posicion = ref(1) // gana el elegido número N; los anteriores salen sin premio
+const secuencia = ref<(ResultadoGiro & { paso: number }) | null>(null)
+const sinPremio = ref<(ElegidoSinPremio & { orden: number }) | null>(null)
+/** Lugar del ganador en la secuencia en curso (o en la configurada, si no hay giro). */
+const lugarGanador = computed(() => (secuencia.value ? secuencia.value.descartados.length + 1 : posicion.value))
 const error = ref('')
 const sonido = ref(true)
 const pantallaCompleta = ref(false)
@@ -555,6 +615,12 @@ const rueda = useTemplateRef<SVGGElement>('rueda')
 const flecha = useTemplateRef<SVGGElement>('flecha')
 const confeti = useTemplateRef<HTMLCanvasElement>('confeti')
 const aceptar = useTemplateRef<HTMLButtonElement>('aceptar')
+const siguiente = useTemplateRef<HTMLButtonElement>('siguiente')
+watch(sinPremio, async (v) => {
+  if (!v) return
+  await nextTick()
+  siguiente.value?.focus()
+})
 const textos: (SVGTextElement | null)[] = [] // <text> de cada casilla: se cambian sin re-render
 
 // Estado de la animación (fuera de la reactividad: cambia en cada cuadro)
@@ -578,6 +644,13 @@ const movimientoReducido = import.meta.client && !!window.matchMedia?.('(prefers
 const seg = computed(() => 360 / Math.max(slots.value.length, 1))
 const fontSize = computed(() => Math.max(9, Math.min(15, ((2 * Math.PI * 120) / Math.max(slots.value.length, 1)) * 0.45)))
 const vigentes = computed(() => ganadores.value.filter(g => g.estado !== 'ANULADO').length)
+const textoBoton = computed(() => {
+  if (sinPremio.value) return 'Siguiente giro'
+  if (girando.value) return 'Girando…'
+  if (elegibles.value < 1) return 'Sin participantes'
+  if (posicion.value > 1) return `Girar · gana el ${ordinal(posicion.value)}`
+  return porGiro.value > 1 ? `Girar · ${porGiro.value} ganadores` : 'Girar la ruleta'
+})
 const anulados = computed(() => ganadores.value.filter(g => g.estado === 'ANULADO').length)
 const entregados = computed(() => ganadores.value.filter(g => g.estado === 'ENTREGADO').length)
 const pendientes = computed(() => ganadores.value.filter(g => g.estado === 'PENDIENTE').length)
@@ -726,72 +799,101 @@ watch(ganadorGiro, async (g) => {
 // ---------------------------------------------------------------------------
 // Sorteo
 // ---------------------------------------------------------------------------
-async function girar() {
-  if (girando.value || ganadorGiro.value || elegibles.value < 1 || slots.value.length < 1) return
+/** Arranca la ruleta (aceleración); la frenada la pone `frenarEn`. */
+function arrancar() {
   sonidos ??= crearSonidos()
   sonidos?.reanudar()
-  girando.value = true
   error.value = ''
   casillasGanadoras.value = null
+  protegidas = new Set()
   detenida = false
   if (!movimientoReducido) {
     inicioFase = performance.now()
     fase = 'accel'
   }
+}
 
-  try {
-    // El ganador lo decide el servidor; la ruleta gira mientras tanto (mín. 1.2 s)
-    const [lista] = await Promise.all([
-      api<GanadorRifaDto[]>('/api/jornadas/rifa/girar', { method: 'POST', body: { fecha: fecha.value, premio: premio.value.trim() || null, cantidad: porGiro.value } }),
-      new Promise(r => setTimeout(r, movimientoReducido ? 0 : 1200)),
-    ])
+const esperaGiro = () => new Promise(r => setTimeout(r, movimientoReducido ? 0 : 1200))
 
-    // El primer ganador va en una casilla al azar (donde frena la flecha) y los demás
-    // repartidos alrededor; ninguna de esas casillas se cambia mientras frena
-    const n = slots.value.length
-    const segmento = 360 / n
-    const k = Math.floor(Math.random() * n)
-    const casillas: number[] = []
-    lista.slice(0, n).forEach((ganador, j) => {
-      let c = (k + Math.round((j * n) / Math.min(lista.length, n))) % n
-      while (casillas.includes(c)) c = (c + 1) % n
-      casillas.push(c)
-      nombres[c] = ganador.nombre
-      const t = textos[c]
-      if (t) t.textContent = nombreCorto(ganador.nombre)
+/**
+ * Coloca los nombres en la ruleta y la frena con la flecha sobre el primero (los demás
+ * repartidos alrededor). Ninguna de esas casillas se cambia mientras frena.
+ */
+function frenarEn(lista: string[], alTerminar: () => void) {
+  const n = slots.value.length
+  const segmento = 360 / n
+  const k = Math.floor(Math.random() * n)
+  const casillas: number[] = []
+  lista.slice(0, n).forEach((nombre, j) => {
+    let c = (k + Math.round((j * n) / Math.min(lista.length, n))) % n
+    while (casillas.includes(c)) c = (c + 1) % n
+    casillas.push(c)
+    nombres[c] = nombre
+    const t = textos[c]
+    if (t) t.textContent = nombreCorto(nombre)
+  })
+  protegidas = new Set(casillas)
+
+  // Lejos de los bordes para que no quede duda de en qué casilla cayó
+  const jitter = (Math.random() - 0.5) * segmento * 0.5
+  const destino = ((-((k + 0.5) * segmento + jitter) % 360) + 360) % 360
+  const from = angulo
+  const ajuste = (((destino - from) % 360) + 360) % 360
+
+  // Vueltas y duración calculadas para que la frenada empiece a la velocidad que lleva
+  const v0 = Math.max(velocidad, 150)
+  const ideal = (v0 * FRENADA_MS) / 1000 / FRENADA_POT
+  const vueltas = Math.max(1, Math.round((ideal - ajuste) / 360))
+  const delta = 360 * vueltas + ajuste
+
+  frenada = {
+    from,
+    delta,
+    duration: movimientoReducido ? 1500 : (FRENADA_POT * delta * 1000) / v0,
+    onEnd: () => {
+      velocidad = IDLE_SPEED
+      detenida = true
+      casillasGanadoras.value = casillas
+      pausa = setTimeout(alTerminar, movimientoReducido ? 0 : PAUSA_GANADOR_MS)
+    },
+  }
+  inicioFase = performance.now()
+  fase = 'decel'
+}
+
+/** Detiene la ruleta en el siguiente elegido de la secuencia: sin premio, o el ganador al final. */
+function frenarEnPaso() {
+  const sec = secuencia.value!
+  const descartado = sec.descartados[sec.paso]
+  if (descartado) {
+    frenarEn([descartado.nombre], () => {
+      sinPremio.value = { ...descartado, orden: sec.paso + 1 }
+      if (sonido.value) sonidos?.fallo()
     })
-    protegidas = new Set(casillas)
+    return
+  }
+  frenarEn(sec.ganadores.map(g => g.nombre), () => {
+    secuencia.value = null
+    ganadorGiro.value = sec.ganadores
+    girando.value = false
+    if (sonido.value) sonidos?.fanfarria()
+    cargarGanadores()
+  })
+}
 
-    // Lejos de los bordes para que no quede duda de en qué casilla cayó
-    const jitter = (Math.random() - 0.5) * segmento * 0.5
-    const destino = ((-((k + 0.5) * segmento + jitter) % 360) + 360) % 360
-    const from = angulo
-    const ajuste = (((destino - from) % 360) + 360) % 360
-
-    // Vueltas y duración calculadas para que la frenada empiece a la velocidad que lleva
-    const v0 = Math.max(velocidad, 150)
-    const ideal = (v0 * FRENADA_MS) / 1000 / FRENADA_POT
-    const vueltas = Math.max(1, Math.round((ideal - ajuste) / 360))
-    const delta = 360 * vueltas + ajuste
-
-    frenada = {
-      from,
-      delta,
-      duration: movimientoReducido ? 1500 : (FRENADA_POT * delta * 1000) / v0,
-      onEnd: () => {
-        velocidad = IDLE_SPEED
-        detenida = true
-        casillasGanadoras.value = casillas
-        pausa = setTimeout(() => {
-          ganadorGiro.value = lista
-          girando.value = false
-          if (sonido.value) sonidos?.fanfarria()
-          cargarGanadores()
-        }, movimientoReducido ? 0 : PAUSA_GANADOR_MS)
-      },
-    }
-    inicioFase = performance.now()
-    fase = 'decel'
+async function girar() {
+  if (sinPremio.value) return siguienteGiro()
+  if (girando.value || ganadorGiro.value || elegibles.value < 1 || slots.value.length < 1) return
+  girando.value = true
+  arrancar()
+  try {
+    // Todos los elegidos del giro los decide el servidor; la ruleta gira mientras tanto (mín. 1.2 s)
+    const [r] = await Promise.all([
+      api<ResultadoGiro>('/api/jornadas/rifa/girar', { method: 'POST', body: { fecha: fecha.value, premio: premio.value.trim() || null, cantidad: porGiro.value, posicion: posicion.value } }),
+      esperaGiro(),
+    ])
+    secuencia.value = { ...r, paso: 0 }
+    frenarEnPaso()
   }
   catch (e) {
     fase = 'idle'
@@ -800,6 +902,16 @@ async function girar() {
     error.value = errorDeApi(e).mensaje
     girando.value = false
   }
+}
+
+/** Tras anunciar a un elegido sin premio, la ruleta vuelve a girar hacia el siguiente. */
+async function siguienteGiro() {
+  if (!sinPremio.value || !secuencia.value) return
+  sinPremio.value = null
+  arrancar()
+  await esperaGiro()
+  secuencia.value.paso++
+  frenarEnPaso()
 }
 
 async function actualizar(id: string, cambios: { estado?: GanadorRifaDto['estado'], premio?: string | null }) {
