@@ -34,6 +34,8 @@ export function usePermisos() {
     limpiar: () => { acceso.value = null },
     puede: (permiso: Permiso) => !!acceso.value?.permisos[permiso],
     puedeEn,
+    /** ¿Tiene el rol con alcance global (no sólo en una organización)? */
+    tieneRol: (clave: string) => !!acceso.value?.roles.some(r => r.clave === clave && !r.organizacion),
     alcance: (permiso: Permiso): Alcance | null => acceso.value?.permisos[permiso] ?? null,
   }
 }

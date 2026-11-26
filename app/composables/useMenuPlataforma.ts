@@ -1,5 +1,5 @@
 import type { CommandPaletteGroup, CommandPaletteItem, NavigationMenuItem } from '@nuxt/ui'
-import type { Permiso } from '#shared/permisos'
+import { ROL_SUPERADMIN, type Permiso } from '#shared/permisos'
 
 /** Un destino de la plataforma. Aparece sólo si el usuario tiene el permiso indicado. */
 export interface Destino {
@@ -10,6 +10,8 @@ export interface Destino {
   descripcion?: string
   permiso?: Permiso
   algunPermiso?: Permiso[]
+  /** Sólo para quien tenga este rol con alcance global (p. ej. SUPERADMIN). */
+  rol?: string
   exact?: boolean
   exactQuery?: boolean
   target?: '_blank'
@@ -74,6 +76,7 @@ const ADMINISTRACION: Seccion[] = [
     destinos: [
       { label: 'Gestión de eventos', icon: 'i-lucide-calendar-cog', permiso: 'evento.gestionar', to: '/plataforma/eventos/gestion', descripcion: 'Crear eventos, inscritos y constancias' },
       { label: 'Registro Jornadas 2026', icon: 'i-lucide-scan-qr-code', permiso: 'evento.gestionar', to: '/plataforma/eventos/registro-jornadas', descripcion: 'Registro e ingresos en sede' },
+      { label: 'Rifa Jornadas 2026', icon: 'i-lucide-ferris-wheel', rol: ROL_SUPERADMIN, to: '/plataforma/eventos/rifa', descripcion: 'Ruleta entre los asistentes del día' },
     ],
   },
   {
@@ -105,13 +108,13 @@ const ADMINISTRACION: Seccion[] = [
 
 /** Menú, buscador y accesos de la plataforma, filtrados por los permisos del usuario. */
 export function useMenuPlataforma() {
-  const { puede } = usePermisos()
+  const { puede, tieneRol } = usePermisos()
   const { noLeidas } = useNotificaciones()
   const route = useRoute()
 
-  const visible = (d: Destino) => (!d.permiso || puede(d.permiso)) && (!d.algunPermiso || d.algunPermiso.some(p => puede(p)))
+  const visible = (d: Destino) => (!d.rol || tieneRol(d.rol)) && (!d.permiso || puede(d.permiso)) && (!d.algunPermiso || d.algunPermiso.some(p => puede(p)))
 
-  const aItem = ({ descripcion: _d, permiso: _p, algunPermiso: _a, notificaciones, ...d }: Destino): NavigationMenuItem =>
+  const aItem = ({ descripcion: _d, permiso: _p, algunPermiso: _a, rol: _r, notificaciones, ...d }: Destino): NavigationMenuItem =>
     notificaciones && noLeidas.value
       ? { ...d, badge: { label: String(noLeidas.value), color: 'primary', variant: 'solid', size: 'sm' } }
       : d

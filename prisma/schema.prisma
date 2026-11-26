@@ -1109,20 +1109,21 @@ enum OrigenRegistro {
 
 /// Persona registrada para un evento sin cuenta. Una por correo y evento.
 model RegistroAsistente {
-  id          String             @id @default(uuid(7)) @db.Uuid
-  eventoSlug  String
-  nombre      String // como aparecerá en la constancia
+  id            String             @id @default(uuid(7)) @db.Uuid
+  eventoSlug    String
+  nombre        String // como aparecerá en la constancia
   /// Siempre en minúsculas y sin espacios (así el índice único no distingue mayúsculas).
-  correo      String
-  telefono    String?
-  categoria   CategoriaAsistente
+  correo        String
+  telefono      String?
+  categoria     CategoriaAsistente
   /// Colegio, asociación, institución o escuela de procedencia.
-  procedencia String?
+  procedencia   String?
   /// Pase personal: permite marcar el ingreso de otros días con un solo toque.
-  codigo      String             @unique
-  origen      OrigenRegistro     @default(AUTOREGISTRO)
-  creadoEn    DateTime           @default(now())
-  ingresos    IngresoAsistente[]
+  codigo        String             @unique
+  origen        OrigenRegistro     @default(AUTOREGISTRO)
+  creadoEn      DateTime           @default(now())
+  ingresos      IngresoAsistente[]
+  ganadoresRifa GanadorRifa[]
 
   @@unique([eventoSlug, correo])
   @@index([eventoSlug, creadoEn])
@@ -1130,13 +1131,44 @@ model RegistroAsistente {
 
 /// Ingreso a la sede: uno por persona y día (fecha de Ciudad de México).
 model IngresoAsistente {
-  id            String            @id @default(uuid(7)) @db.Uuid
-  registroId    String            @db.Uuid
-  fecha         DateTime          @db.Date
-  registradoEn  DateTime          @default(now())
-  origen        OrigenRegistro    @default(AUTOREGISTRO)
-  registro      RegistroAsistente @relation(fields: [registroId], references: [id], onDelete: Cascade)
+  id           String            @id @default(uuid(7)) @db.Uuid
+  registroId   String            @db.Uuid
+  fecha        DateTime          @db.Date
+  registradoEn DateTime          @default(now())
+  origen       OrigenRegistro    @default(AUTOREGISTRO)
+  registro     RegistroAsistente @relation(fields: [registroId], references: [id], onDelete: Cascade)
 
   @@unique([registroId, fecha])
   @@index([fecha])
+}
+
+// -----------------------------------------------------------------------------
+//  RIFA DE LAS JORNADAS (sólo superadministrador)
+//  Una rifa por día: participan quienes marcaron su ingreso ese día.
+// -----------------------------------------------------------------------------
+
+enum EstadoGanadorRifa {
+  PENDIENTE
+  ENTREGADO
+  /// No estaba presente al sortearse: su premio se vuelve a rifar.
+  ANULADO
+}
+
+/// Ganador de la rifa de un día. Una persona gana como máximo una vez por día.
+model GanadorRifa {
+  id          String            @id @default(uuid(7)) @db.Uuid
+  eventoSlug  String
+  /// Día de la rifa (fecha de Ciudad de México).
+  fecha       DateTime          @db.Date
+  /// Consecutivo del día (#1, #2…).
+  numero      Int
+  registroId  String            @db.Uuid
+  premio      String?
+  estado      EstadoGanadorRifa @default(PENDIENTE)
+  sorteadoEn  DateTime          @default(now())
+  entregadoEn DateTime?
+  registro    RegistroAsistente @relation(fields: [registroId], references: [id], onDelete: Cascade)
+
+  @@unique([eventoSlug, fecha, registroId])
+  @@unique([eventoSlug, fecha, numero])
 }

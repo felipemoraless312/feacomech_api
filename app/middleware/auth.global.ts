@@ -6,7 +6,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (!ruta.startsWith('/plataforma') && !ruta.startsWith('/imprimir')) return
 
   const { loggedIn, user, clear } = useUserSession()
-  const { cargar, puede, limpiar } = usePermisos()
+  const { cargar, puede, tieneRol, limpiar } = usePermisos()
 
   // Enlace del correo (activar cuenta / restablecer): el token es la credencial.
   if (ruta === '/plataforma/restablecer') return
@@ -37,7 +37,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo({ path: '/plataforma/login', query: { r: to.fullPath, motivo: 'sesion' } })
   }
 
-  if (to.meta.permiso && !puede(to.meta.permiso)) {
+  if ((to.meta.permiso && !puede(to.meta.permiso)) || (to.meta.rol && !tieneRol(to.meta.rol))) {
     throw createError({ statusCode: 403, statusMessage: 'No tiene permiso para ver esta página', fatal: true })
   }
 })
