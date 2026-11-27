@@ -56,6 +56,9 @@
       </UContainer>
     </section>
 
+    <!-- Fotos del Muro de las Jornadas -->
+    <SitioMuroFotos />
+
     <!-- Noticias y eventos -->
     <section class="bg-muted py-10 sm:py-16">
       <UContainer class="grid gap-10 lg:grid-cols-[1.55fr_1fr] lg:gap-12">

@@ -122,8 +122,11 @@
       </UContainer>
     </section>
 
+    <!-- Fotos del muro -->
+    <SitioMuroFotos class="mt-10" />
+
     <!-- Navegación interna -->
-    <nav class="sticky top-[var(--ui-header-height)] z-20 mt-10 border-y border-default bg-default/95 backdrop-blur" aria-label="Secciones de las Jornadas">
+    <nav class="sticky top-[var(--ui-header-height)] z-20 border-y border-default bg-default/95 backdrop-blur" aria-label="Secciones de las Jornadas">
       <UContainer class="flex gap-1 overflow-x-auto py-2 text-sm [scrollbar-width:none]">
         <a v-for="s in secciones" :key="s.id" :href="`#${s.id}`" class="shrink-0 rounded-md px-3 py-1.5 font-medium text-muted hover:bg-muted hover:text-highlighted">
           {{ s.t }}
