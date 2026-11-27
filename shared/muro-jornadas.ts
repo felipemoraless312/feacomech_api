@@ -6,9 +6,9 @@ export const HASHTAG_JORNADAS = '#JornadasFEACOMECH2026'
 /** Fotos por publicación. */
 export const FOTOS_POR_PUBLICACION = 6
 /** Publicaciones que una misma persona puede crear por hora. */
-export const PUBLICACIONES_POR_HORA = 8
+export const PUBLICACIONES_POR_HORA = 12
 /** Comentarios que una misma persona puede dejar por hora. */
-export const COMENTARIOS_POR_HORA = 30
+export const COMENTARIOS_POR_HORA = 40
 /** Reportes con los que un comentario se oculta solo hasta que el personal lo revise. */
 export const REPORTES_PARA_OCULTAR = 3
 /** El navegador reduce cada foto a este lado mayor antes de enviarla (y quita metadatos). */

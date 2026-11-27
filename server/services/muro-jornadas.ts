@@ -13,7 +13,7 @@
 import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname } from 'node:path'
-import { createError, getRequestIP, type H3Event } from 'h3'
+import { createError, getRequestHeader, getRequestIP, type H3Event } from 'h3'
 import { JORNADAS_2026 } from '~~/shared/jornadas2026'
 import {
   COMENTARIOS_POR_HORA, FOTOS_POR_PUBLICACION, MAX_BYTES_FOTO, MAX_BYTES_MINIATURA, PUBLICACIONES_POR_HORA, REPORTES_PARA_OCULTAR,
@@ -39,10 +39,14 @@ const limite = (clave: string, maximo: number, mensaje: string) => {
   if (!permitirIntento(clave, maximo, HORA)) throw createError({ statusCode: 429, message: mensaje })
 }
 
-/** Huella irreversible de quien envía (no se guarda la IP). */
+/**
+ * Huella irreversible de quien envía (no se guarda la IP). Combina IP y navegador porque en el
+ * Wi-Fi de la sede y en las redes celulares muchas personas comparten la misma IP.
+ */
 export function huellaDe(event: H3Event): string {
   const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'desconocida'
-  return firmar(`huella:${ip}`).slice(0, 24)
+  const navegador = getRequestHeader(event, 'user-agent')?.slice(0, 300) ?? ''
+  return firmar(`huella:${ip}:${navegador}`).slice(0, 24)
 }
 
 // -----------------------------------------------------------------------------
@@ -134,7 +138,7 @@ export async function crearPublicacion(huella: string, p: NuevaPublicacion, img:
   verificarBoleto(p.boleto, huella)
   if (!img && !p.mensaje) throw createError({ statusCode: 400, message: 'Escriba un mensaje o agregue una foto' })
   limite(`muro:pub:${huella}`, PUBLICACIONES_POR_HORA, `Puede publicar hasta ${PUBLICACIONES_POR_HORA} veces por hora. Intente más tarde.`)
-  limite('muro:pub:total', 400, 'Estamos recibiendo muchas publicaciones. Intente en unos minutos.')
+  limite('muro:pub:total', 600, 'Estamos recibiendo muchas publicaciones. Intente en unos minutos.')
 
   const pub = await prisma.publicacionMuro.create({
     data: { eventoSlug: SLUG, autor: p.autor, mensaje: p.mensaje, huella },
