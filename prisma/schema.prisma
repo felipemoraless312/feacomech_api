@@ -1172,3 +1172,68 @@ model GanadorRifa {
   @@unique([eventoSlug, fecha, registroId])
   @@unique([eventoSlug, fecha, numero])
 }
+
+// -----------------------------------------------------------------------------
+//  MURO DE LAS JORNADAS (mini foro público con fotos)
+//  Aislado del resto: tablas y carpeta propias (almacen/muro-jornadas), sin datos de
+//  contacto. Las publicaciones se revisan antes de mostrarse; los comentarios se filtran.
+// -----------------------------------------------------------------------------
+
+enum EstadoPublicacionMuro {
+  PENDIENTE
+  APROBADA
+  RECHAZADA
+}
+
+/// Publicación de un asistente: mensaje y hasta 6 fotos.
+model PublicacionMuro {
+  id            String                @id @default(uuid(7)) @db.Uuid
+  eventoSlug    String
+  autor         String?
+  mensaje       String?
+  estado        EstadoPublicacionMuro @default(PENDIENTE)
+  destacada     Boolean               @default(false)
+  /// Ya se compartió en las redes sociales de la Federación.
+  enRedes       Boolean               @default(false)
+  meGusta       Int                   @default(0)
+  /// HMAC de la IP: sólo para limitar abusos; no permite conocer la IP.
+  huella        String
+  creadoEn      DateTime              @default(now())
+  revisadoEn    DateTime?
+  revisadoPorId String?               @db.Uuid
+  fotos         FotoMuro[]
+  comentarios   ComentarioMuro[]
+
+  @@index([eventoSlug, estado, id])
+}
+
+/// Foto de una publicación. El servidor la reconstruye sin metadatos (GPS, cámara).
+model FotoMuro {
+  id            String          @id @default(uuid(7)) @db.Uuid
+  publicacionId String          @db.Uuid
+  /// Rutas relativas a la carpeta de almacenamiento (subcarpeta muro-jornadas/).
+  ruta          String          @unique
+  rutaMiniatura String          @unique
+  ancho         Int
+  alto          Int
+  tamano        Int
+  creadoEn      DateTime        @default(now())
+  publicacion   PublicacionMuro @relation(fields: [publicacionId], references: [id], onDelete: Cascade)
+
+  @@index([publicacionId])
+}
+
+model ComentarioMuro {
+  id            String          @id @default(uuid(7)) @db.Uuid
+  publicacionId String          @db.Uuid
+  autor         String?
+  texto         String
+  /// Oculto por el personal o por acumular reportes.
+  oculto        Boolean         @default(false)
+  reportes      Int             @default(0)
+  huella        String
+  creadoEn      DateTime        @default(now())
+  publicacion   PublicacionMuro @relation(fields: [publicacionId], references: [id], onDelete: Cascade)
+
+  @@index([publicacionId, id])
+}

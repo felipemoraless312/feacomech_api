@@ -97,6 +97,31 @@
       </UContainer>
     </section>
 
+    <!-- Muro de fotos -->
+    <section id="muro" class="scroll-mt-32 py-12 sm:py-16">
+      <UContainer>
+        <NuxtLink to="/jornadas-2026/muro" class="group relative isolate grid gap-8 overflow-hidden rounded-2xl bg-marca-950 p-7 text-white shadow-flotante sm:p-10 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+          <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_50%_80%_at_90%_40%,rgb(217_106_34/0.45),transparent_70%)]" />
+          <div class="space-y-4">
+            <p class="rotulo !text-acento-200">Nuevo · en vivo</p>
+            <h2 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Muro de las Jornadas</h2>
+            <p class="max-w-xl text-white/80">
+              Publica tus fotos del evento, comenta las de tus colegas y aparece en la pantalla del Polyforum. Las publicaciones aprobadas pueden compartirse en las redes sociales de la FEACOMECH.
+            </p>
+            <span class="inline-flex items-center gap-2 rounded-lg bg-acento-500 px-5 py-3 font-semibold text-white shadow-lg transition group-hover:bg-acento-600">
+              <UIcon name="i-lucide-camera" class="size-5" /> Compartir mis fotos
+              <UIcon name="i-lucide-arrow-right" class="size-4 transition group-hover:translate-x-1" />
+            </span>
+          </div>
+          <div class="hidden grid-cols-3 gap-3 lg:grid" aria-hidden="true">
+            <div v-for="(ic, i) in ['i-lucide-camera', 'i-lucide-heart', 'i-lucide-message-circle', 'i-lucide-images', 'i-lucide-sparkles', 'i-lucide-share-2']" :key="ic" class="flex aspect-square items-center justify-center rounded-xl ring-1 ring-white/15 transition duration-500 group-hover:-translate-y-1" :class="i % 2 ? 'bg-white/10' : 'bg-acento-500/25'" :style="{ transitionDelay: `${i * 40}ms` }">
+              <UIcon :name="ic" class="size-8 text-white/90" />
+            </div>
+          </div>
+        </NuxtLink>
+      </UContainer>
+    </section>
+
     <!-- Programa académico -->
     <section id="programa" class="scroll-mt-32 bg-muted/60 py-16 sm:py-20">
       <UContainer class="space-y-10">
@@ -485,6 +510,7 @@ const cuenta = computed(() => {
 const fechaLarga = (iso: string) => new Intl.DateTimeFormat('es-MX', { dateStyle: 'full', timeZone: 'America/Mexico_City' }).format(new Date(iso))
 
 const secciones = [
+  { id: 'muro', t: 'Muro de fotos' },
   { id: 'programa', t: 'Programa' },
   { id: 'ponentes', t: 'Ponentes' },
   { id: 'cuotas', t: 'Cuotas' },

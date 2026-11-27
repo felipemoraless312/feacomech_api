@@ -76,6 +76,7 @@ const ADMINISTRACION: Seccion[] = [
     destinos: [
       { label: 'Gestión de eventos', icon: 'i-lucide-calendar-cog', permiso: 'evento.gestionar', to: '/plataforma/eventos/gestion', descripcion: 'Crear eventos, inscritos y constancias' },
       { label: 'Registro Jornadas 2026', icon: 'i-lucide-scan-qr-code', permiso: 'evento.gestionar', to: '/plataforma/eventos/registro-jornadas', descripcion: 'Registro e ingresos en sede' },
+      { label: 'Muro Jornadas 2026', icon: 'i-lucide-images', permiso: 'evento.gestionar', to: '/plataforma/eventos/muro-jornadas', descripcion: 'Fotos y comentarios de los asistentes: revisión y descarga' },
       { label: 'Rifa Jornadas 2026', icon: 'i-lucide-ferris-wheel', rol: ROL_SUPERADMIN, to: '/plataforma/eventos/rifa', descripcion: 'Ruleta entre los asistentes del día' },
     ],
   },
