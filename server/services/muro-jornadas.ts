@@ -4,8 +4,9 @@
 //   - Tablas y carpeta propias (muro-jornadas/): una foto nunca comparte ruta, permisos ni
 //     endpoint con documentos o archivos internos, y estas rutas no leen ningún otro dato.
 //   - Sólo JPEG, y el servidor lo reconstruye sin metadatos (utils/jpeg-limpio).
-//   - Cada envío necesita un boleto firmado que se pide al abrir la página (caduca, va ligado
-//     a quien lo pidió y exige unos segundos de espera), más un campo trampa para robots.
+//   - Cada envío necesita un boleto firmado que se pide al abrir la página (caduca y exige unos
+//     segundos de espera), más un campo trampa para robots. No va ligado a la IP: en el
+//     celular la IP cambia a menudo (Wi-Fi ↔ datos) y eso invalidaba envíos legítimos.
 //   - Límites por persona y por hora, y topes generales.
 //   - No se pide correo ni teléfono; de la IP sólo se guarda una huella (HMAC) irreversible.
 //   - Las publicaciones no se ven hasta que el personal las aprueba. Los comentarios se
@@ -55,23 +56,23 @@ export function huellaDe(event: H3Event): string {
 const ESPERA_MINIMA_MS = 2_000
 const VIGENCIA_BOLETO_MS = 6 * HORA
 
-export function emitirBoleto(huella: string): string {
-  const t = Date.now().toString(36)
-  return `${t}.${firmar(`boleto:${t}:${huella}`).slice(0, 32)}`
+export function emitirBoleto(): string {
+  const t = `${Date.now().toString(36)}-${randomUUID().slice(0, 8)}`
+  return `${t}.${firmar(`boleto:${t}`).slice(0, 32)}`
 }
 
-function verificarBoleto(boleto: string, huella: string) {
+function verificarBoleto(boleto: string) {
   const [t = '', firma = ''] = boleto.split('.')
-  const emitido = Number.parseInt(t, 36)
+  const emitido = Number.parseInt(t.split('-')[0] ?? '', 36)
   const edad = Date.now() - emitido
-  if (!Number.isFinite(emitido) || !igual(firma, firmar(`boleto:${t}:${huella}`).slice(0, 32)) || edad > VIGENCIA_BOLETO_MS) {
+  if (!Number.isFinite(emitido) || !igual(firma, firmar(`boleto:${t}`).slice(0, 32)) || edad > VIGENCIA_BOLETO_MS) {
     throw createError({ statusCode: 400, message: 'La página caducó. Intente de nuevo.' })
   }
   if (edad < ESPERA_MINIMA_MS) throw createError({ statusCode: 429, message: 'Espere un momento e intente de nuevo.' })
 }
 
-/** Clave para agregar más fotos a una publicación recién creada (sólo quien la creó). */
-const claveDe = (id: string, huella: string) => firmar(`publicacion:${id}:${huella}`).slice(0, 32)
+/** Clave para agregar más fotos a una publicación recién creada: sólo la recibe quien la creó. */
+const claveDe = (id: string) => firmar(`publicacion:${id}`).slice(0, 32)
 const VENTANA_FOTOS_MS = 30 * 60_000
 
 // -----------------------------------------------------------------------------
@@ -135,7 +136,7 @@ export interface NuevaPublicacion {
 export async function crearPublicacion(huella: string, p: NuevaPublicacion, img: ImagenSubida | null) {
   // Campo trampa lleno: se responde como si todo fuera bien, sin guardar nada.
   if (p.sitio) return { id: randomUUID(), clave: '' }
-  verificarBoleto(p.boleto, huella)
+  verificarBoleto(p.boleto)
   if (!img && !p.mensaje) throw createError({ statusCode: 400, message: 'Escriba un mensaje o agregue una foto' })
   limite(`muro:pub:${huella}`, PUBLICACIONES_POR_HORA, `Puede publicar hasta ${PUBLICACIONES_POR_HORA} veces por hora. Intente más tarde.`)
   limite('muro:pub:total', 600, 'Estamos recibiendo muchas publicaciones. Intente en unos minutos.')
@@ -153,12 +154,12 @@ export async function crearPublicacion(huella: string, p: NuevaPublicacion, img:
       throw e
     }
   }
-  return { id: pub.id, clave: claveDe(pub.id, huella) }
+  return { id: pub.id, clave: claveDe(pub.id) }
 }
 
 /** Agrega otra foto a una publicación recién creada (mismo autor, mientras espera revisión). */
 export async function agregarFoto(publicacionId: string, huella: string, clave: string, img: ImagenSubida) {
-  if (!igual(clave, claveDe(publicacionId, huella))) throw createError({ statusCode: 403, message: 'No autorizado' })
+  if (!igual(clave, claveDe(publicacionId))) throw createError({ statusCode: 403, message: 'No autorizado' })
   const pub = await prisma.publicacionMuro.findFirst({
     where: { id: publicacionId, eventoSlug: SLUG, estado: 'PENDIENTE' },
     select: { creadoEn: true, _count: { select: { fotos: true } } },
@@ -224,7 +225,7 @@ export async function comentariosDe(publicacionId: string) {
 
 export async function comentar(publicacionId: string, huella: string, c: { boleto: string, autor: string | null, texto: string, sitio?: string }) {
   if (c.sitio) return comentarioDto({ id: randomUUID(), autor: c.autor, texto: c.texto, creadoEn: new Date() })
-  verificarBoleto(c.boleto, huella)
+  verificarBoleto(c.boleto)
   await exigirAprobada(publicacionId)
   limite(`muro:com:${huella}`, COMENTARIOS_POR_HORA, 'Escribió muchos comentarios seguidos. Intente en unos minutos.')
   limite('muro:com:total', 2000, 'Hay mucha actividad. Intente en unos minutos.')

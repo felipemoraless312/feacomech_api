@@ -12,7 +12,7 @@ export const COMENTARIOS_POR_HORA = 40
 /** Reportes con los que un comentario se oculta solo hasta que el personal lo revise. */
 export const REPORTES_PARA_OCULTAR = 3
 /** El navegador reduce cada foto a este lado mayor antes de enviarla (y quita metadatos). */
-export const LADO_FOTO = 1920
+export const LADO_FOTO = 1600
 export const LADO_MINIATURA = 640
 export const MAX_BYTES_FOTO = 4 * 1024 * 1024
 export const MAX_BYTES_MINIATURA = 600 * 1024

@@ -111,7 +111,7 @@
                 <UButton
                   type="submit"
                   :loading="enviando"
-                  :disabled="(!mensaje.trim() && !items.length) || !autorizo || !boleto"
+                  :disabled="(!mensaje.trim() && !items.length) || !autorizo"
                   :label="enviando && items.length ? `Subiendo ${progreso}/${items.length}…` : 'Publicar'"
                   icon="i-lucide-send"
                   class="bg-acento-500 px-5 text-white hover:bg-acento-600 disabled:bg-acento-500/50"
@@ -580,23 +580,46 @@ async function reducir(origen: ImageBitmap | HTMLImageElement, lado: number, cal
   return new Promise((ok, mal) => lienzo.toBlob(b => (b ? ok(b) : mal(new Error('No se pudo procesar'))), 'image/jpeg', calidad))
 }
 
+/** Rechaza si la promesa tarda más de `ms` (algunos teléfonos se quedan colgados al decodificar). */
+function conTiempo<T>(p: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([p, new Promise<T>((_, mal) => setTimeout(() => mal(new Error('Tardó demasiado')), ms))])
+}
+
 async function decodificar(archivo: File): Promise<ImageBitmap | HTMLImageElement> {
   if ('createImageBitmap' in window) {
-    try { return await createImageBitmap(archivo, { imageOrientation: 'from-image' }) }
+    try { return await conTiempo(createImageBitmap(archivo, { imageOrientation: 'from-image' }), 10_000) }
     catch { /* se intenta con <img> */ }
   }
-  return new Promise((ok, mal) => {
+  return conTiempo(new Promise((ok, mal) => {
     const img = new Image()
     img.onload = () => ok(img)
     img.onerror = () => mal(new Error('Formato no compatible'))
     img.src = URL.createObjectURL(archivo)
-  })
+  }), 20_000)
+}
+
+/**
+ * Envía con reintentos: en la sede la red es lenta y a veces se corta. Reintenta ante fallas
+ * de red y errores del servidor/proxy (5xx), no ante rechazos (4xx), que no cambiarían.
+ */
+async function enviarConReintentos<T>(fn: () => Promise<T>, intentos = 3): Promise<T> {
+  for (let i = 1; ; i++) {
+    try {
+      return await fn()
+    }
+    catch (e) {
+      const estado = (e as { statusCode?: number }).statusCode
+      const reintentable = !estado || estado >= 500
+      if (!reintentable || i >= intentos) throw e
+      await new Promise(r => setTimeout(r, 1500 * i))
+    }
+  }
 }
 
 async function preparar(it: Item) {
   try {
     const img = await decodificar(it.archivo)
-    it.foto = await reducir(img, LADO_FOTO, 0.85)
+    it.foto = await reducir(img, LADO_FOTO, 0.8)
     it.miniatura = await reducir(img, LADO_MINIATURA, 0.8)
     if ('close' in img) img.close()
     it.vista = URL.createObjectURL(it.miniatura)
@@ -657,10 +680,12 @@ async function publicar() {
       progreso.value = 1
     }
     const datos = JSON.stringify({ boleto: boleto.value, autor: autor.value, mensaje: mensaje.value, autorizo: true, sitio: sitio.value })
-    const { id, clave } = await conBoleto(() => $fetch<{ id: string, clave: string }>('/api/publico/jornadas/muro', {
+    if (!boleto.value) await pedirBoleto()
+    const { id, clave } = await conBoleto(() => enviarConReintentos(() => $fetch<{ id: string, clave: string }>('/api/publico/jornadas/muro', {
       method: 'POST',
-      body: formulario(primera ? { datos, foto: primera.foto!, miniatura: primera.miniatura! } : { datos }),
-    }))
+      body: formulario(primera ? { datos: JSON.stringify({ ...JSON.parse(datos), boleto: boleto.value }), foto: primera.foto!, miniatura: primera.miniatura! } : { datos: JSON.stringify({ ...JSON.parse(datos), boleto: boleto.value }) }),
+      timeout: 90_000,
+    })))
     if (primera) primera.estado = 'listo'
 
     let fallidas = 0
@@ -668,7 +693,7 @@ async function publicar() {
       progreso.value++
       it.estado = 'enviando'
       try {
-        await $fetch(`/api/publico/jornadas/muro/${id}/fotos`, { method: 'POST', body: formulario({ clave, foto: it.foto!, miniatura: it.miniatura! }) })
+        await enviarConReintentos(() => $fetch<{ id: string }>(`/api/publico/jornadas/muro/${id}/fotos` as string, { method: 'POST', body: formulario({ clave, foto: it.foto!, miniatura: it.miniatura! }), timeout: 90_000 }))
         it.estado = 'listo'
       }
       catch (e) {
@@ -685,7 +710,11 @@ async function publicar() {
     publicado.value = true
   }
   catch (e) {
-    error.value = e instanceof Error && !('statusCode' in e) ? e.message : errorDeApi(e).mensaje
+    const estado = (e as { statusCode?: number }).statusCode
+    const deRed = (e as Error)?.name === 'FetchError' && (!estado || estado >= 500)
+    error.value = deRed
+      ? 'No se pudo conectar: la señal está débil. Revise su conexión e intente de nuevo; sus fotos siguen aquí.'
+      : e instanceof Error && !('statusCode' in e) ? e.message : errorDeApi(e).mensaje
     items.value.forEach((i) => { if (i.estado === 'enviando') i.estado = 'lista' })
   }
   finally {
