@@ -282,10 +282,37 @@
                       </div>
                     </UFormField>
                     <UFormField label="Colegio, institución o escuela" name="procedencia" hint="Opcional">
-                      <UInput v-model="datos.procedencia" size="xl" list="colegios" icon="i-lucide-building-2" class="w-full" />
-                      <datalist id="colegios">
-                        <option v-for="c in J.colegios" :key="c" :value="c" />
-                      </datalist>
+                      <!-- Sugerencias propias (no <datalist>): en Android la lista nativa se abría
+                           completa al tocar el campo y tapaba el teclado. Aquí sólo aparecen al escribir. -->
+                      <div class="relative">
+                        <UInput
+                          v-model="datos.procedencia"
+                          size="xl"
+                          icon="i-lucide-building-2"
+                          autocomplete="off"
+                          placeholder="Escriba para buscar su colegio"
+                          class="w-full"
+                          @focus="procedenciaActiva = true"
+                          @blur="procedenciaActiva = false"
+                          @keydown.esc="procedenciaActiva = false"
+                        />
+                        <ul
+                          v-if="procedenciaActiva && sugerenciasProcedencia.length"
+                          class="absolute inset-x-0 top-full z-30 mt-1 overflow-hidden rounded-xl bg-white text-marca-950 shadow-2xl ring-1 ring-black/10"
+                          role="listbox"
+                        >
+                          <li v-for="c in sugerenciasProcedencia" :key="c">
+                            <button
+                              type="button"
+                              role="option"
+                              class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium hover:bg-marca-50 active:bg-marca-100"
+                              @pointerdown.prevent="elegirProcedencia(c)"
+                            >
+                              <UIcon name="i-lucide-building-2" class="size-4 shrink-0 text-marca-500" />{{ c }}
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
                     </UFormField>
                     <UCheckbox v-model="acepta" required>
                       <template #label>
@@ -376,6 +403,23 @@ const acepta = ref(false)
 const festejo = ref(false)
 const categorias = CATEGORIAS_ASISTENTE.map(c => ({ value: c, label: NOMBRE_CATEGORIA[c], icono: ICONO_CATEGORIA[c] }))
 const datos = reactive<RegistroAsistenteEntrada>({ nombre: '', correo: '', telefono: '', categoria: undefined as unknown as CategoriaAsistente, procedencia: '' })
+
+// Colegio o procedencia: hasta 5 sugerencias que coinciden con lo escrito (sin acentos, por palabras)
+const procedenciaActiva = ref(false)
+const sinAcentos = (t: string) => t.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
+const sugerenciasProcedencia = computed(() => {
+  const q = sinAcentos(datos.procedencia ?? '').trim()
+  if (q.length < 2) return []
+  const palabras = q.split(/\s+/)
+  return J.colegios.filter((c) => {
+    const n = sinAcentos(c)
+    return n !== q && palabras.every(w => n.includes(w))
+  }).slice(0, 5)
+})
+function elegirProcedencia(c: string) {
+  datos.procedencia = c
+  procedenciaActiva.value = false
+}
 
 const form = useTemplateRef<Form<RegistroAsistenteEntrada>>('form')
 const { enviando, error, enviar } = useEnvio(form)
