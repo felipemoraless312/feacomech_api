@@ -42,6 +42,10 @@
         <input ref="selector" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="subirPortada">
       </div>
 
+      <!-- Galería -->
+      <NoticiasGaleria v-if="noticia" :noticia-id="noticia.id" :fotos-iniciales="noticia.fotos" :editable="noticia.editable" />
+      <UAlert v-else-if="nueva" color="neutral" variant="subtle" icon="i-lucide-images" title="Guarde el borrador para agregar la portada y la galería de fotos." />
+
       <UForm ref="form" :schema="noticiaSchema" :state="estado" :disabled="!editable" class="space-y-5" @submit="guardar">
         <div class="grid gap-4 sm:grid-cols-2">
           <UFormField label="Tipo" name="tipo" required>

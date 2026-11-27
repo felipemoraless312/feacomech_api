@@ -390,6 +390,7 @@ model Archivo {
   logoDe           Organizacion?
   fotoNombramiento Nombramiento?       @relation("FotoNombramiento")
   portadaNoticia   Noticia?            @relation("PortadaNoticia")
+  fotoNoticia      FotoNoticia?        @relation("FotoNoticia")
   logoVinculo      Vinculo?            @relation("LogoVinculo")
   portadaEvento    Evento?             @relation("PortadaEvento")
   adjuntoComunidad AdjuntoPublicacion? @relation("AdjuntoComunidad")
@@ -700,9 +701,25 @@ model Noticia {
   portada        Archivo?      @relation("PortadaNoticia", fields: [portadaId], references: [id])
   autor          Usuario?      @relation("NoticiaAutor", fields: [autorId], references: [id])
   organizacion   Organizacion? @relation(fields: [organizacionId], references: [id])
+  fotos          FotoNoticia[]
 
   @@index([estado, publicadaEn])
   @@index([tipo, estado])
+}
+
+/// Foto de la galería de una noticia (además de la portada).
+model FotoNoticia {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  noticiaId String   @db.Uuid
+  archivoId String   @unique @db.Uuid
+  /// Pie de foto opcional.
+  pie       String?
+  orden     Int      @default(0)
+  creadoEn  DateTime @default(now())
+  noticia   Noticia  @relation(fields: [noticiaId], references: [id], onDelete: Cascade)
+  archivo   Archivo  @relation("FotoNoticia", fields: [archivoId], references: [id])
+
+  @@index([noticiaId, orden])
 }
 
 /// Instituciones colaboradoras, convenios y organismos relacionados.

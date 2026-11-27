@@ -18,6 +18,11 @@ import { accesoDeUsuario, incluye, usuariosConPermisoTotal } from './permisos'
 import { slugDe } from './organizaciones'
 
 export const MAX_PORTADA = 4 * 1024 * 1024
+/** Fotos de la galería: el editor las reduce antes de enviarlas; éste es sólo el tope. */
+export const MAX_FOTO_NOTICIA = 8 * 1024 * 1024
+export const FOTOS_POR_NOTICIA = 40
+
+const SELECT_FOTOS = { orderBy: [{ orden: 'asc' as const }, { creadoEn: 'asc' as const }], select: { id: true, archivoId: true, pie: true } } satisfies Prisma.Noticia$fotosArgs
 type Datos = z.output<typeof noticiaSchema>
 
 const SELECT_LISTA = {
@@ -85,7 +90,7 @@ export type NoticiaFila = Awaited<ReturnType<typeof listarNoticias>>['datos'][nu
 
 export async function obtenerNoticia(usuarioId: string, id: string) {
   const p = await permisosNoticias(usuarioId)
-  const n = await prisma.noticia.findFirst({ where: { id, ...filtroEditables(usuarioId, p) }, select: { ...SELECT_LISTA, contenido: true } })
+  const n = await prisma.noticia.findFirst({ where: { id, ...filtroEditables(usuarioId, p) }, select: { ...SELECT_LISTA, contenido: true, fotos: SELECT_FOTOS } })
   if (!n) throw createError({ statusCode: 404, message: 'Noticia no encontrada' })
   return { ...n, editable: puedeEditar(usuarioId, p, n) }
 }
@@ -153,7 +158,9 @@ export async function transicionNoticia(usuarioId: string, id: string, t: z.outp
     }
 
     await tx.noticia.update({ where: { id }, data: { estado, ...(estado === 'PUBLICADA' && !n.publicadaEn ? { publicadaEn: new Date() } : {}) } })
-    if (n.portadaId) await tx.archivo.update({ where: { id: n.portadaId }, data: { visibilidad: estado === 'PUBLICADA' ? 'PUBLICO' : 'AUTENTICADO' } })
+    const visibilidad = estado === 'PUBLICADA' ? 'PUBLICO' : 'AUTENTICADO'
+    if (n.portadaId) await tx.archivo.update({ where: { id: n.portadaId }, data: { visibilidad } })
+    await tx.archivo.updateMany({ where: { fotoNoticia: { noticiaId: id } }, data: { visibilidad } })
     await auditar(tx, ctx, { accion: estado === 'PUBLICADA' ? 'VALIDAR' : 'ACTUALIZAR', entidad: 'Noticia.estado', entidadId: id, antes: { estado: n.estado }, despues: { estado }, motivo: t.motivo })
 
     if (t.accion === 'ENVIAR_A_REVISION') {
@@ -175,16 +182,17 @@ export async function transicionNoticia(usuarioId: string, id: string, t: z.outp
 /** Sólo borradores, por quien puede editarlos. */
 export async function eliminarNoticia(usuarioId: string, id: string, ctx: ContextoAuditoria) {
   const p = await permisosNoticias(usuarioId)
-  const ruta = await prisma.$transaction(async (tx) => {
-    const n = await tx.noticia.findUnique({ where: { id }, include: { portada: { select: { id: true, ruta: true } } } })
+  const rutas = await prisma.$transaction(async (tx) => {
+    const n = await tx.noticia.findUnique({ where: { id }, include: { portada: { select: { id: true, ruta: true } }, fotos: { select: { archivo: { select: { id: true, ruta: true } } } } } })
     if (!n) throw createError({ statusCode: 404, message: 'Noticia no encontrada' })
     if (n.estado !== 'BORRADOR' || !puedeEditar(usuarioId, p, n)) throw createError({ statusCode: 403, message: 'Sólo se eliminan borradores propios; lo publicado se retira' })
     await tx.noticia.delete({ where: { id } })
     if (n.portada) await tx.archivo.delete({ where: { id: n.portada.id } })
+    if (n.fotos.length) await tx.archivo.deleteMany({ where: { id: { in: n.fotos.map(f => f.archivo.id) } } })
     await auditar(tx, ctx, { accion: 'ELIMINAR', entidad: 'Noticia', entidadId: id, antes: { titulo: n.titulo } })
-    return n.portada?.ruta
+    return [n.portada?.ruta, ...n.fotos.map(f => f.archivo.ruta)].filter((r): r is string => !!r)
   })
-  if (ruta) await borrarDeDisco(ruta)
+  await Promise.all(rutas.map(r => borrarDeDisco(r)))
 }
 
 export async function guardarPortada(usuarioId: string, id: string, datos: Buffer, nombre: string, ctx: ContextoAuditoria) {
@@ -200,6 +208,60 @@ export async function guardarPortada(usuarioId: string, id: string, datos: Buffe
     return n.portada?.ruta
   })
   if (rutaAnterior) await borrarDeDisco(rutaAnterior)
+}
+
+// --- Galería de fotos ------------------------------------------------------------------
+
+async function noticiaEditable(tx: Prisma.TransactionClient, usuarioId: string, id: string) {
+  const p = await permisosNoticias(usuarioId)
+  const n = await tx.noticia.findUnique({ where: { id }, select: { id: true, autorId: true, organizacionId: true, estado: true } })
+  if (!n) throw createError({ statusCode: 404, message: 'Noticia no encontrada' })
+  if (!puedeEditar(usuarioId, p, n)) throw createError({ statusCode: 403, message: 'No puede editar esta noticia' })
+  return n
+}
+
+export async function agregarFotoNoticia(usuarioId: string, id: string, datos: Buffer, nombre: string, pie: string | null, ctx: ContextoAuditoria) {
+  return prisma.$transaction(async (tx) => {
+    const n = await noticiaEditable(tx, usuarioId, id)
+    const total = await tx.fotoNoticia.count({ where: { noticiaId: id } })
+    if (total >= FOTOS_POR_NOTICIA) throw createError({ statusCode: 400, message: `Máximo ${FOTOS_POR_NOTICIA} fotos por noticia` })
+    const archivo = await guardarArchivo(tx, { datos, nombreOriginal: nombre, permitidos: IMAGENES, maxBytes: MAX_FOTO_NOTICIA, visibilidad: n.estado === 'PUBLICADA' ? 'PUBLICO' : 'AUTENTICADO', subidoPorId: usuarioId })
+    const foto = await tx.fotoNoticia.create({ data: { noticiaId: id, archivoId: archivo.id, pie, orden: total }, select: { id: true, archivoId: true, pie: true } })
+    await auditar(tx, ctx, { accion: 'CREAR', entidad: 'Noticia.foto', entidadId: id })
+    return foto
+  })
+}
+
+export async function editarFotoNoticia(usuarioId: string, id: string, fotoId: string, pie: string | null) {
+  await prisma.$transaction(async (tx) => {
+    await noticiaEditable(tx, usuarioId, id)
+    const r = await tx.fotoNoticia.updateMany({ where: { id: fotoId, noticiaId: id }, data: { pie } })
+    if (!r.count) throw createError({ statusCode: 404, message: 'Foto no encontrada' })
+  })
+}
+
+/** Guarda el orden de la galería (lista completa de ids en el orden deseado). */
+export async function ordenarFotosNoticia(usuarioId: string, id: string, ids: string[]) {
+  await prisma.$transaction(async (tx) => {
+    await noticiaEditable(tx, usuarioId, id)
+    const actuales = await tx.fotoNoticia.findMany({ where: { noticiaId: id }, select: { id: true } })
+    const validos = new Set(actuales.map(f => f.id))
+    if (ids.length !== validos.size || !ids.every(i => validos.has(i))) throw createError({ statusCode: 400, message: 'La lista de fotos no coincide; recargue la página' })
+    for (const [orden, fotoId] of ids.entries()) await tx.fotoNoticia.update({ where: { id: fotoId }, data: { orden } })
+  })
+}
+
+export async function eliminarFotoNoticia(usuarioId: string, id: string, fotoId: string, ctx: ContextoAuditoria) {
+  const ruta = await prisma.$transaction(async (tx) => {
+    await noticiaEditable(tx, usuarioId, id)
+    const f = await tx.fotoNoticia.findFirst({ where: { id: fotoId, noticiaId: id }, select: { archivo: { select: { id: true, ruta: true } } } })
+    if (!f) throw createError({ statusCode: 404, message: 'Foto no encontrada' })
+    await tx.fotoNoticia.delete({ where: { id: fotoId } })
+    await tx.archivo.delete({ where: { id: f.archivo.id } })
+    await auditar(tx, ctx, { accion: 'ELIMINAR', entidad: 'Noticia.foto', entidadId: id })
+    return f.archivo.ruta
+  })
+  await borrarDeDisco(ruta)
 }
 
 // --- Portal ---------------------------------------------------------------------------
@@ -223,7 +285,7 @@ export async function noticiasPublicas(q: z.output<typeof noticiasPublicasQuery>
 export type NoticiaPublica = Awaited<ReturnType<typeof noticiasPublicas>>['datos'][number]
 
 export async function noticiaPublica(slug: string) {
-  const n = await prisma.noticia.findFirst({ where: { slug, estado: 'PUBLICADA' }, select: { ...SELECT_PUBLICA, contenido: true, actualizadoEn: true } })
+  const n = await prisma.noticia.findFirst({ where: { slug, estado: 'PUBLICADA' }, select: { ...SELECT_PUBLICA, contenido: true, actualizadoEn: true, fotos: SELECT_FOTOS } })
   if (!n) throw createError({ statusCode: 404, message: 'Noticia no encontrada' })
   return { ...n, organizacion: fuente(n.organizacion) }
 }
