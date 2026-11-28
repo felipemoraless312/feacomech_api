@@ -1,18 +1,10 @@
-<!-- Aviso de privacidad integral. ESTRUCTURA BASE: la debe revisar y aprobar el área jurídica
-     de la Federación. Los datos entre corchetes los completa la Federación. -->
+<!-- Aviso de privacidad integral. El domicilio y el correo salen de Configuración → Institución;
+     si faltan, se muestra "[… por confirmar]" para que se note y se completen. -->
 <template>
   <div>
     <SitioEncabezado antetitulo="Protección de datos" titulo="Aviso de privacidad" />
 
     <UContainer class="max-w-3xl space-y-10 py-14">
-      <UAlert
-        color="warning"
-        variant="subtle"
-        icon="i-lucide-file-pen-line"
-        title="Borrador para revisión jurídica"
-        description="Este aviso es una estructura base. Debe revisarlo y aprobarlo el área jurídica de la Federación antes de su publicación definitiva."
-      />
-
       <section v-for="s in secciones" :key="s.titulo" class="space-y-3">
         <h2 class="font-display text-2xl font-semibold tracking-tight text-highlighted">
           {{ s.titulo }}
