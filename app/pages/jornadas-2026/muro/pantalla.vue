@@ -23,7 +23,7 @@
     </header>
 
     <!-- Pie: crédito y mensaje -->
-    <div v-if="actual" class="absolute bottom-0 left-0 max-w-[62vw] p-[3.5vh]">
+    <div v-if="actual" class="absolute bottom-0 left-0 max-w-[calc(100vw-34vh)] p-[3.5vh]">
       <Transition name="sube" mode="out-in">
         <div :key="actual.clave">
           <p v-if="actual.pub.mensaje" class="line-clamp-3 font-display text-[3.6vh] font-semibold leading-tight drop-shadow-lg">“{{ actual.pub.mensaje }}”</p>
@@ -35,14 +35,13 @@
       </Transition>
     </div>
 
-    <!-- QR para publicar -->
-    <aside class="absolute bottom-[3.5vh] right-[3.5vh] flex items-center gap-[2vh] rounded-[1vh] bg-white p-[1.8vh] pr-[2.5vh] text-marca-950 shadow-2xl">
-      <div class="qr size-[17vh]" v-html="qr" />
-      <div class="max-w-[22vh]">
-        <p class="font-display text-[2.6vh] font-bold leading-tight text-marca-900">Comparta sus fotografías</p>
-        <p class="mt-[0.6vh] text-[1.7vh] leading-snug text-marca-900/70">Escanee el código para publicar en el muro de las Jornadas</p>
-        <p class="mt-[1vh] font-display text-[1.8vh] font-semibold text-marca-700">{{ HASHTAG_JORNADAS }}</p>
-      </div>
+    <!-- QR para publicar: columna de ancho fijo, todo centrado -->
+    <aside class="absolute bottom-[3.5vh] right-[3.5vh] flex w-[26vh] flex-col items-center rounded-[1vh] bg-white px-[2vh] pb-[2vh] pt-[2.2vh] text-center text-marca-950 shadow-2xl">
+      <p class="font-display text-[1.5vh] font-semibold uppercase tracking-[0.2em] text-acento-700">Muro de las Jornadas</p>
+      <p class="mt-[0.6vh] font-display text-[2.5vh] font-bold leading-tight text-marca-900">Comparta sus fotografías</p>
+      <div class="qr mt-[1.6vh] aspect-square w-full" v-html="qr" />
+      <p class="mt-[1.4vh] text-[1.5vh] leading-snug text-marca-900/70">Escanee el código con su teléfono</p>
+      <p class="mt-[0.8vh] w-full border-t border-marca-100 pt-[0.8vh] font-display text-[1.7vh] font-semibold text-marca-700">{{ HASHTAG_JORNADAS }}</p>
     </aside>
 
     <!-- Sin fotos todavía -->
