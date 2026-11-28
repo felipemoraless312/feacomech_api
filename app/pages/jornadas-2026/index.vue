@@ -20,9 +20,15 @@
           <p class="mt-3 font-display text-2xl font-semibold uppercase italic tracking-[0.1em] text-acento-300 sm:text-3xl">
             &amp; {{ J.subtitulo }}
           </p>
-          <div class="mt-7 flex flex-wrap gap-2 text-sm">
-            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/15"><UIcon name="i-lucide-calendar-days" class="size-4 text-acento-300" />{{ J.fechas }}</span>
-            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/15"><UIcon name="i-lucide-map-pin" class="size-4 text-acento-300" />Polyforum Chiapas, Tuxtla Gutiérrez</span>
+          <div class="mt-7 flex flex-wrap items-stretch gap-px overflow-hidden rounded-md bg-white/15 text-sm sm:w-fit">
+            <div class="bg-marca-900 px-5 py-3">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">Fechas</p>
+              <p class="mt-0.5 font-semibold">{{ J.fechas }}</p>
+            </div>
+            <div class="bg-marca-900 px-5 py-3">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">Sede</p>
+              <p class="mt-0.5 font-semibold">Polyforum Chiapas, Tuxtla Gutiérrez</p>
+            </div>
           </div>
           <div class="mt-8 flex flex-wrap gap-3">
             <template v-if="fase === 'antes'">
@@ -41,7 +47,7 @@
         </div>
 
         <!-- Estado del evento -->
-        <aside class="rounded-2xl bg-white p-6 text-marca-950 shadow-flotante sm:p-7">
+        <aside class="rounded-lg bg-white p-6 text-marca-950 shadow-flotante sm:p-7">
           <div class="flex items-center gap-3">
             <img src="/img/marca/escudo-160.png" alt="Escudo de la Federación" class="h-12 w-auto" width="138" height="160">
             <p class="font-display text-xs font-semibold uppercase leading-snug tracking-[0.12em] text-marca-800">Federación de Asociaciones y Colegios Médicos de Chiapas</p>
@@ -63,29 +69,26 @@
           <!-- Durante: en vivo -->
           <template v-else-if="fase === 'durante'">
             <div class="flex items-center justify-between gap-3">
-              <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-red-600">
-                <span class="relative flex size-2.5"><span class="absolute inline-flex size-full animate-ping rounded-full bg-red-500 opacity-75" /><span class="relative inline-flex size-2.5 rounded-full bg-red-600" /></span>
-                En vivo · día {{ diaActual!.n }} de 3
-              </p>
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-acento-700">Día {{ diaActual!.n }} de 3</p>
               <p class="font-display text-sm font-semibold text-marca-800">{{ diaActual!.etiqueta }}</p>
             </div>
-            <div v-if="sesion.ahora" class="mt-4 rounded-xl bg-marca-50 p-4">
-              <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-marca-700">Ahora · {{ sesion.ahora.inicio }}–{{ sesion.ahora.fin }}</p>
+            <div v-if="sesion.ahora" class="mt-4 border-l-4 border-acento-500 bg-marca-50 p-4">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-marca-700">En curso · {{ sesion.ahora.inicio }}–{{ sesion.ahora.fin }} h</p>
               <p class="mt-1 font-display text-lg font-bold leading-snug">{{ sesion.ahora.titulo }}</p>
               <p v-if="sesion.ahora.ponente" class="mt-0.5 text-sm text-marca-950/70">{{ sesion.ahora.ponente }}</p>
-              <div v-if="sesion.avance !== null" class="mt-3 h-1.5 overflow-hidden rounded-full bg-marca-100">
-                <div class="h-full rounded-full bg-acento-500 transition-[width] duration-1000" :style="{ width: `${sesion.avance}%` }" />
+              <div v-if="sesion.avance !== null" class="mt-3 h-1 overflow-hidden bg-marca-100">
+                <div class="h-full bg-marca-600 transition-[width] duration-1000" :style="{ width: `${sesion.avance}%` }" />
               </div>
             </div>
-            <div v-if="sesion.siguiente" class="mt-3 flex items-start gap-3 rounded-xl px-1 py-2">
+            <div v-if="sesion.siguiente" class="mt-4 flex items-start gap-3">
               <span class="rounded-md bg-marca-800 px-2 py-1 font-display text-sm font-bold tabular-nums text-white">{{ sesion.siguiente.inicio }}</span>
               <div class="min-w-0">
-                <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-acento-700">Después</p>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-dimmed">A continuación</p>
                 <p class="text-sm font-semibold leading-snug">{{ sesion.siguiente.titulo }}</p>
               </div>
             </div>
-            <p v-if="!sesion.ahora && !sesion.siguiente" class="mt-4 rounded-xl bg-marca-50 p-4 text-sm">
-              Concluyeron las actividades de hoy.<template v-if="diaActual!.n < 3"> Mañana iniciamos a las 8:00 h. ¡Te esperamos!</template>
+            <p v-if="!sesion.ahora && !sesion.siguiente" class="mt-4 border-l-4 border-marca-300 bg-marca-50 p-4 text-sm">
+              Concluyeron las actividades de hoy.<template v-if="diaActual!.n < 3"> Mañana iniciamos a las 8:00 h.</template>
             </p>
           </template>
 
@@ -99,31 +102,31 @@
     </section>
 
     <!-- Accesos rápidos: qué se puede hacer aquí -->
-    <section class="relative z-10 -mt-12">
-      <UContainer class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        <component
-          :is="a.externo ? 'a' : NuxtLink"
-          v-for="a in accesos"
-          :key="a.t"
-          v-bind="a.externo ? { href: a.to } : { to: a.to }"
-          class="group relative flex flex-col overflow-hidden rounded-2xl p-4 shadow-flotante ring-1 transition duration-300 hover:-translate-y-1 sm:p-5"
-          :class="a.destacado ? 'bg-acento-500 text-white ring-acento-400' : 'bg-default ring-default'"
-        >
-          <span v-if="a.etiqueta" class="absolute right-3 top-3 rounded-full bg-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-acento-700">{{ a.etiqueta }}</span>
-          <span class="flex size-11 items-center justify-center rounded-xl transition group-hover:scale-110" :class="a.destacado ? 'bg-white/20' : 'bg-marca-50 text-marca-700 dark:bg-marca-900/40 dark:text-marca-200'">
-            <UIcon :name="a.icono" class="size-6" />
-          </span>
-          <span class="mt-3 font-display text-lg font-bold leading-tight" :class="a.destacado ? '' : 'text-highlighted'">{{ a.t }}</span>
-          <span class="mt-1 text-xs leading-snug sm:text-sm" :class="a.destacado ? 'text-white/85' : 'text-muted'">{{ a.d }}</span>
-          <span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold" :class="a.destacado ? '' : 'text-primary'">
-            {{ a.accion }} <UIcon name="i-lucide-arrow-right" class="size-4 transition group-hover:translate-x-1" />
-          </span>
-        </component>
+    <section class="border-b border-default bg-default">
+      <UContainer>
+        <div class="grid grid-cols-2 gap-px bg-[var(--ui-border)] lg:grid-cols-4">
+          <component
+            :is="a.externo ? 'a' : NuxtLink"
+            v-for="a in accesos"
+            :key="a.t"
+            v-bind="a.externo ? { href: a.to } : { to: a.to }"
+            class="group flex gap-4 bg-default px-3 py-6 transition-colors hover:bg-marca-50/60 sm:px-6 dark:hover:bg-white/5"
+          >
+            <UIcon :name="a.icono" class="mt-0.5 size-6 shrink-0 text-marca-600 dark:text-marca-300" />
+            <span class="min-w-0">
+              <span class="block font-display text-base font-bold text-highlighted sm:text-lg">{{ a.t }}</span>
+              <span class="mt-0.5 block text-xs leading-snug text-muted sm:text-sm">{{ a.d }}</span>
+              <span class="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                {{ a.accion }} <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </span>
+          </component>
+        </div>
       </UContainer>
     </section>
 
     <!-- Fotos del muro -->
-    <SitioMuroFotos class="mt-10" />
+    <SitioMuroFotos />
 
     <!-- Navegación interna -->
     <nav class="sticky top-[var(--ui-header-height)] z-20 border-y border-default bg-default/95 backdrop-blur" aria-label="Secciones de las Jornadas">
@@ -151,15 +154,15 @@
 
     <!-- Ponentes invitados -->
     <section id="ponentes" class="scroll-mt-32 py-14 sm:py-20">
-      <UContainer class="space-y-10">
-        <div class="max-w-2xl space-y-3">
+      <UContainer class="grid gap-10 lg:grid-cols-[17rem_1fr]">
+        <div class="space-y-3 lg:sticky lg:top-36 lg:self-start">
           <p class="rotulo">Profesorado</p>
           <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Ponentes invitados</h2>
-          <p class="text-muted">Especialistas de referencia nacional se suman a los ponentes de los colegios de Chiapas.</p>
+          <p class="justificado text-muted">Especialistas de referencia nacional se suman a los ponentes de los colegios de Chiapas.</p>
         </div>
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <article v-for="p in PONENTES_INVITADOS" :key="p.nombre" class="flex gap-4 rounded-2xl bg-default p-5 shadow-tarjeta ring-1 ring-default">
-            <span class="flex size-14 shrink-0 items-center justify-center rounded-xl bg-marca-800 font-display text-lg font-bold text-white">{{ iniciales(p.nombre) }}</span>
+        <div class="grid gap-px overflow-hidden rounded-lg bg-[var(--ui-border)] ring-1 ring-default sm:grid-cols-2">
+          <article v-for="p in PONENTES_INVITADOS" :key="p.nombre" class="flex gap-4 bg-default p-5">
+            <span class="flex size-12 shrink-0 items-center justify-center rounded-md bg-marca-800 font-display text-base font-bold text-white">{{ iniciales(p.nombre) }}</span>
             <div class="min-w-0">
               <p class="font-display text-lg font-bold leading-tight text-highlighted">{{ p.nombre }}</p>
               <p class="mt-0.5 text-xs text-muted">{{ p.perfil }}</p>
@@ -173,14 +176,14 @@
 
     <!-- Talleres y cena -->
     <section id="talleres" class="scroll-mt-32 bg-muted py-14 sm:py-20">
-      <UContainer class="space-y-10">
-        <div class="max-w-2xl space-y-3">
+      <UContainer class="grid gap-10 lg:grid-cols-[17rem_1fr]">
+        <div class="space-y-3">
           <p class="rotulo">Además de las conferencias</p>
           <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Talleres y cena de gala</h2>
           <p class="text-muted">Se adquieren por separado de la inscripción.</p>
         </div>
         <div class="grid gap-5 md:grid-cols-3">
-          <article v-for="t in J.talleres.lista" :key="t.titulo" class="flex flex-col rounded-2xl border-t-4 border-marca-700 bg-default p-6 shadow-tarjeta">
+          <article v-for="t in J.talleres.lista" :key="t.titulo" class="flex flex-col rounded-lg border-t-4 border-marca-700 bg-default p-6 shadow-tarjeta">
             <UIcon :name="t.icono" class="size-7 text-marca-700 dark:text-marca-300" />
             <p class="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-acento-700 dark:text-acento-300">Taller · {{ t.dia }}</p>
             <h3 class="mt-1 font-display text-xl font-bold text-highlighted">{{ t.titulo }}</h3>
@@ -188,7 +191,7 @@
             <p class="mt-1 text-sm text-muted"><UIcon name="i-lucide-clock" class="mr-1 inline size-3.5 align-[-2px]" />{{ t.horario }} · {{ t.lugar }}</p>
             <p class="mt-auto pt-6 font-display text-2xl font-bold text-marca-800 dark:text-marca-200">{{ pesos(J.talleres.costo) }} <span class="text-sm font-medium text-muted">MXN</span></p>
           </article>
-          <article class="flex flex-col rounded-2xl bg-marca-900 p-6 text-white shadow-tarjeta">
+          <article class="flex flex-col rounded-lg border-t-4 border-acento-500 bg-marca-900 p-6 text-white shadow-tarjeta">
             <UIcon name="i-lucide-wine" class="size-7 text-acento-300" />
             <p class="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-acento-300">Evento social</p>
             <h3 class="mt-1 font-display text-xl font-bold">{{ J.cena.titulo }}</h3>
@@ -201,16 +204,16 @@
     </section>
 
     <!-- Inscripción (compacta; desaparece al terminar el evento) -->
-    <section v-if="fase !== 'despues'" id="inscripcion" class="scroll-mt-32 py-14 sm:py-16">
+    <section v-if="fase !== 'despues'" id="inscripcion" class="scroll-mt-32 border-y border-marca-100 bg-marca-50/70 py-12 dark:border-white/10 dark:bg-marca-950/40">
       <UContainer>
-        <div class="grid gap-8 rounded-2xl bg-default p-6 shadow-tarjeta ring-1 ring-default sm:p-8 lg:grid-cols-[1fr_1.3fr_auto] lg:items-center">
+        <div class="grid gap-8 lg:grid-cols-[17rem_1fr_auto] lg:items-center">
           <div class="space-y-2">
             <p class="rotulo">Inscripción</p>
-            <h2 class="font-display text-2xl font-bold text-highlighted">¿Aún no te inscribes?</h2>
-            <p class="text-sm text-muted">Incluye las conferencias de los tres días y la constancia con valor curricular. Consulta disponibilidad en sede o por WhatsApp.</p>
+            <h2 class="font-display text-2xl font-bold text-highlighted">¿Aún no se inscribe?</h2>
+            <p class="text-sm text-muted">Incluye las conferencias de los tres días y la constancia con valor curricular. Consulte disponibilidad en sede o por WhatsApp.</p>
           </div>
           <ul class="grid gap-2 sm:grid-cols-3">
-            <li v-for="c in J.cuotas.categorias" :key="c.nombre" class="rounded-xl bg-muted px-4 py-3">
+            <li v-for="c in J.cuotas.categorias" :key="c.nombre" class="rounded-md bg-default px-4 py-3 ring-1 ring-default">
               <p class="font-display text-2xl font-bold tabular-nums text-marca-800 dark:text-marca-200">{{ pesos(reducidaVigente ? c.reducida : c.regular) }}</p>
               <p class="text-xs font-medium leading-snug text-muted">{{ c.nombre }}</p>
             </li>
@@ -224,7 +227,7 @@
     </section>
 
     <!-- Sede -->
-    <section id="sede" class="scroll-mt-32 py-14 sm:py-20" :class="{ 'bg-muted/60': fase !== 'despues' }">
+    <section id="sede" class="scroll-mt-32 py-14 sm:py-20">
       <UContainer class="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:items-center">
         <div class="space-y-5">
           <p class="rotulo">Sede</p>
@@ -237,7 +240,7 @@
           </dl>
           <UButton :to="J.sede.mapa" target="_blank" icon="i-lucide-navigation" label="Cómo llegar" size="lg" />
         </div>
-        <div class="overflow-hidden rounded-2xl shadow-tarjeta ring-1 ring-default">
+        <div class="overflow-hidden rounded-lg shadow-tarjeta ring-1 ring-default">
           <iframe :src="J.sede.mapaEmbebido" title="Mapa de la sede: Polyforum Chiapas" class="aspect-[16/10] w-full" loading="lazy" referrerpolicy="no-referrer-when-downgrade" />
         </div>
       </UContainer>
@@ -246,8 +249,8 @@
     <!-- Constancias -->
     <section id="constancias" class="scroll-mt-32 py-14 sm:py-20">
       <UContainer>
-        <div class="relative isolate grid gap-8 overflow-hidden rounded-2xl bg-marca-900 p-8 text-white sm:p-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
-          <div class="pointer-events-none absolute inset-y-0 right-0 -z-10 w-1/2 bg-gradient-to-l from-acento-500/60 to-transparent" />
+        <div class="relative isolate grid gap-8 overflow-hidden rounded-lg bg-marca-900 p-8 text-white sm:p-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+          <div class="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[38%] bg-acento-500 [clip-path:polygon(18%_0,100%_0,100%_100%,0_100%)] lg:block" />
           <div class="space-y-4">
             <p class="rotulo !text-acento-200">{{ fase === 'despues' ? 'Ya disponibles' : 'Al terminar el evento' }}</p>
             <h2 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">Descargue su constancia</h2>
@@ -255,8 +258,8 @@
             <UButton to="/jornadas-2026/constancias" icon="i-lucide-award" label="Buscar mi constancia" size="xl" class="bg-white text-marca-900 hover:bg-marca-50" />
           </div>
           <ul class="space-y-3 text-sm">
-            <li v-for="t in ['Asistencia con valor curricular', 'Talleres acreditados', 'Carteles científicos', 'Reconocimiento a ponentes']" :key="t" class="flex items-center gap-3 rounded-md bg-white/10 px-4 py-3 ring-1 ring-white/15">
-              <UIcon name="i-lucide-badge-check" class="size-5 text-acento-300" />{{ t }}
+            <li v-for="t in ['Asistencia con valor curricular', 'Talleres acreditados', 'Carteles científicos', 'Reconocimiento a ponentes']" :key="t" class="flex items-center gap-3 border-b border-white/20 pb-3 font-medium last:border-0">
+              <UIcon name="i-lucide-badge-check" class="size-5 shrink-0" />{{ t }}
             </li>
           </ul>
         </div>
@@ -265,7 +268,7 @@
 
     <!-- Preguntas frecuentes -->
     <section id="preguntas" class="scroll-mt-32 bg-muted py-14 sm:py-20">
-      <UContainer class="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
+      <UContainer class="grid gap-10 lg:grid-cols-[17rem_1fr]">
         <div class="space-y-3">
           <p class="rotulo">¿Dudas?</p>
           <h2 class="font-display text-3xl font-bold tracking-tight text-highlighted sm:text-4xl">Preguntas frecuentes</h2>
@@ -309,7 +312,7 @@
             </div>
           </li>
         </ol>
-        <div class="mt-5 overflow-hidden rounded-xl ring-1 ring-default">
+        <div class="mt-5 overflow-hidden rounded-md ring-1 ring-default">
           <div class="flex items-center justify-between border-b border-default px-4 py-3">
             <p class="text-sm font-medium text-highlighted">{{ J.pago.titular }}</p>
             <span class="rounded-sm bg-marca-800 px-2 py-1 text-xs font-bold tracking-wider text-white">{{ J.pago.banco }}</span>
@@ -411,8 +414,8 @@ const cuenta = computed(() => {
 })
 
 const accesos = computed(() => [
-  { t: 'Programa', d: 'Horarios y conferencias de los tres días.', accion: fase.value === 'durante' ? 'Ver hoy' : 'Consultar', icono: 'i-lucide-calendar-range', to: '#programa', externo: true },
-  { t: 'Muro de fotos', d: 'Comparte tus fotos y comenta las de tus colegas.', accion: 'Participar', icono: 'i-lucide-camera', to: '/jornadas-2026/muro', destacado: true, etiqueta: 'Nuevo' },
+  { t: 'Programa académico', d: 'Horarios y conferencias de los tres días.', accion: fase.value === 'durante' ? 'Ver hoy' : 'Consultar', icono: 'i-lucide-calendar-range', to: '#programa', externo: true },
+  { t: 'Muro de fotos', d: 'Fotografías y comentarios de los asistentes.', accion: 'Ver y publicar', icono: 'i-lucide-images', to: '/jornadas-2026/muro' },
   { t: 'Cómo llegar', d: 'Polyforum Chiapas, Tuxtla Gutiérrez.', accion: 'Ver mapa', icono: 'i-lucide-map-pin', to: '#sede', externo: true },
   { t: 'Constancias', d: fase.value === 'despues' ? 'Descárgala con tu correo de inscripción.' : 'Disponibles al terminar el evento.', accion: 'Buscar', icono: 'i-lucide-award', to: '/jornadas-2026/constancias' },
 ])
