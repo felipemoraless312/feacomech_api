@@ -19,8 +19,8 @@
       </div>
     </SitioEncabezado>
 
-    <UContainer class="grid gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
-      <div class="mx-auto w-full max-w-2xl space-y-6">
+    <UContainer class="grid gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,1fr)_20rem] xl:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+      <div class="w-full min-w-0 space-y-6">
         <!-- Publicar -->
         <section id="publicar" class="scroll-mt-24 rounded-xl bg-default shadow-tarjeta ring-1 ring-default">
           <div v-if="publicado" class="flex flex-col items-center px-6 py-10 text-center">
@@ -37,12 +37,14 @@
               <p class="rotulo">Nueva publicación</p>
             </div>
             <div class="space-y-4 p-5">
-              <UFormField label="Nombre" hint="Opcional" help="Aparecerá como crédito de la fotografía.">
-                <UInput v-model="autor" maxlength="60" placeholder="Ej. Dra. Ana López Pérez" :disabled="enviando" class="w-full" />
-              </UFormField>
-              <UFormField label="Mensaje" hint="Opcional">
-                <UTextarea ref="caja" v-model="mensaje" :rows="3" autoresize maxlength="500" placeholder="Describa el momento: ponencia, taller, sede…" :disabled="enviando" class="w-full" />
-              </UFormField>
+              <div class="grid gap-4 md:grid-cols-[1fr_1.7fr]">
+                <UFormField label="Nombre" hint="Opcional" help="Aparecerá como crédito de la fotografía.">
+                  <UInput v-model="autor" maxlength="60" placeholder="Ej. Dra. Ana López Pérez" :disabled="enviando" class="w-full" />
+                </UFormField>
+                <UFormField label="Mensaje" hint="Opcional">
+                  <UTextarea v-model="mensaje" :rows="3" autoresize maxlength="500" placeholder="Describa el momento: ponencia, taller, sede…" :disabled="enviando" class="w-full" />
+                </UFormField>
+              </div>
 
               <!-- Fotos elegidas -->
               <div v-if="items.length" class="grid grid-cols-3 gap-2 sm:grid-cols-6">
