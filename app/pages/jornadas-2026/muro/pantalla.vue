@@ -15,49 +15,45 @@
     <header class="absolute inset-x-0 top-0 flex items-center gap-[1.5vh] p-[3vh]">
       <span class="rounded-[1.2vh] bg-white p-[0.6vh] shadow-lg"><img src="/img/marca/escudo-160.png" alt="" class="h-[7vh] w-auto"></span>
       <div>
-        <p class="font-display text-[1.8vh] font-semibold uppercase tracking-[0.25em] text-acento-300">{{ J.edicion }} Jornadas Académicas FEACOMECH</p>
+        <p class="font-display text-[1.8vh] font-semibold uppercase tracking-[0.25em] text-marca-200">{{ J.edicion }} Jornadas Académicas FEACOMECH</p>
         <p class="font-display text-[4vh] font-bold leading-none">Muro de las Jornadas</p>
+        <div class="mt-[1vh] h-[0.35vh] w-[6vh] bg-acento-500" />
       </div>
-      <span class="ml-auto inline-flex items-center gap-[0.8vh] rounded-full bg-white/10 px-[1.6vh] py-[0.8vh] text-[1.8vh] font-semibold ring-1 ring-white/20 backdrop-blur">
-        <span class="size-[1.2vh] animate-pulse rounded-full bg-red-500" /> En vivo
-      </span>
+      <p class="ml-auto text-right text-[1.8vh] leading-snug text-white/75">{{ J.fechas }}<br>{{ J.sede.nombre }}</p>
     </header>
 
     <!-- Pie: crédito y mensaje -->
     <div v-if="actual" class="absolute bottom-0 left-0 max-w-[62vw] p-[3.5vh]">
       <Transition name="sube" mode="out-in">
         <div :key="actual.clave">
-          <span v-if="esNueva(actual.pub)" class="mb-[1.2vh] inline-flex items-center gap-[0.6vh] rounded-full bg-acento-500 px-[1.4vh] py-[0.5vh] text-[1.7vh] font-bold uppercase tracking-wide">
-            <UIcon name="i-lucide-sparkles" class="size-[1.8vh]" /> ¡Nueva!
-          </span>
           <p v-if="actual.pub.mensaje" class="line-clamp-3 font-display text-[3.6vh] font-semibold leading-tight drop-shadow-lg">“{{ actual.pub.mensaje }}”</p>
           <p class="mt-[1vh] text-[2.2vh] text-white/80">
             {{ actual.pub.autor ? `Foto: ${actual.pub.autor}` : 'Asistente de las Jornadas' }}
-            <span v-if="actual.pub.meGusta" class="ml-[1.5vh] inline-flex items-center gap-[0.5vh]"><UIcon name="i-lucide-heart" class="size-[2vh] fill-current text-rose-400" /> {{ actual.pub.meGusta }}</span>
+            <span v-if="actual.pub.meGusta" class="ml-[1.5vh] inline-flex items-center gap-[0.5vh] text-white/65"><UIcon name="i-lucide-heart" class="size-[2vh]" /> {{ actual.pub.meGusta }}</span>
           </p>
         </div>
       </Transition>
     </div>
 
     <!-- QR para publicar -->
-    <aside class="absolute bottom-[3.5vh] right-[3.5vh] flex items-center gap-[2vh] rounded-[2vh] bg-white p-[1.8vh] pr-[2.5vh] text-marca-950 shadow-2xl">
+    <aside class="absolute bottom-[3.5vh] right-[3.5vh] flex items-center gap-[2vh] rounded-[1vh] bg-white p-[1.8vh] pr-[2.5vh] text-marca-950 shadow-2xl">
       <div class="qr size-[17vh]" v-html="qr" />
       <div class="max-w-[22vh]">
-        <p class="font-display text-[2.8vh] font-bold leading-tight">¡Comparte tus fotos!</p>
-        <p class="mt-[0.6vh] text-[1.7vh] leading-snug text-marca-900/70">Escanea, publica y aparece en esta pantalla</p>
-        <p class="mt-[1vh] font-display text-[1.7vh] font-semibold text-acento-600">{{ HASHTAG_JORNADAS }}</p>
+        <p class="font-display text-[2.6vh] font-bold leading-tight text-marca-900">Comparta sus fotografías</p>
+        <p class="mt-[0.6vh] text-[1.7vh] leading-snug text-marca-900/70">Escanee el código para publicar en el muro de las Jornadas</p>
+        <p class="mt-[1vh] font-display text-[1.8vh] font-semibold text-marca-700">{{ HASHTAG_JORNADAS }}</p>
       </div>
     </aside>
 
     <!-- Sin fotos todavía -->
     <div v-if="!diapositivas.length" class="absolute inset-0 flex flex-col items-center justify-center text-center">
-      <p class="font-display text-[6vh] font-bold">¿Ya tomaste tu foto?</p>
-      <p class="mt-[1vh] text-[2.6vh] text-white/75">Escanea el código y sé el primero en aparecer aquí</p>
+      <p class="font-display text-[6vh] font-bold">Muro de las Jornadas</p>
+      <p class="mt-[1vh] text-[2.6vh] text-white/75">Escanee el código para compartir sus fotografías del evento</p>
     </div>
 
     <!-- Barra de avance -->
     <div v-if="diapositivas.length > 1" class="absolute inset-x-0 bottom-0 h-[0.5vh] bg-white/10">
-      <div :key="indice" class="avance h-full bg-acento-400" :style="{ animationDuration: `${DURACION_MS}ms` }" />
+      <div :key="indice" class="avance h-full bg-marca-300" :style="{ animationDuration: `${DURACION_MS}ms` }" />
     </div>
   </div>
 </template>
@@ -84,7 +80,6 @@ const diapositivas = computed<Diapositiva[]>(() =>
   publicaciones.value.flatMap(pub => pub.fotos.map(foto => ({ clave: foto.id, pub, foto }))))
 const actual = computed(() => diapositivas.value[indice.value % Math.max(diapositivas.value.length, 1)])
 const diapositivaActual = computed(() => (actual.value ? [actual.value] : []))
-const esNueva = (p: PublicacionDto) => Date.now() - new Date(p.creadoEn).getTime() < 20 * 60_000
 
 async function cargar() {
   const r = await $fetch<Pagina>('/api/publico/jornadas/muro').catch(() => null)
@@ -126,7 +121,7 @@ function pantallaCompleta() {
 .fundido-enter-active, .fundido-leave-active { transition: opacity 1.2s ease; }
 .fundido-enter-from, .fundido-leave-to { opacity: 0; }
 .sube-enter-active, .sube-leave-active { transition: all 0.6s ease; }
-.sube-enter-from { opacity: 0; transform: translateY(20px); }
+.sube-enter-from { opacity: 0; transform: translateY(8px); }
 .sube-leave-to { opacity: 0; transform: translateY(-10px); }
 .avance { animation: avance linear both; transform-origin: left; }
 @keyframes avance { from { transform: scaleX(0); } to { transform: scaleX(1); } }
